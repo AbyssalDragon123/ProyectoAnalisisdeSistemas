@@ -1,0 +1,55 @@
+# --- Archivos y carpetas comunes que deben ignorarse ---
+
+# Carpeta de configuración de Visual Studio
+.vs/
+*.user
+*.suo
+
+# Build results
+bin/
+obj/
+
+# NuGet Packages
+*.nupkg
+*.snupkg
+*.nuspec
+*.cache
+*.dll
+*.exe
+*.pdb
+project.lock.json
+project.assets.json
+*.nuget.props
+*.nuget.targets
+*.nuget.dgspec.json
+*.csproj.nuget.g.*
+
+# Archivos generados por Visual Studio
+*.dbmdl
+*.bak
+*.log
+*.tmp
+*.log
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+
+# Archivos temporales
+*.swp
+*.swo
+*.tmp
+*.temp
+
+# Carpetas relacionadas a diseño en tiempo de ejecución
+**/DesignTimeBuild/
+**/FileContentIndex/
+
+# Configuración de Rider o VS Code (opcional)
+.idea/
+.vscode/
+
+# Config personalizado para tu proyecto
+SistemaVentasAPI/.vs/
+SistemaVentasAPI/SistemaVentasAPI/obj/
+SistemaVentasAPI/SistemaVentasAPI/bin/
