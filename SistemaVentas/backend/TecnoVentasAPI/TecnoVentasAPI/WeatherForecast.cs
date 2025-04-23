@@ -1,4 +1,4 @@
-namespace TecnoSolucionesAPI
+namespace TecnoVentasAPI
 {
     public class WeatherForecast
     {
