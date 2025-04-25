@@ -1,6 +1,0 @@
-@TecnoSolucionesAPI_HostAddress = http://localhost:5272
-
-GET {{TecnoSolucionesAPI_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###

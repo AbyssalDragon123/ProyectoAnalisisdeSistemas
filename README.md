@@ -17,8 +17,9 @@ Este proyecto es una aplicación de gestión de ventas desarrollada de la siguie
 - 	Microsofto Visual Estudio 2022
 - Frontend: Java (Swing)
 - Base de Datos:
-- 	SQL Server
-- 	SQL Server managment Studio 
+- 	MySQL Server
+- 	MySQL Workbench
+- 	Dbeaver 
 - Arquitectura: Cliente-Servidor con APIs RESTful
 
 ## 💻 Funcionalidades

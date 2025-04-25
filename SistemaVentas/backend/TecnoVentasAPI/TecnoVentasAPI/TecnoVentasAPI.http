@@ -1,0 +1,6 @@
+@TecnoVentasAPI_HostAddress = http://localhost:5167
+
+GET {{TecnoVentasAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
