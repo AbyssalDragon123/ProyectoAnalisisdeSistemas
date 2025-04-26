@@ -12,6 +12,6 @@ namespace TecnoVentasAPI.Models
         public int IdCliente { get; set; }
         public Cliente? Cliente { get; set; }
 
-        public ICollection<DetalleFactura>? DetalleFacturas { get; set; }
+        //public ICollection<DetalleFactura>? DetalleFacturas { get; set; }
     }
 }

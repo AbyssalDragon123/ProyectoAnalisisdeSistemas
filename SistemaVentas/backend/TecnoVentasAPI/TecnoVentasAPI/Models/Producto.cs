@@ -11,6 +11,6 @@ namespace TecnoVentasAPI.Models
         public decimal PrecioVenta { get; set; }
         public int Stock { get; set; }
 
-        public ICollection<DetalleFactura>? DetalleFacturas { get; set; }
+       // public ICollection<DetalleFactura>? DetalleFacturas { get; set; }
     }
 }
