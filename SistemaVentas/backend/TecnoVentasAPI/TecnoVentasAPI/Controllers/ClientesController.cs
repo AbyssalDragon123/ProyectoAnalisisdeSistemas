@@ -16,7 +16,7 @@ namespace TecnoVentasAPI.Controllers
     {
         private readonly AppDbContext _context;
 
-        public ClientesController(AppDbContext context)
+        public ClientesController(AppDbContext context) // conectar la base de datos contenida en AppDbContext
         {
             _context = context;
         }
@@ -25,14 +25,14 @@ namespace TecnoVentasAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Cliente>>> GetClientes()
         {
-            return await _context.Clientes.ToListAsync();
+            return await _context.Clientes.ToListAsync(); //obtener todos los datos de la tabla cliente
         }
 
         // GET: api/Clientes/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Cliente>> GetCliente(int id)
         {
-            var cliente = await _context.Clientes.FindAsync(id);
+            var cliente = await _context.Clientes.FindAsync(id); //buscar el cliente por id
 
             if (cliente == null)
             {
