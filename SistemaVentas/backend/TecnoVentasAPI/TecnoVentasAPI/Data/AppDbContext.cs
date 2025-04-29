@@ -10,6 +10,9 @@ namespace TecnoVentasAPI.Data
         {
         }
         public DbSet<Cliente> Clientes { get; set; }
+      
+        public DbSet<Categoria> Categorias { get; set; }
+
         
     }
 }

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TecnoVentasAPI.Models
 {
-    [Table("cliente")]
+    [Table("Cliente")]
     public class Cliente
     {
         [Key]
@@ -14,19 +14,20 @@ namespace TecnoVentasAPI.Models
         public int IdUsuario { get; set; }
         [Required]
         [Column("nombre")]
-        public string? Nombre {  get; set; }
+        public string Nombre { get; set; } = string.Empty;
         [Required]
         [Column("apellido")]
-        public string? Apellido { get; set; }
+        public string Apellido { get; set; } = string.Empty;
         [Column("direccion")]
         public string? Direccion { get; set; }
         [Column("telefono")]
         public string? Telefono { get; set; }
         [Column("correo")]
-        public string? Correo { get; set; }
+        public string Correo { get; set; } = string.Empty;
         [Column("nit")]
-        public int Nit { get; set; }
+        public string Nit { get; set; } = string.Empty;
 
-        // public ICollection<Factura>? Facturas { get; set; }  //Relacion uno a muchos con Factura
+         //public ICollection<Factura>? Facturas { get; set; }  //Relacion uno a muchos con Factura
+         //public ICollection<Usuario> Usuarios { get; set; }  // Relacion uno a muchos con Usuario
     }
 }

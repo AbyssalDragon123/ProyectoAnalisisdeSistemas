@@ -17,8 +17,8 @@ public class Conexion {
     Connection conectar = null;
     
     String usuario ="root";  
-    String contrasenia ="Guatemala2025";  
-    String bd ="dbcrudcolegio";  
+    String contrasenia ="";  
+    String bd ="tecno_ventas";  
     String ip ="localhost";  
     String puerto ="3306";
     

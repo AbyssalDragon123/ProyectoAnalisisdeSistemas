@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS `tecno_ventas`.`cliente` (
   `direccion` VARCHAR(45) NULL,
   `telefono` VARCHAR(45) NULL,
   `correo` VARCHAR(45) NULL,
-  `nit` INT NULL,
+  `nit` VARCHAR(13) NULL,
   
   PRIMARY KEY (`id_cliente`),
   INDEX `fk_cliente_usuario1_idx` (`id_usuario` ASC),
