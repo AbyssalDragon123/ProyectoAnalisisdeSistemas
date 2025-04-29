@@ -21,6 +21,7 @@ CREATE TABLE IF NOT EXISTS `tecno_ventas`.`usuario` (
   `apellido` VARCHAR(45) NOT NULL,
   `correo` VARCHAR(45) NOT NULL,
   `username` VARCHAR(45) NOT NULL,
+  `password_hash` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`idusuario`)
 ) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4;
 
