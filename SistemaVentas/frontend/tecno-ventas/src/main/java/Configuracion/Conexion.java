@@ -7,7 +7,7 @@ import javax.swing.JOptionPane;
 public class Conexion {
     private static final String URL = "jdbc:mysql://localhost:3306/tecno_ventas";
     private static final String USER = "root";
-    private static final String PASSWORD = "Guatemala2025";
+    private static final String PASSWORD = "";
     
     public Connection estableceConexion() {
         Connection conn = null;

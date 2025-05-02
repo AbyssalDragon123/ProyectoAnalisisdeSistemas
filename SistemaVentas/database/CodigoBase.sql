@@ -7,7 +7,7 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,N
 CREATE SCHEMA IF NOT EXISTS `tecno_ventas` DEFAULT CHARACTER SET utf8mb4;
 USE `tecno_ventas`;
 
--- Tabla: usuario
+-- Tabla: usuario (modificada con campo rol)
 CREATE TABLE IF NOT EXISTS `usuario` (
   `id_usuario` INT NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(45) NOT NULL,
@@ -15,6 +15,7 @@ CREATE TABLE IF NOT EXISTS `usuario` (
   `correo` VARCHAR(45) NOT NULL,
   `username` VARCHAR(45) NOT NULL,
   `pass` VARCHAR(255) NOT NULL,
+  `rol` ENUM('admin', 'vendedor', 'cajero') NOT NULL DEFAULT 'cajero',
   `password_reset_token` VARCHAR(255) NULL,
   `password_reset_expires` DATETIME NULL,
   PRIMARY KEY (`id_usuario`),
@@ -47,21 +48,14 @@ CREATE TABLE IF NOT EXISTS `cliente` (
   `telefono` VARCHAR(45) NULL,
   `correo` VARCHAR(45) NULL,
   `nit` VARCHAR(13) NULL,
-  `creado_por` INT NULL,
   `fecha_creacion` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id_cliente`),
   INDEX `fk_cliente_usuario1_idx` (`id_usuario` ASC),
-  INDEX `fk_cliente_creado_por_idx` (`creado_por` ASC),
   CONSTRAINT `fk_cliente_usuario1`
     FOREIGN KEY (`id_usuario`)
     REFERENCES `usuario` (`id_usuario`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_cliente_creado_por`
-    FOREIGN KEY (`creado_por`)
-    REFERENCES `usuario` (`id_usuario`)
-    ON DELETE SET NULL
-    ON UPDATE CASCADE
+    ON UPDATE NO ACTION
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
 
 -- Tabla: factura
@@ -70,12 +64,9 @@ CREATE TABLE IF NOT EXISTS `factura` (
   `fecha_factura` DATE NULL DEFAULT NULL,
   `id_cliente` INT(11) NULL DEFAULT NULL,
   `id_usuario` INT NOT NULL,
-  `creado_por` INT NULL,
-  `fecha_creacion` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id_factura`),
   INDEX `id_cliente` (`id_cliente` ASC),
   INDEX `fk_factura_usuario1_idx` (`id_usuario` ASC),
-  INDEX `fk_factura_creado_por_idx` (`creado_por` ASC),
   CONSTRAINT `factura_ibfk_1`
     FOREIGN KEY (`id_cliente`)
     REFERENCES `cliente` (`id_cliente`),
@@ -83,12 +74,7 @@ CREATE TABLE IF NOT EXISTS `factura` (
     FOREIGN KEY (`id_usuario`)
     REFERENCES `usuario` (`id_usuario`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_factura_creado_por`
-    FOREIGN KEY (`creado_por`)
-    REFERENCES `usuario` (`id_usuario`)
-    ON DELETE SET NULL
-    ON UPDATE CASCADE
+    ON UPDATE NO ACTION
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
 
 -- Tabla: producto
@@ -99,12 +85,10 @@ CREATE TABLE IF NOT EXISTS `producto` (
   `nombre` VARCHAR(100) NULL DEFAULT NULL,
   `precio_venta` DECIMAL(10,2) NULL DEFAULT NULL,
   `stock` INT(11) NULL DEFAULT NULL,
-  `creado_por` INT NULL,
   `fecha_creacion` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id_producto`),
   INDEX `fk_producto_categoria1_idx` (`id_categoria` ASC),
   INDEX `fk_producto_usuario1_idx` (`id_usuario` ASC),
-  INDEX `fk_producto_creado_por_idx` (`creado_por` ASC),
   CONSTRAINT `fk_producto_categoria1`
     FOREIGN KEY (`id_categoria`)
     REFERENCES `categoria` (`id_categoria`),
@@ -112,12 +96,7 @@ CREATE TABLE IF NOT EXISTS `producto` (
     FOREIGN KEY (`id_usuario`)
     REFERENCES `usuario` (`id_usuario`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_producto_creado_por`
-    FOREIGN KEY (`creado_por`)
-    REFERENCES `usuario` (`id_usuario`)
-    ON DELETE SET NULL
-    ON UPDATE CASCADE
+    ON UPDATE NO ACTION
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
 
 -- Tabla: detalle_venta

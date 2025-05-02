@@ -1,7 +1,7 @@
 package com.mycompany.tecno.ventas;
 
 import Configuracion.Conexion;
-import Formularios.MenuPrincipal;
+import Vistas.MenuPrincipal;
 
 public class TecnoVentas {
     public static void main(String[] args) {
