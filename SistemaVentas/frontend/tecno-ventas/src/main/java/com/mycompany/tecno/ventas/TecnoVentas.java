@@ -1,10 +1,19 @@
 package com.mycompany.tecno.ventas;
 
-import Configuracion.Conexion;
-import Vistas.MenuPrincipal;
+//import Configuracion.Conexion;
+import Vista.MenuPrincipal;
 
 public class TecnoVentas {
     public static void main(String[] args) {
+        
+        //abrir formulario principal
+        
+        MenuPrincipal menu = new MenuPrincipal();
+        
+        menu.setVisible(true);
+        
+        
+        /*
         // 1. Establecer conexión
         Conexion conexion = new Conexion();
         java.sql.Connection conn = conexion.estableceConexion();
@@ -35,6 +44,6 @@ public class TecnoVentas {
             }
         } else {
             System.err.println("No se pudo iniciar la aplicación por falta de conexión a BD");
-        }
+        }*/
     }
 }
