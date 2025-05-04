@@ -13,6 +13,22 @@ namespace TecnoVentasAPI.Data
       
         public DbSet<Categoria> Categorias { get; set; }
 
-        
+        public DbSet<Factura> Facturas { get; set; }
+
+        public DbSet<Producto> Productos { get; set; }
+
+        public DbSet<DetalleVenta> DetalleVentas { get; set; }
+
+        public DbSet<Usuario> usuarios { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Usuario>()
+                .Property(u => u.Rol)
+                .HasConversion<string>();
+
+            base.OnModelCreating(modelBuilder);
+        }
     }
+
 }
