@@ -29,7 +29,7 @@ namespace TecnoVentasAPI.Models
         [Column("fecha_creacion")]
         public DateTime FechaCreacion { get; private set; } //fecha solo de lectura (se genera auto en la tabla)
 
-        public ICollection<Factura>? Facturas { get; set; }  //Relacion uno a muchos con Factura 
-        public ICollection<Usuario> Usuarios { get; set; }  // Relacion uno a muchos con Usuario
+        //public ICollection<Factura>? Facturas { get; set; }  //Relacion uno a muchos con Factura 
+        //public ICollection<Usuario> Usuarios { get; set; }  // Relacion uno a muchos con Usuario
     }
 }

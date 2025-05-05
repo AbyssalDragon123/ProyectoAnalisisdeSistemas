@@ -24,7 +24,7 @@ namespace TecnoVentasAPI.Models
         [ForeignKey("IdCliente")]
         public Cliente? Cliente { get; set; }
 
-        [ForeignKey("IdUsuario")]
-        public Usuario Usuario { get; set; } = null!;
+        //[ForeignKey("IdUsuario")]  //relación uno a muchos con Usuario
+        //public Usuario Usuario { get; set; } = null!;
     }
 }

@@ -14,7 +14,7 @@ import java.util.List;
 
 public class ClienteController {
 
-   private final ViewCliente vista;
+  /* private final ViewCliente vista;
     private final ServiceCliente servicio;
 
     public ClienteController(ViewCliente vista) {
@@ -137,6 +137,6 @@ public class ClienteController {
             vista.getTxtNit().setText(vista.getTblClientes().getValueAt(fila, 6).toString());
         }
     }
-    
+   */ 
 }
 

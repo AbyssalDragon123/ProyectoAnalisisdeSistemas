@@ -7,7 +7,7 @@ namespace TecnoVentasAPI.Models
     public class Categoria
     {
         [Key]
-        [Column("idcategoria")]
+        [Column("id_categoria")] //corregi de (idcategoria) a (id_categoria)
         public int IdCategoria { get; set; }
         [Required]
         [Column("nombre_cat")]

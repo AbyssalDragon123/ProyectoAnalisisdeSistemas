@@ -49,9 +49,9 @@ namespace TecnoVentasAPI.Models
         public DateTime? PasswordResetExpires { get; set; }
 
         // Relaciones de navegación
-        public ICollection<Cliente>? Clientes { get; set; }
-        public ICollection<Factura>? Facturas { get; set; }
-        public ICollection<Producto>? Productos { get; set; }
+        //public ICollection<Cliente>? Clientes { get; set; }
+        //public ICollection<Factura>? Facturas { get; set; }
+        //public ICollection<Producto>? Productos { get; set; }
     }
 
     public enum RolUsuario
