@@ -12,11 +12,11 @@ namespace TecnoVentasAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductoesController : ControllerBase
+    public class ProductosController : ControllerBase
     {
         private readonly AppDbContext _context;
 
-        public ProductoesController(AppDbContext context)
+        public ProductosController(AppDbContext context)
         {
             _context = context;
         }

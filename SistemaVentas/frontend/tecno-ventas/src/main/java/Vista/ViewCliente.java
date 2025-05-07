@@ -32,33 +32,50 @@ public class ViewCliente extends javax.swing.JFrame {
 
             // Crear el modelo de la tabla
             DefaultTableModel model = new DefaultTableModel();
-            //model.addColumn("ID Cliente");
-            //model.addColumn("ID Usuario");
+            model.addColumn("ID Cliente");
+            model.addColumn("ID Usuario");
             model.addColumn("Nombre");
             model.addColumn("Apellido");
             model.addColumn("Dirección");
             model.addColumn("Teléfono");
             model.addColumn("Correo");
             model.addColumn("NIT");
-            //model.addColumn("Fecha Creación");
+            model.addColumn("Fecha Creación");
 
             // Agregar filas a la tabla
             for (ModeloCliente cliente : clientes) {
                 model.addRow(new Object[]{
-                        //cliente.getIdCliente(),
-                        //cliente.getIdUsuario(),
+                        cliente.getIdCliente(),
+                        cliente.getIdUsuario(),
                         cliente.getNombre(),
                         cliente.getApellido(),
                         cliente.getDireccion(),
                         cliente.getTelefono(),
                         cliente.getCorreo(),
                         cliente.getNit(),
-                        //cliente.getFechaCreacion()
+                        cliente.getFechaCreacion()
                 });
+                
+                // Establecer el modelo de la tabla
+                tblClientes.setModel(model);
+                
+                //ocultar la columnas IdUsuario, idCliente para que no se muestren en el formulario pero si cargar los datos
+                
+                tblClientes.getColumnModel().getColumn(0).setMinWidth(0); // IdCliente oculto
+                tblClientes.getColumnModel().getColumn(0).setMaxWidth(0);
+                tblClientes.getColumnModel().getColumn(0).setWidth(0);
+                
+                tblClientes.getColumnModel().getColumn(1).setMinWidth(0); //IdUsuario oculto
+                tblClientes.getColumnModel().getColumn(1).setMaxWidth(0);
+                tblClientes.getColumnModel().getColumn(1).setWidth(0);
+                
+                tblClientes.getColumnModel().getColumn(8).setMinWidth(0); //Fecha creación oculto
+                tblClientes.getColumnModel().getColumn(8).setMaxWidth(0);
+                tblClientes.getColumnModel().getColumn(8).setWidth(0);
+                
             }
 
-            // Establecer el modelo de la tabla
-            tblClientes.setModel(model);
+            
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -74,9 +91,11 @@ public class ViewCliente extends javax.swing.JFrame {
     public ViewCliente() {
         initComponents();
         
+        //ocultar el idCliente 
+        
+        txtIdCliente.setVisible(false);
+        
         cargarClientesDesdeAPI();
-        
-        
         
         /*setLocationRelativeTo(null);
         
@@ -86,7 +105,9 @@ public class ViewCliente extends javax.swing.JFrame {
         //vista.setVisible(true);
     }
     
-    /*crear getters publicos
+    //crear getters publicos
+            
+            
     public JButton getbtnAgregar(){
         return btnAgregar;
     }
@@ -135,7 +156,9 @@ public class ViewCliente extends javax.swing.JFrame {
 
     public JTextField getTxtNit() {
         return txtNit;
-    }*/
+    }
+    
+    
     
 
     /**
@@ -173,6 +196,7 @@ public class ViewCliente extends javax.swing.JFrame {
         txtNombre = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         txtApellido = new javax.swing.JTextField();
+        txtIdCliente = new javax.swing.JTextField();
 
         jPanel3.setBackground(new java.awt.Color(92, 128, 188));
 
@@ -245,6 +269,11 @@ public class ViewCliente extends javax.swing.JFrame {
         btnLimpiar.setText("LIMPIAR");
         btnLimpiar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(74, 111, 165), 3));
         btnLimpiar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimpiarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -412,6 +441,8 @@ public class ViewCliente extends javax.swing.JFrame {
                 .addContainerGap(58, Short.MAX_VALUE))
         );
 
+        txtIdCliente.setEditable(false);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -420,11 +451,17 @@ public class ViewCliente extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jScrollPane1)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(txtIdCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -439,6 +476,8 @@ public class ViewCliente extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(18, 18, 18)
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtIdCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap())))
@@ -503,8 +542,9 @@ public class ViewCliente extends javax.swing.JFrame {
         
         // Si una fila está seleccionada, obtener el ID del cliente
         
-        if (rowSeleccionada >= 0) {
-            int idCliente = (int) tblClientes.getValueAt(rowSeleccionada, 0); // obtener el id de la primera columna
+        if (rowSeleccionada !=-1) {
+            int idCliente = (int) tblClientes.getValueAt(rowSeleccionada, 0); // Obtener el ID cliente de la columna 0 
+            //int idUsuario = (int) tblClientes.getValueAt(rowSeleccionada, 1); //obtener el ID de usuario de la columna 1
             
             // Mostrar mensaje de confirmación
             int confirmacion = JOptionPane.showConfirmDialog(
@@ -550,6 +590,21 @@ public class ViewCliente extends javax.swing.JFrame {
 
 
     }//GEN-LAST:event_btnEliminarActionPerformed
+
+    private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
+        // TODO add your handling code here:
+        
+        
+        //limpiar campos del formulario
+        
+        txtNombre.setText("");
+        txtApellido.setText("");
+        txtDireccion.setText("");
+        txtTelefono.setText("");
+        txtCorreo.setText("");
+        txtNit.setText("");
+        
+    }//GEN-LAST:event_btnLimpiarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -613,6 +668,7 @@ public class ViewCliente extends javax.swing.JFrame {
     private javax.swing.JTextField txtApellido;
     private javax.swing.JTextField txtCorreo;
     private javax.swing.JTextField txtDireccion;
+    private javax.swing.JTextField txtIdCliente;
     private javax.swing.JTextField txtNit;
     private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtTelefono;
