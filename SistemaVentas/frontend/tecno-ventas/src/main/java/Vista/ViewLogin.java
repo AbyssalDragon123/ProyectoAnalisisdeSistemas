@@ -4,10 +4,14 @@
  */
 package Vista;
 
+import Controlador.LoginController;
 import java.awt.event.ActionListener;
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+import Servicio.ServiceLogin;
 
 /**
  *
@@ -48,6 +52,27 @@ public class ViewLogin extends javax.swing.JFrame {
         initComponents();
         
        this.setLocationRelativeTo(null); //centrar formulario en pantalla
+       
+      
+    }
+    
+    //Metodos publicos para botones, getters
+    
+    public JTextField getTxtUsuario(){
+       return txtUsuario;
+    }
+    
+    public JPasswordField jPasswordField(){
+    
+        return txtPassword;
+    }
+    
+    public JButton getBtnLogin(){
+        return jbtLogin;
+    }
+    
+    public JButton getBtnRecuperar(){
+        return jbtRecuperar;
     }
 
     /**
@@ -70,11 +95,10 @@ public class ViewLogin extends javax.swing.JFrame {
         jSeparator2 = new javax.swing.JSeparator();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        jbtLogin = new javax.swing.JButton();
+        jbtRecuperar = new javax.swing.JButton();
         mostrarPassCheck = new javax.swing.JCheckBox();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
 
         jPanel2.setBackground(new java.awt.Color(71, 31, 61));
@@ -84,6 +108,7 @@ public class ViewLogin extends javax.swing.JFrame {
         jLabel3.setVerticalAlignment(javax.swing.SwingConstants.TOP);
 
         jLabel4.setFont(new java.awt.Font("Tw Cen MT", 1, 48)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(0, 255, 204));
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel4.setText("Tecno Ventas");
 
@@ -159,21 +184,32 @@ public class ViewLogin extends javax.swing.JFrame {
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/clave.png"))); // NOI18N
         jPanel3.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 180, 110, 50));
 
-        jButton1.setBackground(new java.awt.Color(186, 79, 84));
-        jButton1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jButton1.setText("Iniciar sesión");
-        jButton1.setBorder(null);
-        jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jPanel3.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 290, 200, 30));
+        jbtLogin.setBackground(new java.awt.Color(186, 79, 84));
+        jbtLogin.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jbtLogin.setText("Iniciar sesión");
+        jbtLogin.setBorder(null);
+        jbtLogin.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jbtLogin.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jbtLoginMouseClicked(evt);
+            }
+        });
+        jbtLogin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtLoginActionPerformed(evt);
+            }
+        });
+        jPanel3.add(jbtLogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 290, 200, 30));
 
-        jButton2.setBackground(new java.awt.Color(186, 79, 84));
-        jButton2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton2.setText("Recuperar contraseña");
-        jButton2.setBorder(null);
-        jButton2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jPanel3.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 400, 160, 30));
+        jbtRecuperar.setBackground(new java.awt.Color(186, 79, 84));
+        jbtRecuperar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jbtRecuperar.setText("Recuperar contraseña");
+        jbtRecuperar.setBorder(null);
+        jbtRecuperar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jPanel3.add(jbtRecuperar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 400, 160, 30));
 
         mostrarPassCheck.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        mostrarPassCheck.setBorder(null);
         mostrarPassCheck.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         mostrarPassCheck.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ojo.png"))); // NOI18N
         mostrarPassCheck.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -200,7 +236,10 @@ public class ViewLogin extends javax.swing.JFrame {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 449, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(26, 26, 26)
+                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -250,6 +289,21 @@ public class ViewLogin extends javax.swing.JFrame {
         mostrarpassword();  //carga el metodo mostrar contraseña al dar clic
     }//GEN-LAST:event_mostrarPassCheckMouseClicked
 
+    private void jbtLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtLoginActionPerformed
+        // TODO add your handling code here:
+        
+       
+        
+        
+        
+        
+    }//GEN-LAST:event_jbtLoginActionPerformed
+
+    private void jbtLoginMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbtLoginMouseClicked
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_jbtLoginMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -286,8 +340,6 @@ public class ViewLogin extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -297,8 +349,12 @@ public class ViewLogin extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JButton jbtLogin;
+    private javax.swing.JButton jbtRecuperar;
     private javax.swing.JCheckBox mostrarPassCheck;
     private javax.swing.JPasswordField txtPassword;
     private javax.swing.JTextField txtUsuario;
     // End of variables declaration//GEN-END:variables
+
+  
 }

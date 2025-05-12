@@ -9,6 +9,13 @@ package Vista;
  * @author Admin
  */
 public class MenuPrincipal extends javax.swing.JFrame {
+    
+    //metodo para cargar el usuario que se loguea y mostrarlo
+    
+    public void nombreUsuario(String nombreUsuario){
+    
+        txtPrincipalUsuario.setText(nombreUsuario);
+    }
 
     /**
      * Creates new form MenuPrincipal
@@ -18,6 +25,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
         initComponents();
         
         this.setLocationRelativeTo(null);
+        
     }
 
     /**
@@ -41,7 +49,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        txtPrincipalUsua = new javax.swing.JTextField();
+        txtPrincipalUsuario = new javax.swing.JTextField();
         jPanel4 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
@@ -64,6 +72,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
         btnClientes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cliente.png"))); // NOI18N
         btnClientes.setText("CLIENTES");
         btnClientes.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(74, 111, 165), 3, true));
+        btnClientes.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnClientes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnClientesActionPerformed(evt);
@@ -74,16 +83,19 @@ public class MenuPrincipal extends javax.swing.JFrame {
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/agregar-producto.png"))); // NOI18N
         jButton2.setText("PRODUCTO");
         jButton2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(74, 111, 165), 3, true));
+        jButton2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
         jButton3.setBackground(new java.awt.Color(192, 214, 223));
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/categorias.png"))); // NOI18N
         jButton3.setText("CATEGORIAS");
         jButton3.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(74, 111, 165), 3, true));
+        jButton3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
         jbVentas.setBackground(new java.awt.Color(192, 214, 223));
         jbVentas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ventas.png"))); // NOI18N
         jbVentas.setText("VENTAS");
         jbVentas.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(74, 111, 165), 3, true));
+        jbVentas.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jbVentas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbVentasActionPerformed(evt);
@@ -94,11 +106,13 @@ public class MenuPrincipal extends javax.swing.JFrame {
         jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/factura.png"))); // NOI18N
         jButton5.setText("FACTURAS");
         jButton5.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(74, 111, 165), 3, true));
+        jButton5.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
         jButton6.setBackground(new java.awt.Color(192, 214, 223));
         jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/reporte-de-negocios.png"))); // NOI18N
         jButton6.setText("REPORTES");
         jButton6.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(74, 111, 165), 3, true));
+        jButton6.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -142,7 +156,12 @@ public class MenuPrincipal extends javax.swing.JFrame {
         jLabel4.setForeground(new java.awt.Color(219, 233, 238));
         jLabel4.setText("----- MENU PRINCIPAL -----");
 
-        txtPrincipalUsua.setEditable(false);
+        txtPrincipalUsuario.setEditable(false);
+        txtPrincipalUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtPrincipalUsuarioActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -152,7 +171,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(txtPrincipalUsua, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtPrincipalUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(75, 75, 75)
@@ -166,7 +185,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(txtPrincipalUsua, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txtPrincipalUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel4)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -277,6 +296,12 @@ public class MenuPrincipal extends javax.swing.JFrame {
         
     }//GEN-LAST:event_btnClientesActionPerformed
 
+    private void txtPrincipalUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPrincipalUsuarioActionPerformed
+        // TODO add your handling code here:
+        
+        
+    }//GEN-LAST:event_txtPrincipalUsuarioActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -330,6 +355,6 @@ public class MenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JButton jbVentas;
     private javax.swing.JTextField txtBienvenida;
-    private javax.swing.JTextField txtPrincipalUsua;
+    private javax.swing.JTextField txtPrincipalUsuario;
     // End of variables declaration//GEN-END:variables
 }

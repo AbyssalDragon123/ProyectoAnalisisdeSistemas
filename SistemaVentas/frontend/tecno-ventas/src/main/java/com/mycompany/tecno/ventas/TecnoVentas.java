@@ -1,17 +1,49 @@
 package com.mycompany.tecno.ventas;
 
 //import Configuracion.Conexion;
+import Servicio.ServiceLogin;
 import Vista.MenuPrincipal;
+import Vista.ViewLogin;
+import Controlador.LoginController;
 
 public class TecnoVentas {
     public static void main(String[] args) {
         
-        //abrir formulario principal
+        //cargar servicios para el login
         
-        MenuPrincipal menu = new MenuPrincipal();
+        ViewLogin vista = new ViewLogin();
+        ServiceLogin servicio = new ServiceLogin();
+        LoginController controller = new LoginController (vista, servicio);
         
-        menu.setVisible(true);
+        vista.setVisible(true);
         
+        
+        //probar servicios
+        
+        /*datos de prueba
+        String username = "corozco";
+        String password = "admin123";
+        
+        //llamar el servicio
+        
+        Modelos.ModeloLogin usuario = ServiceLogin.autenticar(username, password);
+        
+        if (usuario != null) {
+            
+            System.out.println("usuario autenticado");
+            System.out.println("Username: " + usuario.getUserName());
+            System.out.println("Rol " + usuario.getRol());
+            
+        }*/
+       
+        //se crea instancia para abri form login
+        
+      /*  ViewLogin login = new ViewLogin();
+        
+        login.setLocationRelativeTo(null); //centrar form
+        
+        login.setVisible(true);
+        */
         
         /*
         // 1. Establecer conexión

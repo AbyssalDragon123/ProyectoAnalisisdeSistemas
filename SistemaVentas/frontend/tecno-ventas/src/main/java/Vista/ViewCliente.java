@@ -228,6 +228,8 @@ public class ViewCliente extends javax.swing.JFrame {
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/usuario (4).png"))); // NOI18N
 
+        txtUsuarioClien.setEditable(false);
+
         btnAgregar.setBackground(new java.awt.Color(79, 109, 122));
         btnAgregar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnAgregar.setForeground(new java.awt.Color(219, 233, 238));

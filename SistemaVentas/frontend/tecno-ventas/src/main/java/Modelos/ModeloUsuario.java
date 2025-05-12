@@ -4,6 +4,8 @@
  */
 package Modelos;
 
+import javax.swing.JButton;
+
 /**
  *
  * @author Carlos Orozco
@@ -15,6 +17,7 @@ public class ModeloUsuario {
     private String apellido;
     private String correo;
     private String username;
+    private String pass;
     private String rol;
     
     //constructor vacio
@@ -40,5 +43,6 @@ public class ModeloUsuario {
 
     public String getRol() { return rol; }
     public void setRol(String rol) { this.rol = rol; }
+    
     
 }
