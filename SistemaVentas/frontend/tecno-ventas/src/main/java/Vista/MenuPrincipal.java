@@ -4,6 +4,8 @@
  */
 package Vista;
 
+import Controlador.UsuarioController;
+
 /**
  *
  * @author Admin
@@ -361,9 +363,9 @@ public class MenuPrincipal extends javax.swing.JFrame {
 
     private void btnUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUsuariosActionPerformed
         // TODO add your handling code here:
-         ViewUsuarios usuarios = new ViewUsuarios();
-        usuarios.setLocationRelativeTo(null);
-        usuarios.setVisible(true);
+        ViewUsuario vista = new ViewUsuario(); //Instancia de vista
+        UsuarioController controller = new UsuarioController(vista); //Instanciar el UsuarioController
+        vista.setVisible(true);
     }//GEN-LAST:event_btnUsuariosActionPerformed
 
     /**

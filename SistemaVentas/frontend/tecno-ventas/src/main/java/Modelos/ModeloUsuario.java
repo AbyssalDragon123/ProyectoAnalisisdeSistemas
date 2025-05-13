@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package Modelos;
 
 import javax.swing.JButton;
@@ -19,30 +16,49 @@ public class ModeloUsuario {
     private String username;
     private String pass;
     private String rol;
+    private String passwordResetToken;
+    private String passwordResetExpires;
+
+    //constructor
     
-    //constructor vacio
     public ModeloUsuario(){}
     
     
-    //Getters y setters
-    
-    public int getIdusuario(){ return idUsuario;}
-    public void setIdUsuario(int idUsuario){ this.idUsuario = idUsuario;}
-    
+    // Getters
+    public int getIdUsuario() { return idUsuario; }
+
     public String getNombre() { return nombre; }
-    public void setNombre(String nombre) { this.nombre = nombre; }
 
     public String getApellido() { return apellido; }
-    public void setApellido(String apellido) { this.apellido = apellido; }
 
     public String getCorreo() { return correo; }
-    public void setCorreo(String correo) { this.correo = correo; }
 
     public String getUsername() { return username; }
-    public void setUsername(String username) { this.username = username; }
+
+    public String getPass() { return pass; }
 
     public String getRol() { return rol; }
+
+    public String getPasswordResetToken() { return passwordResetToken; }
+
+    public String getPasswordResetExpires() { return passwordResetExpires; }
+
+    // Setters
+    public void setIdUsuario(int idUsuario) { this.idUsuario = idUsuario; }
+
+    public void setNombre(String nombre) { this.nombre = nombre; }
+
+    public void setApellido(String apellido) { this.apellido = apellido; }
+
+    public void setCorreo(String correo) { this.correo = correo; }
+
+    public void setUsername(String username) { this.username = username; }
+
+    public void setPass(String pass) { this.pass = pass; }
+
     public void setRol(String rol) { this.rol = rol; }
-    
-    
+
+    public void setPasswordResetToken(String passwordResetToken) { this.passwordResetToken = passwordResetToken; }
+
+    public void setPasswordResetExpires(String passwordResetExpires) { this.passwordResetExpires = passwordResetExpires; }
 }

@@ -1,76 +1,58 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Controlador;
 
-/**
- *
- * @author C-Orozco
- */
-
-import Modelos.ModeloUsuario;  //se importa el modelo
-import Servicio.ServiceUsuario;  //se importa el servicio
-import Vista.ViewLogin;        //se importa la vista (formulario)
-
-import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-
-
+import Servicio.ServiceUsuario;
+import Vista.ViewUsuario;
+import Modelos.ModeloUsuario;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
 
 public class UsuarioController {
-    
 
-    // Referencia a la vista (el formulario de login)
-    private final ViewLogin loginForm;
+    private ViewUsuario vista;
 
-    // Constructor del controlador: recibe el formulario y configura el botón de login
-    public UsuarioController(ViewLogin loginForm){
-        this.loginForm = loginForm;
+    public UsuarioController(ViewUsuario vista) {
+        this.vista = vista;
+        mostrarUsuarios(); // Mostrar al iniciar
+    }
 
-        // Asociamos el evento "click" al botón de login
-        this.loginForm.getBtnLogin().addActionListener(new ActionListener() {
+    private void mostrarUsuarios() {
+        List<ModeloUsuario> usuarios = ServiceUsuario.getAllUsuarios();
         
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                iniciarSesion();  // Llamamos al método que intentará iniciar sesión
+        // Crear nuevo modelo y definir columnas
+        DefaultTableModel modelo = new DefaultTableModel();
+        modelo.addColumn("ID");
+        modelo.addColumn("Nombre");
+        modelo.addColumn("Apellido");
+        modelo.addColumn("Correo");
+        modelo.addColumn("Username");
+        modelo.addColumn("Rol");
+
+        if (usuarios != null) {
+            for (ModeloUsuario u : usuarios) {
+                String nombreRol;
+                    switch (u.getRol()) {
+                    case "0": nombreRol = "Admin"; break;
+                    case "1": nombreRol = "Vendedor"; break;
+                    case "2": nombreRol = "Cajero"; break;
+                    
+                        default: nombreRol = "Desconocido"; break;
+                    }
+                modelo.addRow(new Object[]{
+                    u.getIdUsuario(),
+                    u.getNombre(),
+                    u.getApellido(),
+                    u.getCorreo(),
+                    u.getUsername(),
+                    nombreRol
+                });
             }
-        });
-    }
-
-    //Método para manejar el proceso de inicio de sesión
-    
-    private void iniciarSesion() {
-        // Obtenemos el texto ingresado en los campos del formulario
-        String username = loginForm.getTxtUsuario().getText();
-        char[] passwordChars = loginForm.jPasswordField().getPassword();  // se obtiene como arreglo de chars
-        String password = new String(passwordChars);  // lo convertimos a String
-
-        //Validación simple: verificar que los campos no estén vacíos
-        if (username.isEmpty() || password.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Por favor ingrese usuario y contraseña");
-            return;  // detenemos el flujo si están vacíos
         }
-
-        // Llamamos al servicio que consulta la API para autenticar
-        //ServiceUsuario usuario = ServiceUsuario.autenticar(username, password);
-
-        // Verificamos la respuesta del servicio
-       // if (usuario != null) {
-            //Si el usuario es válido, mostramos un mensaje y podríamos abrir el menú principal
-            //JOptionPane.showMessageDialog(null, "¡Bienvenido, " + usuario.getNombre() + "!");
-
-            // Aquí iría el código para abrir otra ventana, ejemplo:
-            // MenuPrincipal menu = new MenuPrincipal(usuario);
-            // menu.setVisible(true);
-            // loginForm.dispose(); // cerrar el formulario de login
-        //} else {
-            //Si las credenciales son incorrectas
-            JOptionPane.showMessageDialog(null, "Credenciales incorrectas");
-        }
+        
+        //asignar el modelo a la tabla
+        vista.getTableUsuarios().setModel(modelo);
     }
+}
+
 
 
 

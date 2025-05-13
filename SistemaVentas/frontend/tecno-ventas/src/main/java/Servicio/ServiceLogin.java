@@ -8,9 +8,7 @@ package Servicio;
  *
  * @author Carlos Orozco
  */
-import Controlador.UsuarioController;
 import Modelos.ModeloLogin;
-import Modelos.ModeloUsuario;
 import javax.swing.*;
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -59,7 +57,7 @@ public class ServiceLogin {
             } else if (con.getResponseCode() == 401) {
                // JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos");
             } else {
-                JOptionPane.showMessageDialog(null, "Error del servidor: " + con.getResponseCode());
+                //JOptionPane.showMessageDialog(null, "Error del servidor: " + con.getResponseCode());
             }
 
         } catch (Exception e) {
