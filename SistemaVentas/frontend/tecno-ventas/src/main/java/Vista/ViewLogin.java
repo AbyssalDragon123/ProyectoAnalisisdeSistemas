@@ -56,7 +56,7 @@ public class ViewLogin extends javax.swing.JFrame {
       
     }
     
-    //Metodos publicos para botones, getters
+    //Getters
     
     public JTextField getTxtUsuario(){
        return txtUsuario;

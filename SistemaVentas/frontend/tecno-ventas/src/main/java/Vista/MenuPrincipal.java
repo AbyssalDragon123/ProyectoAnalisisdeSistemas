@@ -73,7 +73,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
 
         btnClientes.setBackground(new java.awt.Color(154, 179, 227));
         btnClientes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cliente.png"))); // NOI18N
-        btnClientes.setText("CLIENTES");
+        btnClientes.setText("Clientes");
         btnClientes.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(74, 111, 165), 3, true));
         btnClientes.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnClientes.addActionListener(new java.awt.event.ActionListener() {
