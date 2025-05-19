@@ -119,7 +119,6 @@ public class ViewLogin extends javax.swing.JFrame {
         txtUsuario.setBackground(new java.awt.Color(181, 186, 208));
         txtUsuario.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         txtUsuario.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        txtUsuario.setText("XXXXXXXX");
         txtUsuario.setBorder(javax.swing.BorderFactory.createCompoundBorder());
         txtUsuario.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -136,7 +135,6 @@ public class ViewLogin extends javax.swing.JFrame {
         txtPassword.setBackground(new java.awt.Color(181, 186, 208));
         txtPassword.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         txtPassword.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        txtPassword.setText("contraseña");
         txtPassword.setBorder(javax.swing.BorderFactory.createCompoundBorder());
         txtPassword.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -172,6 +170,11 @@ public class ViewLogin extends javax.swing.JFrame {
         jbtRecuperar.setText("¿Olvidaste tu contraseña?");
         jbtRecuperar.setBorder(null);
         jbtRecuperar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jbtRecuperar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtRecuperarActionPerformed(evt);
+            }
+        });
         jPanel3.add(jbtRecuperar, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 240, 170, 20));
 
         mostrarPassCheck.setBackground(new java.awt.Color(115, 137, 174));
@@ -301,6 +304,14 @@ public class ViewLogin extends javax.swing.JFrame {
         txtUsuario.setText("");
 
     }//GEN-LAST:event_txtUsuarioFocusGained
+
+    private void jbtRecuperarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtRecuperarActionPerformed
+        // TODO add your handling code here:
+        ViewRecuperarContrasena Recuperacion = new ViewRecuperarContrasena();
+        Recuperacion.setLocationRelativeTo(null);
+        Recuperacion.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jbtRecuperarActionPerformed
 
     /**
      * @param args the command line arguments

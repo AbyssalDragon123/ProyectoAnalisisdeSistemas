@@ -8,26 +8,27 @@ package Modelos;
  *
  * @author C-Orozco
  */
+
 public class ModeloLogin {
-    
+
     private String username;
     private String rol;
-    
-    //Getters y setters
-    
-    public String getUserName(){
+
+    // Getters y Setters
+    public String getUserName() {
         return username;
     }
-    
-    public void setUserName(String username){
+
+    public void setUserName(String username) {
         this.username = username;
     }
-    
-    public String getRol(){
+
+    public String getRol() {
         return rol;
     }
-    
-    public void setRol(String rol){
+
+    public void setRol(String rol) {
         this.rol = rol;
     }
 }
+

@@ -8,6 +8,22 @@ import javax.swing.JButton;
  * @author Carlos Orozco
  */
 public class ModeloUsuario {
+        private static ModeloUsuario usuarioActual;
+
+    public static void setUsuarioActual(ModeloUsuario usuario) {
+        usuarioActual = usuario;
+    }
+
+    public static ModeloUsuario getUsuarioActual() {
+        return usuarioActual;
+    }
+
+    public static String getNombreCompleto() {
+        if (usuarioActual != null) {
+            return usuarioActual.getNombre() + " " + usuarioActual.getApellido();
+        }
+        return "Usuario desconocido";
+    }
     
     private int idUsuario;
     private String nombre;

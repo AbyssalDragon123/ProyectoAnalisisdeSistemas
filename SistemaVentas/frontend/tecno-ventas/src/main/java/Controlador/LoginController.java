@@ -1,84 +1,62 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Controlador;
 
 import Vista.ViewLogin;
-import java.awt.event.ActionEvent;
-import javax.swing.JOptionPane;
-import Modelos.ModeloLogin;
-import Servicio.ServiceLogin;
 import Vista.MenuPrincipal;
+import Modelos.ModeloLogin;
+import Modelos.SesionUsuario;
+import Servicio.ServiceLogin;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author C-Orozco
  */
 public class LoginController {
-    //Instancia a la vista del login
     
     private ViewLogin viewLogin;
     private ServiceLogin servicio;
-    
-     //Constructor que recibe la vista y el servicio
-    
+
+    // Constructor que recibe la vista y el servicio
     public LoginController(ViewLogin viewLogin, ServiceLogin servicio) {
-        
         this.viewLogin = viewLogin;
         this.servicio = servicio;
 
-        // Configurar el botón
+        // Mostrar la vista del login
         this.viewLogin.setVisible(true);
-        
+
+        // Agregar el listener al botón de login
         this.viewLogin.getBtnLogin().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //System.out.println("Boton clickeado");
                 loginActionPerformed(e);
             }
         });
     }
-    
-    // obtener usuario y contraseña del formulario
-    
-   /* public LoginController(){
-        
-        this.viewLogin = new ViewLogin(); // el objeto se ejectura correctamente.
-    
-    }*/
-    
-    public void loginActionPerformed(ActionEvent e){
-    
-        //obtenemos los datos del formulario
-        
+
+    // Método que se ejecuta al hacer clic en el botón de login
+    public void loginActionPerformed(ActionEvent e) {
+        // Obtener usuario y contraseña del formulario
         String username = viewLogin.getTxtUsuario().getText();
         String password = new String(viewLogin.jPasswordField().getPassword());
-        
-        //llamamos el servicio de autenticación
-        
-        Modelos.ModeloLogin usuario = Servicio.ServiceLogin.autenticar(username, password);
-        
+
+        // Autenticación mediante el servicio
+        ModeloLogin usuario = ServiceLogin.autenticar(username, password);
+
         if (usuario != null) {
-            
-            System.out.println("Usuario autenticado : " + usuario.getUserName());
-           
-            //llamar formulario principal
-            
-            MenuPrincipal menu = new MenuPrincipal(); //instancia menu principal
-            menu.setName(usuario.getUserName()); //pasar el nombre de usuario al formulario principal
-            menu.setLocationRelativeTo(menu); //centrar formulario
-            menu.setVisible(true); //mostror form
-            viewLogin.dispose(); //cerrar form login
-            
-        }else{
-        
+            System.out.println("Usuario autenticado: " + usuario.getUserName());
+                // Guardar en la sesión
+            SesionUsuario.nombreUsuario = usuario.getUserName();
+            // Crear e iniciar el formulario principal, pasando el nombre del usuario
+            MenuPrincipal menu = new MenuPrincipal();
+            menu.setLocationRelativeTo(null); // Centrar formulario
+            menu.setVisible(true); // Mostrar menú
+            viewLogin.dispose(); // Cerrar login
+
+        } else {
             JOptionPane.showMessageDialog(viewLogin, "Usuario o contraseña incorrectos", "Error", JOptionPane.ERROR_MESSAGE);
-        
         }
-    
     }
-    
 }

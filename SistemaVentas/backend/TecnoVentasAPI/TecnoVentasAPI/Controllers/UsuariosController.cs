@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TecnoVentasAPI.Data;
+using TecnoVentasAPI.DTOs;
 using TecnoVentasAPI.Models;
 
 namespace TecnoVentasAPI.Controllers
@@ -83,7 +84,29 @@ namespace TecnoVentasAPI.Controllers
 
             return CreatedAtAction("GetUsuario", new { id = usuario.IdUsuario }, usuario);
         }
+        //recuperar contraseña
+        [HttpPut("RecuperarContrasena")]
+        public async Task<IActionResult> RecuperarContrasena([FromBody] RecuperarContrasenaDto data)
+        {
+            var usuario = await _context.usuarios.FirstOrDefaultAsync(u => u.Username == data.Username);
 
+            if (usuario == null)
+            {
+                return NotFound(new { mensaje = "Usuario no encontrado" });
+            }
+
+            usuario.Pass = data.NuevaContrasena;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+                return Ok(new { mensaje = "Contraseña actualizada" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { mensaje = "Error al actualizar", detalle = ex.Message });
+            }
+        }
         // DELETE: api/Usuarios/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUsuario(int id)
