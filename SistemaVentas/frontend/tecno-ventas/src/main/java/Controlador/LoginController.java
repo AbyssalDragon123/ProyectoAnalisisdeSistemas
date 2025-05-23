@@ -47,6 +47,7 @@ public class LoginController {
 
         if (usuario != null) {
             System.out.println("Usuario autenticado: " + usuario.getUserName());
+            JOptionPane.showMessageDialog(viewLogin, "Bienvenido!!  "+ usuario.getUserName());
                 // Guardar en la sesión
             SesionUsuario.nombreUsuario = usuario.getUserName();
             // Crear e iniciar el formulario principal, pasando el nombre del usuario
@@ -56,7 +57,7 @@ public class LoginController {
             viewLogin.dispose(); // Cerrar login
 
         } else {
-            JOptionPane.showMessageDialog(viewLogin, "Usuario o contraseña incorrectos", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(viewLogin, "Nombre de usuario o contraseña inválidos", "Credenciales incorrectas", JOptionPane.ERROR_MESSAGE);
         }
     }
 }

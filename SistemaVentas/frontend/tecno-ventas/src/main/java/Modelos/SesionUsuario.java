@@ -9,6 +9,7 @@ package Modelos;
  * @author Admin
  */
 public class SesionUsuario {
+    
         public static String nombreUsuario;
         
 }
