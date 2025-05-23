@@ -49,13 +49,9 @@ public class ViewCategorias extends javax.swing.JFrame {
         tblCategorias = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
         btnHome = new javax.swing.JButton();
-        btnProductos = new javax.swing.JButton();
-        btnCategorias = new javax.swing.JButton();
-        btnVentas = new javax.swing.JButton();
-        btnFacturas = new javax.swing.JButton();
-        btnUsuarios = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Gestión de categorias");
         setResizable(false);
 
         jPanel4.setBackground(new java.awt.Color(48, 50, 61));
@@ -135,28 +131,28 @@ public class ViewCategorias extends javax.swing.JFrame {
         btnAgregar.setBackground(new java.awt.Color(154, 179, 227));
         btnAgregar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/anadir-amigo.png"))); // NOI18N
-        btnAgregar.setText("AGREGAR");
+        btnAgregar.setText("Registrar");
         btnAgregar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(74, 111, 165), 3));
         btnAgregar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
         btnLimpiar.setBackground(new java.awt.Color(154, 179, 227));
         btnLimpiar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnLimpiar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/conjunto-vacio.png"))); // NOI18N
-        btnLimpiar.setText("LIMPIAR");
+        btnLimpiar.setText("Limpiar");
         btnLimpiar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(74, 111, 165), 3));
         btnLimpiar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
         btnEliminar.setBackground(new java.awt.Color(154, 179, 227));
         btnEliminar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eliminar-amigo.png"))); // NOI18N
-        btnEliminar.setText("ELIMINAR");
+        btnEliminar.setText("Eliminar");
         btnEliminar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(74, 111, 165), 3));
         btnEliminar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
         btnEditar.setBackground(new java.awt.Color(154, 179, 227));
         btnEditar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/avatar-de-usuario.png"))); // NOI18N
-        btnEditar.setText("EDITAR");
+        btnEditar.setText("Actualizar");
         btnEditar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(74, 111, 165), 3));
         btnEditar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnEditar.addActionListener(new java.awt.event.ActionListener() {
@@ -176,7 +172,7 @@ public class ViewCategorias extends javax.swing.JFrame {
                         .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(18, 18, 18)
                         .addComponent(btnLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -193,14 +189,14 @@ public class ViewCategorias extends javax.swing.JFrame {
                                         .addComponent(txtDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, 502, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 502, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 268, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(0, 0, Short.MAX_VALUE)))))
+                                .addGap(82, 82, 82)))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap(31, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel6)
                     .addComponent(txtIdCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -209,13 +205,13 @@ public class ViewCategorias extends javax.swing.JFrame {
                 .addComponent(jLabel8)
                 .addGap(4, 4, 4)
                 .addComponent(txtDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(42, 42, 42)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(60, 60, 60))
+                    .addComponent(btnAgregar)
+                    .addComponent(btnEditar)
+                    .addComponent(btnLimpiar)
+                    .addComponent(btnEliminar))
+                .addContainerGap())
         );
 
         jPanel7.setBackground(new java.awt.Color(115, 137, 174));
@@ -283,93 +279,19 @@ public class ViewCategorias extends javax.swing.JFrame {
             }
         });
 
-        btnProductos.setBackground(new java.awt.Color(154, 179, 227));
-        btnProductos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/agregar-producto.png"))); // NOI18N
-        btnProductos.setText("PRODUCTO");
-        btnProductos.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(74, 111, 165), 3, true));
-        btnProductos.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnProductos.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnProductosActionPerformed(evt);
-            }
-        });
-
-        btnCategorias.setBackground(new java.awt.Color(154, 179, 227));
-        btnCategorias.setIcon(new javax.swing.ImageIcon(getClass().getResource("/categorias.png"))); // NOI18N
-        btnCategorias.setText("CATEGORIAS");
-        btnCategorias.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(74, 111, 165), 3, true));
-        btnCategorias.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnCategorias.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCategoriasActionPerformed(evt);
-            }
-        });
-
-        btnVentas.setBackground(new java.awt.Color(154, 179, 227));
-        btnVentas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ventas.png"))); // NOI18N
-        btnVentas.setText("VENTAS");
-        btnVentas.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(74, 111, 165), 3, true));
-        btnVentas.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnVentas.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnVentasActionPerformed(evt);
-            }
-        });
-
-        btnFacturas.setBackground(new java.awt.Color(154, 179, 227));
-        btnFacturas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/factura.png"))); // NOI18N
-        btnFacturas.setText("FACTURAS");
-        btnFacturas.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(74, 111, 165), 3, true));
-        btnFacturas.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnFacturas.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnFacturasActionPerformed(evt);
-            }
-        });
-
-        btnUsuarios.setBackground(new java.awt.Color(154, 179, 227));
-        btnUsuarios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/perfil.png"))); // NOI18N
-        btnUsuarios.setText("USUARIOS");
-        btnUsuarios.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(74, 111, 165), 3, true));
-        btnUsuarios.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnUsuarios.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnUsuariosActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnProductos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnCategorias, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnVentas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnFacturas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnUsuarios, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(32, 32, 32)
+                .addGap(28, 28, 28)
                 .addComponent(btnHome, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addComponent(btnProductos, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30)
-                .addComponent(btnCategorias, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30)
-                .addComponent(btnVentas, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30)
-                .addComponent(btnFacturas, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30)
-                .addComponent(btnUsuarios, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(23, 23, 23)
                 .addComponent(btnHome, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -415,49 +337,6 @@ public class ViewCategorias extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnHomeActionPerformed
 
-    private void btnProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProductosActionPerformed
-        // TODO add your handling code here:
-        ViewProducto producto = new ViewProducto();
-        producto.setLocationRelativeTo(null);
-        producto.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_btnProductosActionPerformed
-
-    private void btnCategoriasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCategoriasActionPerformed
-        // TODO add your handling code here:
-        ViewCategorias categorias = new ViewCategorias();
-        categorias.setLocationRelativeTo(null);
-        categorias.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_btnCategoriasActionPerformed
-
-    private void btnVentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVentasActionPerformed
-        // TODO add your handling code here:
-
-        //abrir vista ventas
-
-        ViewVentas ventas = new ViewVentas();
-        ventas.setLocationRelativeTo(null);
-        ventas.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_btnVentasActionPerformed
-
-    private void btnFacturasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFacturasActionPerformed
-        // TODO add your handling code here:
-        ViewFacturas facturas = new ViewFacturas();
-        facturas.setLocationRelativeTo(null);
-        facturas.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_btnFacturasActionPerformed
-
-    private void btnUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUsuariosActionPerformed
-        // TODO add your handling code here:
-        ViewUsuario vista = new ViewUsuario(); //Instancia de vista
-        UsuarioController controller = new UsuarioController(vista); //Instanciar el UsuarioController
-        vista.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_btnUsuariosActionPerformed
-
     /**
      * @param args the command line arguments
      */
@@ -495,15 +374,10 @@ public class ViewCategorias extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
-    private javax.swing.JButton btnCategorias;
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnEliminar;
-    private javax.swing.JButton btnFacturas;
     private javax.swing.JButton btnHome;
     private javax.swing.JButton btnLimpiar;
-    private javax.swing.JButton btnProductos;
-    private javax.swing.JButton btnUsuarios;
-    private javax.swing.JButton btnVentas;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
