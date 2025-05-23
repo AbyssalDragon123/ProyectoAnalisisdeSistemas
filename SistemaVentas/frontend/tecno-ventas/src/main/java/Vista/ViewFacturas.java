@@ -38,11 +38,6 @@ public class ViewFacturas extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tblClientes = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
-        btnProductos = new javax.swing.JButton();
-        btnCategorias = new javax.swing.JButton();
-        btnVentas = new javax.swing.JButton();
-        btnFacturas = new javax.swing.JButton();
-        btnUsuarios = new javax.swing.JButton();
         btnHome2 = new javax.swing.JButton();
 
         btnHome4.setBackground(new java.awt.Color(154, 179, 227));
@@ -160,61 +155,6 @@ public class ViewFacturas extends javax.swing.JFrame {
 
         jPanel2.setBackground(new java.awt.Color(77, 80, 97));
 
-        btnProductos.setBackground(new java.awt.Color(154, 179, 227));
-        btnProductos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/agregar-producto.png"))); // NOI18N
-        btnProductos.setText("PRODUCTO");
-        btnProductos.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(74, 111, 165), 3, true));
-        btnProductos.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnProductos.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnProductosActionPerformed(evt);
-            }
-        });
-
-        btnCategorias.setBackground(new java.awt.Color(154, 179, 227));
-        btnCategorias.setIcon(new javax.swing.ImageIcon(getClass().getResource("/categorias.png"))); // NOI18N
-        btnCategorias.setText("CATEGORIAS");
-        btnCategorias.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(74, 111, 165), 3, true));
-        btnCategorias.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnCategorias.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCategoriasActionPerformed(evt);
-            }
-        });
-
-        btnVentas.setBackground(new java.awt.Color(154, 179, 227));
-        btnVentas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ventas.png"))); // NOI18N
-        btnVentas.setText("VENTAS");
-        btnVentas.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(74, 111, 165), 3, true));
-        btnVentas.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnVentas.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnVentasActionPerformed(evt);
-            }
-        });
-
-        btnFacturas.setBackground(new java.awt.Color(154, 179, 227));
-        btnFacturas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/factura.png"))); // NOI18N
-        btnFacturas.setText("FACTURAS");
-        btnFacturas.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(74, 111, 165), 3, true));
-        btnFacturas.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnFacturas.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnFacturasActionPerformed(evt);
-            }
-        });
-
-        btnUsuarios.setBackground(new java.awt.Color(154, 179, 227));
-        btnUsuarios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/perfil.png"))); // NOI18N
-        btnUsuarios.setText("USUARIOS");
-        btnUsuarios.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(74, 111, 165), 3, true));
-        btnUsuarios.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnUsuarios.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnUsuariosActionPerformed(evt);
-            }
-        });
-
         btnHome2.setBackground(new java.awt.Color(154, 179, 227));
         btnHome2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/casa (1).png"))); // NOI18N
         btnHome2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(74, 111, 165), 3, true));
@@ -229,36 +169,17 @@ public class ViewFacturas extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnProductos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnCategorias, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnVentas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnFacturas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnUsuarios, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(47, 47, 47)
-                .addComponent(btnHome2, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(btnHome2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addComponent(btnProductos, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30)
-                .addComponent(btnCategorias, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30)
-                .addComponent(btnVentas, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30)
-                .addComponent(btnFacturas, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30)
-                .addComponent(btnUsuarios, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(btnHome2, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(38, Short.MAX_VALUE))
+                .addContainerGap(450, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -294,49 +215,6 @@ public class ViewFacturas extends javax.swing.JFrame {
         home.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnHome4ActionPerformed
-
-    private void btnProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProductosActionPerformed
-        // TODO add your handling code here:
-        ViewProducto producto = new ViewProducto();
-        producto.setLocationRelativeTo(null);
-        producto.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_btnProductosActionPerformed
-
-    private void btnCategoriasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCategoriasActionPerformed
-        // TODO add your handling code here:
-        ViewCategorias categorias = new ViewCategorias();
-        categorias.setLocationRelativeTo(null);
-        categorias.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_btnCategoriasActionPerformed
-
-    private void btnVentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVentasActionPerformed
-        // TODO add your handling code here:
-
-        //abrir vista ventas
-
-        ViewVentas ventas = new ViewVentas();
-        ventas.setLocationRelativeTo(null);
-        ventas.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_btnVentasActionPerformed
-
-    private void btnFacturasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFacturasActionPerformed
-        // TODO add your handling code here:
-        ViewFacturas facturas = new ViewFacturas();
-        facturas.setLocationRelativeTo(null);
-        facturas.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_btnFacturasActionPerformed
-
-    private void btnUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUsuariosActionPerformed
-        // TODO add your handling code here:
-        ViewUsuario vista = new ViewUsuario(); //Instancia de vista
-        UsuarioController controller = new UsuarioController(vista); //Instanciar el UsuarioController
-        vista.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_btnUsuariosActionPerformed
 
     private void btnHome2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHome2ActionPerformed
         // TODO add your handling code here:
@@ -382,13 +260,8 @@ public class ViewFacturas extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnCategorias;
-    private javax.swing.JButton btnFacturas;
     private javax.swing.JButton btnHome2;
     private javax.swing.JButton btnHome4;
-    private javax.swing.JButton btnProductos;
-    private javax.swing.JButton btnUsuarios;
-    private javax.swing.JButton btnVentas;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel2;
