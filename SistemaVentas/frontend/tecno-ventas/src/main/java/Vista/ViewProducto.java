@@ -118,7 +118,6 @@ public void limpiarCampos() {
         jLabel12 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
         txtid_producto = new javax.swing.JTextField();
-        btnVerProducto = new javax.swing.JButton();
         jPanel7 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableProducto = new javax.swing.JTable();
@@ -166,6 +165,7 @@ public void limpiarCampos() {
         btnAGREGAR.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnAGREGAR.setText("AGREGAR");
         btnAGREGAR.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(74, 111, 165)));
+        btnAGREGAR.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnAGREGAR.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAGREGARActionPerformed(evt);
@@ -176,6 +176,7 @@ public void limpiarCampos() {
         btnMODIFICAR.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnMODIFICAR.setText("MODIFICAR");
         btnMODIFICAR.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(74, 111, 165)));
+        btnMODIFICAR.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnMODIFICAR.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnMODIFICARActionPerformed(evt);
@@ -186,6 +187,7 @@ public void limpiarCampos() {
         btnELIMINAR.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnELIMINAR.setText("ELIMINAR");
         btnELIMINAR.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(74, 111, 165)));
+        btnELIMINAR.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnELIMINAR.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnELIMINARActionPerformed(evt);
@@ -210,13 +212,13 @@ public void limpiarCampos() {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(btnHome2, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(35, 35, 35)
-                .addComponent(btnAGREGAR, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnAGREGAR, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnMODIFICAR, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(btnELIMINAR, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(251, 251, 251))
+                .addComponent(btnELIMINAR, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(204, 204, 204))
         );
 
         jPanel5.setBackground(new java.awt.Color(48, 50, 61));
@@ -310,16 +312,6 @@ public void limpiarCampos() {
         txtid_producto.setBackground(new java.awt.Color(164, 178, 202));
         txtid_producto.setBorder(null);
 
-        btnVerProducto.setBackground(new java.awt.Color(154, 179, 227));
-        btnVerProducto.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnVerProducto.setText("VER PRODUCTOS");
-        btnVerProducto.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(74, 111, 165)));
-        btnVerProducto.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnVerProductoActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -327,7 +319,6 @@ public void limpiarCampos() {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(23, 23, 23)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnVerProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtnombre, javax.swing.GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE)
@@ -378,9 +369,7 @@ public void limpiarCampos() {
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtid_usuario, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(18, 18, 18)
-                .addComponent(btnVerProducto, javax.swing.GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE)
-                .addContainerGap())
+                .addContainerGap(38, Short.MAX_VALUE))
         );
 
         jPanel7.setBackground(new java.awt.Color(115, 137, 174));
@@ -608,10 +597,6 @@ public void limpiarCampos() {
         }
     }//GEN-LAST:event_btnAGREGARActionPerformed
 
-    private void btnVerProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerProductoActionPerformed
-        cargarTablaProductos();
-    }//GEN-LAST:event_btnVerProductoActionPerformed
-
     private void btnHome2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHome2ActionPerformed
         // TODO add your handling code here:
                 MenuPrincipal menu = new MenuPrincipal();
@@ -664,7 +649,6 @@ public void limpiarCampos() {
     private javax.swing.JButton btnELIMINAR;
     private javax.swing.JButton btnHome2;
     private javax.swing.JButton btnMODIFICAR;
-    private javax.swing.JButton btnVerProducto;
     private javax.swing.JComboBox<String> jComboBoxCategoria;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
