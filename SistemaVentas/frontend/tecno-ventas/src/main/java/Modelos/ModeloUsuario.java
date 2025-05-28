@@ -1,80 +1,123 @@
-
 package Modelos;
 
-import javax.swing.JButton;
-
-/**
- *
- * @author Carlos Orozco
- */
 public class ModeloUsuario {
-        private static ModeloUsuario usuarioActual;
 
-    public static void setUsuarioActual(ModeloUsuario usuario) {
-        usuarioActual = usuario;
-    }
-
-    public static ModeloUsuario getUsuarioActual() {
-        return usuarioActual;
-    }
-
-    public static String getNombreCompleto() {
-        if (usuarioActual != null) {
-            return usuarioActual.getNombre() + " " + usuarioActual.getApellido();
-        }
-        return "Usuario desconocido";
-    }
-    
+    // Atributos de la clase
     private int idUsuario;
     private String nombre;
     private String apellido;
     private String correo;
     private String username;
     private String pass;
-    private String rol;
+    private String rol;  // El rol se maneja como texto (ej. "admin", "vendedor", etc.)
     private String passwordResetToken;
     private String passwordResetExpires;
 
-    //constructor
-    
-    public ModeloUsuario(){}
-    
-    
-    // Getters
-    public int getIdUsuario() { return idUsuario; }
+    // Constructor vacío
+    public ModeloUsuario() {
+    }
 
-    public String getNombre() { return nombre; }
+    // Constructor con todos los atributos
+    public ModeloUsuario(int idUsuario, String nombre, String apellido, String correo,
+                         String username, String pass, String rol,
+                         String passwordResetToken, String passwordResetExpires) {
+        this.idUsuario = idUsuario;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.correo = correo;
+        this.username = username;
+        this.pass = pass;
+        this.rol = rol;
+        this.passwordResetToken = passwordResetToken;
+        this.passwordResetExpires = passwordResetExpires;
+    }
 
-    public String getApellido() { return apellido; }
+    // Getters y setters
+    public int getIdUsuario() {
+        return idUsuario;
+    }
 
-    public String getCorreo() { return correo; }
+    public void setIdUsuario(int idUsuario) {
+        this.idUsuario = idUsuario;
+    }
 
-    public String getUsername() { return username; }
+    public String getNombre() {
+        return nombre;
+    }
 
-    public String getPass() { return pass; }
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
 
-    public String getRol() { return rol; }
+    public String getApellido() {
+        return apellido;
+    }
 
-    public String getPasswordResetToken() { return passwordResetToken; }
+    public void setApellido(String apellido) {
+        this.apellido = apellido;
+    }
 
-    public String getPasswordResetExpires() { return passwordResetExpires; }
+    public String getCorreo() {
+        return correo;
+    }
 
-    // Setters
-    public void setIdUsuario(int idUsuario) { this.idUsuario = idUsuario; }
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
 
-    public void setNombre(String nombre) { this.nombre = nombre; }
+    public String getUsername() {
+        return username;
+    }
 
-    public void setApellido(String apellido) { this.apellido = apellido; }
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
-    public void setCorreo(String correo) { this.correo = correo; }
+    public String getPass() {
+        return pass;
+    }
 
-    public void setUsername(String username) { this.username = username; }
+    public void setPass(String pass) {
+        this.pass = pass;
+    }
 
-    public void setPass(String pass) { this.pass = pass; }
+    public String getRol() {
+        return rol;
+    }
 
-    public void setRol(String rol) { this.rol = rol; }
+    public void setRol(String rol) {
+        this.rol = rol;
+    }
 
-    public void setPasswordResetToken(String passwordResetToken) { this.passwordResetToken = passwordResetToken; }
+    public String getPasswordResetToken() {
+        return passwordResetToken;
+    }
 
-    public void setPasswordResetExpires(String passwordResetExpires) { this.passwordResetExpires = passwordResetExpires; }
+    public void setPasswordResetToken(String passwordResetToken) {
+        this.passwordResetToken = passwordResetToken;
+    }
+
+    public String getPasswordResetExpires() {
+        return passwordResetExpires;
+    }
+
+    public void setPasswordResetExpires(String passwordResetExpires) {
+        this.passwordResetExpires = passwordResetExpires;
+    }
+
+    // Método que devuelve el nombre completo del usuario
+    public String getNombreCompleto() {
+        return nombre + " " + apellido;
+    }
+
+    @Override
+    public String toString() {
+        return nombre + " " + apellido + " (" + username + ")";
+    }
+
+    public static class Rol {
+
+        public Rol() {
+        }
+    }
 }

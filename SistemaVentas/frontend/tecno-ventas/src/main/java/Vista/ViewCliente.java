@@ -4,20 +4,10 @@
  */
 package Vista;
 
-import Controlador.ClienteController;
-import Controlador.UsuarioController;
-import Modelos.ModeloCliente;
 import Modelos.SesionUsuario;
-import Servicio.ServiceCliente;
-import com.mysql.cj.conf.PropertyKey;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.List;
 import javax.swing.JButton;
-import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.table.DefaultTableModel;
 import static Modelos.SesionUsuario.nombreUsuario; //importar nombre de usuario desde el login
 
 /**
@@ -26,114 +16,41 @@ import static Modelos.SesionUsuario.nombreUsuario; //importar nombre de usuario 
  */
 public class ViewCliente extends javax.swing.JFrame {
 
-    
-     private void cargarClientesDesdeAPI() {
-        try {
-            // Llamar al servicio que consume la API
-            ServiceCliente serviceCliente = new ServiceCliente();
-            List<ModeloCliente> clientes = serviceCliente.obtenerClientes();
-
-            // Crear el modelo de la tabla
-            DefaultTableModel model = new DefaultTableModel();
-            model.addColumn("ID Cliente");
-            model.addColumn("ID Usuario");
-            model.addColumn("Nombre");
-            model.addColumn("Apellido");
-            model.addColumn("Dirección");
-            model.addColumn("Teléfono");
-            model.addColumn("Correo");
-            model.addColumn("NIT");
-            model.addColumn("Fecha Creación");
-
-            // Agregar filas a la tabla
-            for (ModeloCliente cliente : clientes) {
-                model.addRow(new Object[]{
-                        cliente.getIdCliente(),
-                        cliente.getIdUsuario(),
-                        cliente.getNombre(),
-                        cliente.getApellido(),
-                        cliente.getDireccion(),
-                        cliente.getTelefono(),
-                        cliente.getCorreo(),
-                        cliente.getNit(),
-                        cliente.getFechaCreacion()
-                });
-                
-                // Establecer el modelo de la tabla
-                tblClientes.setModel(model);
-                
-                //ocultar la columnas IdUsuario, idCliente para que no se muestren en el formulario pero si cargar los datos
-                
-                tblClientes.getColumnModel().getColumn(0).setMinWidth(0); // IdCliente oculto
-                tblClientes.getColumnModel().getColumn(0).setMaxWidth(0);
-                tblClientes.getColumnModel().getColumn(0).setWidth(0);
-                
-                tblClientes.getColumnModel().getColumn(1).setMinWidth(0); //IdUsuario oculto
-                tblClientes.getColumnModel().getColumn(1).setMaxWidth(0);
-                tblClientes.getColumnModel().getColumn(1).setWidth(0);
-                
-                tblClientes.getColumnModel().getColumn(8).setMinWidth(0); //Fecha creación oculto
-                tblClientes.getColumnModel().getColumn(8).setMaxWidth(0);
-                tblClientes.getColumnModel().getColumn(8).setWidth(0);
-                
-            }
-
-            
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Error al cargar los clientes desde la API: " + e.getMessage(),
-                    "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }
-
- 
     /**
-     * 
+     *
      */
     public ViewCliente() {
-        initComponents();
-        
-        //ocultar el idCliente 
-        
-        txtIdCliente.setVisible(false);
-        
-        cargarClientesDesdeAPI();
-        
-        //cargar usuario del login
-        
-         nombreUsuario = SesionUsuario.nombreUsuario;
 
-    if (nombreUsuario != null) {
-        txtUsuarioLogin.setText(nombreUsuario);
-    } else {
-        txtUsuarioLogin.setText("Usuario no identificado");
-    };
-        /*setLocationRelativeTo(null);
-        
-        ViewCliente vista = new ViewCliente();
-        ClienteController controlador = new ClienteController(vista);*/
-        
-        //vista.setVisible(true);
+        initComponents();
+
+        //ocultar el idCliente 
+        txtIdCliente.setVisible(false);
+
+        //cargar usuario del login
+        nombreUsuario = SesionUsuario.nombreUsuario;
+
+        if (nombreUsuario != null) {
+            txtUsuarioLogin.setText(nombreUsuario);
+        } else {
+            txtUsuarioLogin.setText("Usuario no identificado");
+        };
+
     }
-    
+
     //crear getters publicos
-            
-            
-    public JButton getbtnAgregar(){
-        return btnAgregar;
+    public JButton getBtnRegistrar() {
+        return btnRegistrar;
     }
-    
-    public JButton getbtnEditar(){
-        
-        return btnEditar;
+
+    public JButton getBtnActualizar() {
+
+        return btnActualizar;
     }
-    
-    public JButton getbtnEliminar(){
+
+    public JButton getbtnEliminar() {
         return btnEliminar;
     }
-    
-    
+
     public JButton getBtnLimpiar() {
         return btnLimpiar;
     }
@@ -141,8 +58,8 @@ public class ViewCliente extends javax.swing.JFrame {
     public JTable getTblClientes() {
         return tblClientes;
     }
-    
-    public JTextField getTxtIdUsuario(){
+
+    public JTextField getTxtIdUsuario() {
         return txtIdCliente;
     }
 
@@ -169,9 +86,6 @@ public class ViewCliente extends javax.swing.JFrame {
     public JTextField getTxtNit() {
         return txtNit;
     }
-    
-    
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -189,10 +103,10 @@ public class ViewCliente extends javax.swing.JFrame {
         jSeparator1 = new javax.swing.JSeparator();
         jPanel2 = new javax.swing.JPanel();
         btnHome1 = new javax.swing.JButton();
-        btnAgregar = new javax.swing.JButton();
-        btnEditar = new javax.swing.JButton();
+        btnActualizar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
         btnLimpiar = new javax.swing.JButton();
+        btnRegistrar = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
@@ -277,22 +191,15 @@ public class ViewCliente extends javax.swing.JFrame {
             }
         });
 
-        btnAgregar.setBackground(new java.awt.Color(154, 179, 227));
-        btnAgregar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/anadir-amigo.png"))); // NOI18N
-        btnAgregar.setText("Registrar");
-        btnAgregar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(74, 111, 165), 3));
-        btnAgregar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-
-        btnEditar.setBackground(new java.awt.Color(154, 179, 227));
-        btnEditar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/avatar-de-usuario.png"))); // NOI18N
-        btnEditar.setText("Actualizar");
-        btnEditar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(74, 111, 165), 3));
-        btnEditar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+        btnActualizar.setBackground(new java.awt.Color(154, 179, 227));
+        btnActualizar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnActualizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/avatar-de-usuario.png"))); // NOI18N
+        btnActualizar.setText("Actualizar");
+        btnActualizar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(74, 111, 165), 3));
+        btnActualizar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnActualizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEditarActionPerformed(evt);
+                btnActualizarActionPerformed(evt);
             }
         });
 
@@ -310,6 +217,13 @@ public class ViewCliente extends javax.swing.JFrame {
         btnLimpiar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(74, 111, 165), 3));
         btnLimpiar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
+        btnRegistrar.setBackground(new java.awt.Color(154, 179, 227));
+        btnRegistrar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnRegistrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/anadir-amigo.png"))); // NOI18N
+        btnRegistrar.setText("Registrar");
+        btnRegistrar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(74, 111, 165), 3));
+        btnRegistrar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -318,10 +232,10 @@ public class ViewCliente extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnHome1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnAgregar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnEditar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnActualizar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnEliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnLimpiar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnLimpiar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnRegistrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -330,9 +244,9 @@ public class ViewCliente extends javax.swing.JFrame {
                 .addGap(20, 20, 20)
                 .addComponent(btnHome1, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(29, 29, 29)
-                .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnRegistrar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -367,7 +281,7 @@ public class ViewCliente extends javax.swing.JFrame {
         jPanel5.setBackground(new java.awt.Color(181, 186, 208));
 
         jPanel1.setBackground(new java.awt.Color(115, 137, 174));
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED), "Datos del Cliente", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 24), new java.awt.Color(255, 255, 255))); // NOI18N
+        jPanel1.setEnabled(false);
 
         jLabel8.setFont(new java.awt.Font("Roboto Medium", 1, 18)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
@@ -460,7 +374,9 @@ public class ViewCliente extends javax.swing.JFrame {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(txtIdCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 58, Short.MAX_VALUE))
-                            .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addGap(0, 50, Short.MAX_VALUE)
+                                .addComponent(jLabel6)))
                         .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(3, 3, 3)
                         .addComponent(jLabel8)
@@ -574,9 +490,9 @@ public class ViewCliente extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnHome1ActionPerformed
 
-    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+    private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnEditarActionPerformed
+    }//GEN-LAST:event_btnActualizarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -611,18 +527,18 @@ public class ViewCliente extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                
+
                 new ViewCliente().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAgregar;
-    private javax.swing.JButton btnEditar;
+    private javax.swing.JButton btnActualizar;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnHome1;
     private javax.swing.JButton btnLimpiar;
+    private javax.swing.JButton btnRegistrar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

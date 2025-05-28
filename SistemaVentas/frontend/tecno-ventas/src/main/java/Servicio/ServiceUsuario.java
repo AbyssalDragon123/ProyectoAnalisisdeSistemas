@@ -1,13 +1,13 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
+    
 package Servicio;
 
 import Modelos.ModeloUsuario;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
 import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
@@ -15,84 +15,103 @@ import java.net.URL;
 import java.util.List;
 
 public class ServiceUsuario {
-    
-    private static final String Usuario = "http://localhost:5167/api/Usuarios"; // Ajusta el puerto/API si es necesario
-    
-    
-    //metodo para cargar lista de usuarios de prueba
-    
-   /* public static List<ModeloUsuario> getAllUsuarios() {
-        try {
-            URL url = new URL(Usuario);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
 
-            BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            StringBuilder respuesta = new StringBuilder();
-            String linea;
+    private static final String USUARIOS = "http://localhost:5167/api/Usuarios"; // Endpoint
+    private final Gson gson = new Gson();
 
-            while ((linea = reader.readLine()) != null) {
-                respuesta.append(linea);
-            }
-              System.out.println("listado" + respuesta); //pintar datos en consola
-            reader.close();
+    // Obtener lista de clientes
+    public List<ModeloUsuario> obtenerUsuarios() throws Exception {
+        
+        URL url = new URL(USUARIOS);
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setRequestMethod("GET");
 
-            Gson gson = new Gson();
-            Type listaTipo = new TypeToken<List<ModeloUsuario>>() {}.getType();
-            //asignar una variable para prueba
-            List<ModeloUsuario> usuarios = gson.fromJson(respuesta.toString(), listaTipo);
-            
-            //Log de prueba para validar funcionamiento de la API
-            System.out.println("Usuarios obtenidos desde la API:");
-            for (ModeloUsuario u : usuarios) {
-            System.out.println("ID: " + u.getIdUsuario() 
-                    + ", Nombre: " + u.getNombre() 
-                    + ", Usuario: " + u.getUsername()
-                    +"Contraseña: " + u.getPass()
-            );
+        int responseCode = conn.getResponseCode();
+        if (responseCode != 200) {
+            throw new RuntimeException("Error al obtener clientes. Código: " + responseCode);
         }
 
-            return usuarios;
-            
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+        BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+        StringBuilder response = new StringBuilder();
+        String inputLine;
+
+        while ((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
         }
+        in.close();
+
+        Type listType = new TypeToken<List<ModeloUsuario>>() {}.getType();
+        return gson.fromJson(response.toString(), listType);
     }
+
+    // Agregar cliente
     
-    }*/
+    public boolean agregarUsuario(ModeloUsuario usuario) throws Exception {
+        URL url = new URL(USUARIOS);
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setRequestMethod("POST");
+        conn.setRequestProperty("Content-Type", "application/json");
+        conn.setDoOutput(true);
 
-//metodo para cargar lista de usuarios
-    
-    public static List<ModeloUsuario> getAllUsuarios() {
-        try {
-            URL url = new URL(Usuario);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
-
-            BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            StringBuilder respuesta = new StringBuilder();
-            String linea;
-
-            while ((linea = reader.readLine()) != null) {
-                respuesta.append(linea);
-            }
-            reader.close();
-
-            Gson gson = new Gson();
-            Type listaTipo = new TypeToken<List<ModeloUsuario>>() {}.getType();
-            return gson.fromJson(respuesta.toString(), listaTipo);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+        String jsonInput = gson.toJson(usuario);
+        try (DataOutputStream wr = new DataOutputStream(conn.getOutputStream())) {
+            wr.writeBytes(jsonInput);
+            wr.flush();
         }
+
+        int responseCode = conn.getResponseCode();
+        if (responseCode != 201 && responseCode != 200) {
+            BufferedReader err = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
+            StringBuilder errorResponse = new StringBuilder();
+            String line;
+            while ((line = err.readLine()) != null) {
+                errorResponse.append(line);
+            }
+            err.close();
+            System.out.println("Error al agregar cliente: " + errorResponse.toString());
+        }
+
+        return responseCode == 201 || responseCode == 200;
+    }
+
+    // Actualizar cliente
+    public boolean actualizarUsuario(ModeloUsuario usuario) throws Exception {
+        URL url = new URL(USUARIOS + "/" + usuario.getIdUsuario());
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setRequestMethod("PUT");
+        conn.setRequestProperty("Content-Type", "application/json");
+        conn.setDoOutput(true);
+
+        String jsonInput = gson.toJson(usuario);
+        
+        System.out.println("Json antes de enviar" + jsonInput);
+        
+        try (DataOutputStream wr = new DataOutputStream(conn.getOutputStream())) {
+            wr.writeBytes(jsonInput);
+            wr.flush();
+        }
+
+        int responseCode = conn.getResponseCode();
+        if (responseCode != 204) {
+            System.out.println("Error al actualizar cliente. Código: " + responseCode);
+        }
+
+        return responseCode == 204;
+    }
+
+    // Eliminar cliente
+    public boolean eliminarUsuario(int idUsuario) throws Exception {
+        URL url = new URL(USUARIOS + "/" + idUsuario);
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setRequestMethod("DELETE");
+
+        int responseCode = conn.getResponseCode();
+        if (responseCode != 200 && responseCode != 204) {
+            System.out.println("Error al eliminar cliente. Código: " + responseCode);
+        }
+
+        return responseCode == 200 || responseCode == 204;
     }
 }
 
-
-
-
-
-    
 

@@ -12,6 +12,8 @@ import Servicio.ServiceLogin;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
+import Vista.ViewCliente;
+import Controlador.ClienteController;
 
 /**
  *
@@ -115,7 +117,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
 
         btnProductos.setBackground(new java.awt.Color(154, 179, 227));
         btnProductos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/agregar-producto.png"))); // NOI18N
-        btnProductos.setText("PRODUCTO");
+        btnProductos.setText("Producto");
         btnProductos.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(74, 111, 165), 3, true));
         btnProductos.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnProductos.addActionListener(new java.awt.event.ActionListener() {
@@ -126,7 +128,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
 
         btnCategorias.setBackground(new java.awt.Color(154, 179, 227));
         btnCategorias.setIcon(new javax.swing.ImageIcon(getClass().getResource("/categorias.png"))); // NOI18N
-        btnCategorias.setText("CATEGORIAS");
+        btnCategorias.setText("Categorias");
         btnCategorias.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(74, 111, 165), 3, true));
         btnCategorias.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnCategorias.addActionListener(new java.awt.event.ActionListener() {
@@ -137,7 +139,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
 
         btnVentas.setBackground(new java.awt.Color(154, 179, 227));
         btnVentas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ventas.png"))); // NOI18N
-        btnVentas.setText("VENTAS");
+        btnVentas.setText("Ventas");
         btnVentas.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(74, 111, 165), 3, true));
         btnVentas.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnVentas.addActionListener(new java.awt.event.ActionListener() {
@@ -148,7 +150,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
 
         btnFacturas.setBackground(new java.awt.Color(154, 179, 227));
         btnFacturas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/factura.png"))); // NOI18N
-        btnFacturas.setText("FACTURAS");
+        btnFacturas.setText("Facturas");
         btnFacturas.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(74, 111, 165), 3, true));
         btnFacturas.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnFacturas.addActionListener(new java.awt.event.ActionListener() {
@@ -158,8 +160,8 @@ public class MenuPrincipal extends javax.swing.JFrame {
         });
 
         btnUsuarios.setBackground(new java.awt.Color(154, 179, 227));
-        btnUsuarios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/perfil.png"))); // NOI18N
-        btnUsuarios.setText("USUARIOS");
+        btnUsuarios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/usuario (4).png"))); // NOI18N
+        btnUsuarios.setText("Usuarios");
         btnUsuarios.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(74, 111, 165), 3, true));
         btnUsuarios.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnUsuarios.addActionListener(new java.awt.event.ActionListener() {
@@ -193,8 +195,8 @@ public class MenuPrincipal extends javax.swing.JFrame {
                     .addComponent(btnUsuarios, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(68, 68, 68)
-                .addComponent(btnCerrarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(46, 46, 46)
+                .addComponent(btnCerrarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -212,9 +214,9 @@ public class MenuPrincipal extends javax.swing.JFrame {
                 .addComponent(btnFacturas, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnUsuarios, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnCerrarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         jPanel3.setBackground(new java.awt.Color(92, 128, 188));
@@ -369,9 +371,10 @@ public class MenuPrincipal extends javax.swing.JFrame {
     private void btnClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClientesActionPerformed
         // TODO add your handling code here:
         
-        //abrir vista clientes
+        //abrir vista clientes, instanciar controlador
         
         ViewCliente clientes = new ViewCliente();
+        ClienteController  clienteController = new ClienteController(clientes);
         clientes.setLocationRelativeTo(null);
         clientes.setVisible(true);
             this.dispose();

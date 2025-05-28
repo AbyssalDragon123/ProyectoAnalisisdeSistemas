@@ -91,17 +91,20 @@ public class ServiceCliente {
         conn.setDoOutput(true);
 
         String jsonInput = gson.toJson(cliente);
+        
+        System.out.println("Json antes de enviar" + jsonInput);
+        
         try (DataOutputStream wr = new DataOutputStream(conn.getOutputStream())) {
             wr.writeBytes(jsonInput);
             wr.flush();
         }
 
         int responseCode = conn.getResponseCode();
-        if (responseCode != 200) {
+        if (responseCode != 204) {
             System.out.println("Error al actualizar cliente. Código: " + responseCode);
         }
 
-        return responseCode == 200;
+        return responseCode == 204;
     }
 
     // Eliminar cliente
