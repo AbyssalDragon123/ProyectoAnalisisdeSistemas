@@ -39,7 +39,7 @@ namespace TecnoVentasAPI.Models
 
         [Required]
         [Column("rol")]
-        public RolUsuario Rol { get; set; } = RolUsuario.cajero;
+        public string Rol { get; set; } = string.Empty;
 
         [Column("password_reset_token")]
         [MaxLength(255)]

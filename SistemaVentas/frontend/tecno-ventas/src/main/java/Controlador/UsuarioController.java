@@ -2,10 +2,15 @@ package Controlador;
 
 import Modelos.ModeloUsuario;
 import Servicio.ServiceUsuario;
+import Util.GeneradorContrasena;
+import Util.EmailSender;
 import Vista.ViewUsuario;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
+import Util.GeneradorUsername;
 
 public class UsuarioController {
 
@@ -31,7 +36,36 @@ public class UsuarioController {
         vista.getBtnEliminar().addActionListener(e -> eliminarUsuario());
         vista.getBtnLimpiar().addActionListener(e -> limpiarCampos());
 
-        vista.getTableUsuarios().getSelectionModel().addListSelectionListener(e -> {
+        //Boton para enviar correo con usuario y contraseña
+        vista.getBtnEnviarEmail().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                enviarCorreoDesdeFormulario();
+            }
+        });
+
+        //llamando el boton desde la vista sin anotacion labda
+        vista.getBtnGenerar().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String nuevaContrasena = GeneradorContrasena.generar(8); // Ajustar la longitud de la contraseña
+                vista.getTxtPass().setText(nuevaContrasena);//setear la contraseña al campo password
+            }
+        });
+
+        vista.getBtnGenerarUser().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String nombre = vista.getTxtNombre().getText();
+                String apellido = vista.getTxtApellido().getText();
+
+                String username = GeneradorUsername.generarNombreUsuario(nombre, apellido);
+
+                vista.getTxtUserName().setText(username); //enviar el nombre de usuario al campo username
+            }
+        });
+
+        vista.getTableUsuarios().getSelectionModel().addListSelectionListener(e -> {//seleccionar registro
             if (!e.getValueIsAdjusting()) {
                 llenarFormularioDesdeTabla();
 
@@ -45,6 +79,8 @@ public class UsuarioController {
     private void cargarUsuarios() {
         try {
             List<ModeloUsuario> usuarios = servicio.obtenerUsuarios();
+
+            System.out.println("usuarios obtenidos" + usuarios);
 
             DefaultTableModel modelo = new DefaultTableModel();
 
@@ -67,7 +103,7 @@ public class UsuarioController {
                     u.getApellido(),
                     u.getCorreo(),
                     u.getUsername(),
-                    u.getRol() != null ? u.getRol() : "",
+                    u.getRol(),
                     u.getPass(),
                     u.getPasswordResetToken(),
                     u.getPasswordResetExpires()
@@ -75,7 +111,7 @@ public class UsuarioController {
             }
 
             vista.getTableUsuarios().setModel(modelo);
-            ocultarColumnas(new int[]{0, 6, 7, 8}); // Ocultar ID, Pass, Token y Expiración
+            ocultarColumnas(new int[]{0,}); // Ocultar ID, Pass, Token y Expiración
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(vista, "Error al cargar usuarios: " + e.getMessage());
@@ -84,6 +120,17 @@ public class UsuarioController {
 
     private void agregarUsuario() {
         try {
+            if (vista.getTxtNombre().getText().trim().isEmpty()
+                    || vista.getTxtApellido().getText().trim().isEmpty()
+                    || vista.getTxtCorreo().getText().trim().isEmpty()
+                    || vista.getTxtUserName().getText().trim().isEmpty()
+                    || vista.getTxtPass().getText().trim().isEmpty()) {
+
+                JOptionPane.showMessageDialog(vista, "Todos los campos son obligatorios.");
+                return;
+
+            }
+
             ModeloUsuario usuario = construirUsuarioDesdeFormulario();
 
             boolean exito = servicio.agregarUsuario(usuario);
@@ -153,30 +200,43 @@ public class UsuarioController {
         usuario.setCorreo(vista.getTxtCorreo().getText());
         usuario.setUsername(vista.getTxtUserName().getText());
         usuario.setPass(vista.getTxtPass().getText());
-
-       
-
+        usuario.setRol(vista.getComboBoxRol().getSelectedItem().toString());
         usuario.setPasswordResetToken(null);
         usuario.setPasswordResetExpires(null);
 
         return usuario;
     }
 
+    //Seleccionar fila y rellenar el formulario con los datos obtenidos
     private void llenarFormularioDesdeTabla() {
         int filaVista = vista.getTableUsuarios().getSelectedRow();
         if (filaVista != -1) {
             int filaModelo = vista.getTableUsuarios().convertRowIndexToModel(filaVista);
             DefaultTableModel modelo = (DefaultTableModel) vista.getTableUsuarios().getModel();
 
-            vista.getTxtIdUsuario().setText(modelo.getValueAt(filaModelo, 0).toString());
-            vista.getTxtNombre().setText(modelo.getValueAt(filaModelo, 1).toString());
-            vista.getTxtApellido().setText(modelo.getValueAt(filaModelo, 2).toString());
-            vista.getTxtCorreo().setText(modelo.getValueAt(filaModelo, 3).toString());
-            vista.getTxtUserName().setText(modelo.getValueAt(filaModelo, 4).toString());
+            // Obtener valores desde la tabla
+            String id = modelo.getValueAt(filaModelo, 0).toString();
+            String nombre = modelo.getValueAt(filaModelo, 1).toString();
+            String apellido = modelo.getValueAt(filaModelo, 2).toString();
+            String correo = modelo.getValueAt(filaModelo, 3).toString();
+            String username = modelo.getValueAt(filaModelo, 4).toString();
+            String rol = modelo.getValueAt(filaModelo, 5).toString();
+            String pass = modelo.getValueAt(filaModelo, 6).toString();
 
-            
+            // Setear los valores en los campos
+            vista.getTxtIdUsuario().setText(id);
+            vista.getTxtNombre().setText(nombre);
+            vista.getTxtApellido().setText(apellido);
+            vista.getTxtCorreo().setText(correo);
+            vista.getTxtUserName().setText(username);
+            vista.getTxtPass().setText(pass); //contraseña con texto plano
+            // Setear rol en el ComboBox
+            vista.getComboBoxRol().setSelectedItem(rol);
+
         } else {
+
             limpiarCampos();
+
         }
     }
 
@@ -187,7 +247,6 @@ public class UsuarioController {
         vista.getTxtCorreo().setText("");
         vista.getTxtUserName().setText("");
         vista.getTxtPass().setText("");
-       
 
         vista.getTxtNombre().requestFocus();
 
@@ -206,4 +265,36 @@ public class UsuarioController {
             }
         }
     }
+
+    //metodo para el envio de correo
+    private void enviarCorreoDesdeFormulario() {
+
+        try {
+            String destinatario = vista.getTxtCorreo().getText().trim();
+            String username = vista.getTxtUserName().getText().trim();
+            String password = vista.getTxtPass().getText().trim();
+            String nombre = vista.getTxtNombre().getText().trim();
+
+            if (destinatario.isEmpty() || username.isEmpty() || password.isEmpty() || nombre.isEmpty()) {
+                JOptionPane.showMessageDialog(vista, "Por favor, complete todos los campos necesarios para enviar el correo.");
+                return;
+            }
+
+            String asunto = "Tus credenciales de acceso";
+            String cuerpo = "Hola " + nombre + ",\n\n"
+                    + "Aquí están tus credenciales de acceso:\n\n"
+                    + "Nombre de usuario: " + username + "\n"
+                    + "Contraseña: " + password + "\n\n"
+                    + "Por favor, cambia tu contraseña después de iniciar sesión.\n\n"
+                    + "Gracias.";
+
+            EmailSender.sendEmail(destinatario, asunto, cuerpo);
+
+            JOptionPane.showMessageDialog(vista, "Correo enviado correctamente.");
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(vista, "Error al enviar correo: " + ex.getMessage());
+        }
+    }
+
 }
