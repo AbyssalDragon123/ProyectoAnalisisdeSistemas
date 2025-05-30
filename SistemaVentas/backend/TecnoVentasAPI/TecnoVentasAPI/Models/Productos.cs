@@ -1,37 +1,34 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace TecnoVentasAPI.Models
+[Table("producto")]
+public class Producto
 {
-    [Table("producto", Schema = "tecno_ventas")]
-    public class Producto
-    {
-        [Key]
-        [Column("id_producto")]
-        public int IdProducto { get; set; }
+    [Key]
+    [Column("id_producto")]
+    public int IdProducto { get; set; }
 
-        [Required]
-        [Column("id_usuario")]
-        public int IdUsuario { get; set; }
+    [Column("id_usuario")]
+    public int IdUsuario { get; set; }
 
-        [Required]
-        [Column("id_categoria")]
-        public int IdCategoria { get; set; }
+    [Column("id_categoria")]
+    public int IdCategoria { get; set; }
 
-        [Column("nombre")]
-        [MaxLength(100)]
-        public string? Nombre { get; set; }
+    [Column("nombre")]
+    [StringLength(100)]
+    public string? Nombre { get; set; }
 
-        [Column("precio_venta", TypeName = "decimal(10,2)")]
-        public decimal? PrecioVenta { get; set; }
+    [Column("precio_venta", TypeName = "decimal(10,2)")]
+    public decimal? PrecioVenta { get; set; }
 
-        [Column("stock")]
-        public int? Stock { get; set; }
+    [Column("stock")]
+    public int? Stock { get; set; }
 
-       [ForeignKey("IdUsuario")]
-        public Usuario Usuario { get; set; } = null!;
+    [Column("fecha_creacion")]
+    public DateTime FechaCreacion { get; set; } = DateTime.Now;
 
-        [ForeignKey("IdCategoria")]
-        public Categoria Categoria { get; set; } = null!;
-    }
+    // Relaciones (opcional, si tienes clases Usuario y Categoria)
+    // public virtual Usuario Usuario { get; set; }
+    // public virtual Categoria Categoria { get; set; }
 }
