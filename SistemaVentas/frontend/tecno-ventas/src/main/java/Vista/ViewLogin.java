@@ -4,45 +4,43 @@
  */
 package Vista;
 
-import Controlador.LoginController;
-import java.awt.event.ActionListener;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-import Servicio.ServiceLogin;
+import Controlador.RecuperarController;
+import Servicio.ServiceRecuperarContrasena;
 
 /**
  *
  * @author Carlos Orozco
  */
 public class ViewLogin extends javax.swing.JFrame {
-    
-    private void mostrarpassword(){
-    
+
+    private void mostrarpassword() {
+
         char echoChar = '*'; //caracteres a mostrar al no estar seleccionado el check
-        
+
         String passwordTxt = String.valueOf(txtPassword.getPassword()); //carga el contenido de txtpassword(campo de contraseña)
-        
+
         if (passwordTxt.isEmpty()) {
-            
+
             JOptionPane.showMessageDialog(this, "El campo de contraseña esta vacio", "Advertencia", JOptionPane.WARNING_MESSAGE);
-            
+
             mostrarPassCheck.setSelected(false); //si el campo esta vacio no muestra la contraseña
-            
+
         }
-        
+
         if (mostrarPassCheck.isSelected()) {
-            
-            txtPassword.setEchoChar((char)0); //mostrar caracteres
-            
-        }else{
-        
+
+            txtPassword.setEchoChar((char) 0); //mostrar caracteres
+
+        } else {
+
             txtPassword.setEchoChar(echoChar); //ocultar los caracteres
-        
+
         }
-    
+
     }
 
     /**
@@ -50,28 +48,26 @@ public class ViewLogin extends javax.swing.JFrame {
      */
     public ViewLogin() {
         initComponents();
-        
-       this.setLocationRelativeTo(null); //centrar formulario en pantalla
-       
-      
+
+        this.setLocationRelativeTo(null); //centrar formulario en pantalla
+
     }
-    
+
     //Getters
-    
-    public JTextField getTxtUsuario(){
-       return txtUsuario;
+    public JTextField getTxtUsuario() {
+        return txtUsuario;
     }
-    
-    public JPasswordField jPasswordField(){
-    
+
+    public JPasswordField jPasswordField() {
+
         return txtPassword;
     }
-    
-    public JButton getBtnLogin(){
+
+    public JButton getBtnLogin() {
         return jbtLogin;
     }
-    
-    public JButton getBtnRecuperar(){
+
+    public JButton getBtnRecuperar() {
         return jbtRecuperar;
     }
 
@@ -288,7 +284,6 @@ public class ViewLogin extends javax.swing.JFrame {
         // TODO add your handling code here:
 
         //texto en blanco al recibir el enfoque
-
         txtPassword.setText("");
     }//GEN-LAST:event_txtPasswordFocusGained
 
@@ -300,17 +295,22 @@ public class ViewLogin extends javax.swing.JFrame {
         // TODO add your handling code here:
 
         //texto en blanco al recibir el enfoque
-
         txtUsuario.setText("");
 
     }//GEN-LAST:event_txtUsuarioFocusGained
 
     private void jbtRecuperarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtRecuperarActionPerformed
         // TODO add your handling code here:
-        ViewRecuperarContrasena Recuperacion = new ViewRecuperarContrasena();
-        Recuperacion.setLocationRelativeTo(null);
-        Recuperacion.setVisible(true);
+
+        ViewRecuperarContrasena recuperacion = new ViewRecuperarContrasena();
+        ServiceRecuperarContrasena service = new ServiceRecuperarContrasena();
+        RecuperarController controller = new RecuperarController(recuperacion, service);
+
+        recuperacion.setLocationRelativeTo(null);
+        recuperacion.setVisible(true);
         this.dispose();
+
+
     }//GEN-LAST:event_jbtRecuperarActionPerformed
 
     /**
@@ -368,5 +368,4 @@ public class ViewLogin extends javax.swing.JFrame {
     private javax.swing.JTextField txtUsuario;
     // End of variables declaration//GEN-END:variables
 
-  
 }

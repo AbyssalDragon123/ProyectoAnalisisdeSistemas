@@ -20,7 +20,7 @@ namespace TecnoVentasAPI.Data
 
         public DbSet<DetalleVenta> DetalleVentas { get; set; }
 
-        public DbSet<Usuario> usuarios { get; set; }
+        public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<LoginRequest> loginRequest { get; set; }
 
 

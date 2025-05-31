@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TecnoVentasAPI.Data;
-using TecnoVentasAPI.DTOs;
 using TecnoVentasAPI.Models;
 
 namespace TecnoVentasAPI.Controllers
@@ -22,36 +16,41 @@ namespace TecnoVentasAPI.Controllers
             _context = context;
         }
 
-        // GET: api/Usuarios
+        // GET: api/usuarios
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Usuario>>> Getusuarios()
+        public async Task<ActionResult<IEnumerable<Usuario>>> GetUsuarios()
         {
-            return await _context.usuarios.ToListAsync();
+            return await _context.Usuarios.ToListAsync();
         }
 
-        // GET: api/Usuarios/5
+        // GET: api/usuarios/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Usuario>> GetUsuario(int id)
         {
-            var usuario = await _context.usuarios.FindAsync(id);
+            var usuario = await _context.Usuarios.FindAsync(id);
 
             if (usuario == null)
-            {
                 return NotFound();
-            }
 
             return usuario;
         }
 
-        // PUT: api/Usuarios/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        // POST: api/usuarios
+        [HttpPost]
+        public async Task<ActionResult<Usuario>> PostUsuario(Usuario usuario)
+        {
+            _context.Usuarios.Add(usuario);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(GetUsuario), new { id = usuario.IdUsuario }, usuario);
+        }
+
+        // PUT: api/usuarios/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutUsuario(int id, Usuario usuario)
         {
             if (id != usuario.IdUsuario)
-            {
                 return BadRequest();
-            }
 
             _context.Entry(usuario).State = EntityState.Modified;
 
@@ -62,62 +61,23 @@ namespace TecnoVentasAPI.Controllers
             catch (DbUpdateConcurrencyException)
             {
                 if (!UsuarioExists(id))
-                {
                     return NotFound();
-                }
                 else
-                {
                     throw;
-                }
             }
 
             return NoContent();
         }
 
-        // POST: api/Usuarios
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Usuario>> PostUsuario(Usuario usuario)
-        {
-            _context.usuarios.Add(usuario);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetUsuario", new { id = usuario.IdUsuario }, usuario);
-        }
-        //recuperar contraseña
-        [HttpPut("RecuperarContrasena")]
-        public async Task<IActionResult> RecuperarContrasena([FromBody] RecuperarContrasenaDto data)
-        {
-            var usuario = await _context.usuarios.FirstOrDefaultAsync(u => u.Username == data.Username);
-
-            if (usuario == null)
-            {
-                return NotFound(new { mensaje = "Usuario no encontrado" });
-            }
-
-            usuario.Pass = data.NuevaContrasena;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-                return Ok(new { mensaje = "Contraseña actualizada" });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { mensaje = "Error al actualizar", detalle = ex.Message });
-            }
-        }
-        // DELETE: api/Usuarios/5
+        // DELETE: api/usuarios/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUsuario(int id)
         {
-            var usuario = await _context.usuarios.FindAsync(id);
+            var usuario = await _context.Usuarios.FindAsync(id);
             if (usuario == null)
-            {
                 return NotFound();
-            }
 
-            _context.usuarios.Remove(usuario);
+            _context.Usuarios.Remove(usuario);
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -125,7 +85,7 @@ namespace TecnoVentasAPI.Controllers
 
         private bool UsuarioExists(int id)
         {
-            return _context.usuarios.Any(e => e.IdUsuario == id);
+            return _context.Usuarios.Any(e => e.IdUsuario == id);
         }
     }
 }

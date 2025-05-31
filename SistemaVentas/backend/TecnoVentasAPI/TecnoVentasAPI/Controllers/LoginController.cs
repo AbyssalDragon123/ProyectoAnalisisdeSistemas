@@ -23,7 +23,7 @@ namespace TecnoVentasAPI.Controllers
             {
                 return BadRequest("Faltan datos para la validación...");
             }
-            var user = _context.usuarios.FirstOrDefault(u => u.Username == loginRequest.UserName && u.Pass == loginRequest.Password);
+            var user = _context.Usuarios.FirstOrDefault(u => u.Username == loginRequest.UserName && u.Pass == loginRequest.Password);
             if (user == null)
             {
                 return Unauthorized("Usuario o Contraseña incorrectos.");

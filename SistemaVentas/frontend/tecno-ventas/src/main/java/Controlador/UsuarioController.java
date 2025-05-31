@@ -11,6 +11,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
 import Util.GeneradorUsername;
+import java.awt.BorderLayout;
 
 public class UsuarioController {
 
@@ -268,33 +269,66 @@ public class UsuarioController {
 
     //metodo para el envio de correo
     private void enviarCorreoDesdeFormulario() {
+        String destinatario = vista.getTxtCorreo().getText().trim();
+        String username = vista.getTxtUserName().getText().trim();
+        String password = vista.getTxtPass().getText().trim();
+        String nombre = vista.getTxtNombre().getText().trim();
 
-        try {
-            String destinatario = vista.getTxtCorreo().getText().trim();
-            String username = vista.getTxtUserName().getText().trim();
-            String password = vista.getTxtPass().getText().trim();
-            String nombre = vista.getTxtNombre().getText().trim();
+        if (destinatario.isEmpty() || username.isEmpty() || password.isEmpty() || nombre.isEmpty()) {
+            JOptionPane.showMessageDialog(vista, "Por favor, complete todos los campos necesarios para enviar el correo.");
+            return;
+        }
 
-            if (destinatario.isEmpty() || username.isEmpty() || password.isEmpty() || nombre.isEmpty()) {
-                JOptionPane.showMessageDialog(vista, "Por favor, complete todos los campos necesarios para enviar el correo.");
-                return;
+        String asunto = "Tus credenciales de acceso";
+        String cuerpo = "Hola " + nombre + ",\n\n"
+                + "Aquí están tus credenciales de acceso:\n\n"
+                + "Nombre de usuario: " + username + "\n"
+                + "Contraseña: " + password + "\n\n"
+                + "Por favor, cambia tu contraseña después de iniciar sesión.\n\n"
+                + "Gracias.";
+
+        // Crear un JDialog para mostrar mientras se envía el correo
+        JDialog dialogoEspera = new JDialog(vista, "Enviando correo", true);
+        JPanel panel = new JPanel(new BorderLayout(10, 10));
+        panel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+
+        // Cargar la imagen
+        ImageIcon icono = new ImageIcon(getClass().getResource("/enviando.png")); // Usa un .gif si quieres animación
+        JLabel etiquetaImagen = new JLabel(icono);
+        panel.add(etiquetaImagen, BorderLayout.WEST);
+
+        JLabel etiquetaTexto = new JLabel("Enviando correo, por favor espera...");
+        etiquetaTexto.setVerticalAlignment(SwingConstants.CENTER);
+        panel.add(etiquetaTexto, BorderLayout.CENTER);
+
+        dialogoEspera.getContentPane().add(panel);
+        dialogoEspera.pack();
+        dialogoEspera.setLocationRelativeTo(vista);
+
+        // Worker en segundo plano
+        SwingWorker<Void, Void> worker = new SwingWorker<>() {
+            @Override
+            protected Void doInBackground() throws Exception {
+                EmailSender.sendEmail(destinatario, asunto, cuerpo);
+                return null;
             }
 
-            String asunto = "Tus credenciales de acceso";
-            String cuerpo = "Hola " + nombre + ",\n\n"
-                    + "Aquí están tus credenciales de acceso:\n\n"
-                    + "Nombre de usuario: " + username + "\n"
-                    + "Contraseña: " + password + "\n\n"
-                    + "Por favor, cambia tu contraseña después de iniciar sesión.\n\n"
-                    + "Gracias.";
+            @Override
+            protected void done() {
+                dialogoEspera.dispose(); // Cerrar diálogo de espera
 
-            EmailSender.sendEmail(destinatario, asunto, cuerpo);
+                try {
+                    get(); // Verifica si hubo alguna excepción
+                    JOptionPane.showMessageDialog(vista, "Correo enviado correctamente.");
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(vista, "Error al enviar correo: " + ex.getMessage());
+                }
+            }
+        };
 
-            JOptionPane.showMessageDialog(vista, "Correo enviado correctamente.");
-
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(vista, "Error al enviar correo: " + ex.getMessage());
-        }
+        // Ejecutar worker y mostrar diálogo
+        worker.execute();
+        dialogoEspera.setVisible(true);
     }
 
 }
