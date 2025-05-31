@@ -1,38 +1,56 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Servicio;
 
 import Modelos.ModeloProducto;
-import com.google.gson.Gson;
+import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
+
 import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/**
- *
- * @author Administrador
- */
+// Adaptador para serializar y deserializar LocalDateTime en formato ISO
+class LocalDateTimeAdapter implements JsonSerializer<LocalDateTime>, JsonDeserializer<LocalDateTime> {
+
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+
+    @Override
+    public JsonElement serialize(LocalDateTime localDateTime, Type srcType, JsonSerializationContext context) {
+        return new JsonPrimitive(localDateTime.format(formatter));
+    }
+
+    @Override
+    public LocalDateTime deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+        return LocalDateTime.parse(json.getAsString(), formatter);
+    }
+}
+
 public class ServiceProducto {
-    
-    private final String PRODUCTO = "http://localhost:7050/api/Productos"; // endpoint
-    private final Gson gson = new Gson();
-    //ver producto
-     // Obtener lista productos
-    public List<ModeloProducto> obtenerProducto() throws Exception {
-        URL url = new URL("");
+
+    private static final String PRODUCTO_API = "http://localhost:5167/api/Productos"; // Cambia la URL según tu API
+
+    private final Gson gson;
+
+    public ServiceProducto() {
+        this.gson = new GsonBuilder()
+                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
+                .create();
+    }
+
+    // Obtener lista de productos
+    public List<ModeloProducto> obtenerProductos() throws Exception {
+        URL url = new URL(PRODUCTO_API);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("GET");
 
         int responseCode = conn.getResponseCode();
         if (responseCode != 200) {
-            throw new RuntimeException("Error al obtener producto. Código: " + responseCode);
+            throw new RuntimeException("Error al obtener productos. Código: " + responseCode);
         }
 
         BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
@@ -48,91 +66,71 @@ public class ServiceProducto {
         return gson.fromJson(response.toString(), listType);
     }
 
-    
-    
-    
-    //Agregar nuevo Producto
-    public boolean agregarProducto(ModeloProducto producto) {
-try {
-        URL url = new URL("http://localhost:7050/api/Productos");
+    // Agregar producto
+    public boolean agregarProducto(ModeloProducto producto) throws Exception {
+        URL url = new URL(PRODUCTO_API);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("POST");
         conn.setRequestProperty("Content-Type", "application/json");
         conn.setDoOutput(true);
 
-      Gson gson = new Gson();
-      String json = gson.toJson(producto);
-
-        // Envía el JSON al servidor
-        try (OutputStream os = conn.getOutputStream()) {
-            byte[] input = json.getBytes("utf-8");
-            os.write(input, 0, input.length); //
+        String jsonInput = gson.toJson(producto);
+        try (DataOutputStream wr = new DataOutputStream(conn.getOutputStream())) {
+            wr.writeBytes(jsonInput);
+            wr.flush();
         }
-//codigo de respuesta 
-     int responseCode = conn.getResponseCode();
-            if (responseCode == 200|| responseCode == 201) {  //OK,creado
-                System.out.println("Producto agregado correctamente.");
-                return true;
-            } else {
-                System.out.println("Error al agregar producto. Código de respuesta: " + responseCode);
-                return false;
-            }
-    } catch (Exception e) { //Imprime error en consola
-        e.printStackTrace();
-        return false; //returna false si sale mal 
-    }
-}
 
-//Modificar producto
-    public static boolean modificarproducto (ModeloProducto producto){
-   try{
-        URL url = new URL("http://localhost:7050/api/Productos" + producto.getIdproducto());
+        int responseCode = conn.getResponseCode();
+        if (responseCode != 201 && responseCode != 200) {
+            BufferedReader err = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
+            StringBuilder errorResponse = new StringBuilder();
+            String line;
+            while ((line = err.readLine()) != null) {
+                errorResponse.append(line);
+            }
+            err.close();
+            System.out.println("Error al agregar producto: " + errorResponse.toString());
+        }
+
+        return responseCode == 201 || responseCode == 200;
+    }
+
+    // Actualizar producto
+    public boolean actualizarProducto(ModeloProducto producto) throws Exception {
+        URL url = new URL(PRODUCTO_API + "/" + producto.getIdProducto());
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("PUT");
-        conn.setRequestProperty("Content-Type", "application/json; utf-8");
+        conn.setRequestProperty("Content-Type", "application/json");
         conn.setDoOutput(true);
-        
-        // Convertir el objeto Alumno a JSON
-        Gson gson = new Gson();
-        String json = gson.toJson(producto);
 
-        // Enviar el JSON al servidor
-        try (OutputStream os = conn.getOutputStream()) {
-            byte[] input = json.getBytes("utf-8");
-            os.write(input, 0, input.length);
+        String jsonInput = gson.toJson(producto);
+
+        System.out.println("Json antes de enviar: " + jsonInput);
+
+        try (DataOutputStream wr = new DataOutputStream(conn.getOutputStream())) {
+            wr.writeBytes(jsonInput);
+            wr.flush();
         }
-//respuesta
-          int responseCode = conn.getResponseCode();
-            return responseCode == HttpURLConnection.HTTP_OK || responseCode == HttpURLConnection.HTTP_NO_CONTENT;
 
-    } catch (Exception e) {
-        e.printStackTrace();
-        return false;
-}
-}
-
-//Eliminar producto
-    public static boolean EliminarProducto(int idProducto){
-   try{
-        URL  url = new URL("http://localhost:7050/api/Productos" + idProducto);//endpoint
-          HttpURLConnection conn = (HttpURLConnection) url.openConnection();//abre conexion
-        conn.setRequestMethod("DELETE");
-        //respuesta
         int responseCode = conn.getResponseCode();
-        
-        if (responseCode == 200 || responseCode == 204){ // Si esta correcto muestra el siguiente mensaje
-        System.out.println("Alumno eliminado correctamente");
-        return true;
-        }else{ // de lo contrario 
-                System.out.println("Error al eliminar alumno. codigo de respuesta: " + responseCode); 
-                return false;
-   }
-   }catch (Exception e) {
-   e.printStackTrace();
-   return false;
-   }
+        if (responseCode != 204) {
+            System.out.println("Error al actualizar producto. Código: " + responseCode);
+        }
 
+        return responseCode == 204;
+    }
+
+    // Eliminar producto
+    public boolean eliminarProducto(int idProducto) throws Exception {
+        URL url = new URL(PRODUCTO_API + "/" + idProducto);
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setRequestMethod("DELETE");
+
+        int responseCode = conn.getResponseCode();
+        if (responseCode != 200 && responseCode != 204) {
+            System.out.println("Error al eliminar producto. Código: " + responseCode);
+        }
+
+        return responseCode == 200 || responseCode == 204;
+    }
 }
-}
-
-

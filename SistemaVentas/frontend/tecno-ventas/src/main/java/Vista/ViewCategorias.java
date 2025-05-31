@@ -4,7 +4,13 @@
  */
 package Vista;
 
-import Controlador.UsuarioController;
+import Modelos.ModeloCategoria;
+
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.awt.event.*;
+import java.util.List;
+import servicio.ServiceCategoria;
 
 /**
  *
@@ -12,14 +18,161 @@ import Controlador.UsuarioController;
  */
 public class ViewCategorias extends javax.swing.JFrame {
 
-    /**
-     * Creates new form ViewCategorias
-     */
+private final ServiceCategoria serviceCategoria = new ServiceCategoria();
+
     public ViewCategorias() {
         initComponents();
-        
+        configurarTabla();
+        cargarCategorias();
+        configurarEventos();
+        txtIdCategoria.setVisible(false);
     }
 
+    private void configurarTabla() {
+        tblCategorias.setModel(new DefaultTableModel(
+                new Object[][]{},
+                new String[]{"ID", "Nombre", "Descripción"}
+        ) {
+            public boolean isCellEditable(int row, int column) {
+                return false; // No editable directamente
+            }
+        });
+    }
+
+    private void cargarCategorias() {
+        SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+            @Override
+            protected Void doInBackground() throws Exception {
+                try {
+                    List<ModeloCategoria> categorias = serviceCategoria.obtenerCategorias();
+                    DefaultTableModel model = (DefaultTableModel) tblCategorias.getModel();
+                    model.setRowCount(0); // Limpiar tabla
+                    for (ModeloCategoria c : categorias) {
+                        model.addRow(new Object[]{c.getIdCategoria(), c.getNombreCat(), c.getDescripcion()});
+                    }
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(ViewCategorias.this, "Error al cargar categorías: " + e.getMessage());
+                    e.printStackTrace();
+                }
+                return null;
+            }
+
+            @Override
+            protected void done() {
+                // Opcional: hacer algo después de cargar los datos
+            }
+        };
+        worker.execute();
+    }
+
+    private void configurarEventos() {
+        // Selección en tabla para mostrar en campos
+        tblCategorias.getSelectionModel().addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting() && tblCategorias.getSelectedRow() != -1) {
+                int fila = tblCategorias.getSelectedRow();
+
+                Object idValue = tblCategorias.getValueAt(fila, 0);
+                Object nombreValue = tblCategorias.getValueAt(fila, 1);
+                Object descripcionValue = tblCategorias.getValueAt(fila, 2);
+
+                txtIdCategoria.setText(idValue != null ? idValue.toString() : "");
+                txtNombre.setText(nombreValue != null ? nombreValue.toString() : "");
+                txtDireccion.setText(descripcionValue != null ? descripcionValue.toString() : "");
+            }
+        });
+
+        // Botón Agregar
+        btnAgregar.addActionListener(e -> {
+            try {
+                String nombre = txtNombre.getText().trim();
+                String descripcion = txtDireccion.getText().trim();
+                if (nombre.isEmpty() || descripcion.isEmpty()) {
+                    JOptionPane.showMessageDialog(this, "Debe llenar todos los campos.");
+                    return;
+                }
+                ModeloCategoria nueva = new ModeloCategoria();
+                nueva.setNombreCat(nombre);
+                nueva.setDescripcion(descripcion);
+                boolean exito = serviceCategoria.agregarCategoria(nueva);
+                if (exito) {
+                    JOptionPane.showMessageDialog(this, "Categoría agregada correctamente.");
+                    limpiarCampos();
+                    cargarCategorias();
+                } else {
+                    JOptionPane.showMessageDialog(this, "Error al agregar categoría.");
+                }
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage());
+            }
+        });
+
+        // Botón Editar
+        btnEditar.addActionListener(e -> {
+            try {
+                String idText = txtIdCategoria.getText().trim();
+                if (idText.isEmpty()) {
+                    JOptionPane.showMessageDialog(this, "Seleccione una categoría para actualizar.");
+                    return;
+                }
+                int id = Integer.parseInt(idText);
+                String nombre = txtNombre.getText().trim();
+                String descripcion = txtDireccion.getText().trim();
+                if (nombre.isEmpty() || descripcion.isEmpty()) {
+                    JOptionPane.showMessageDialog(this, "Debe llenar todos los campos.");
+                    return;
+                }
+                ModeloCategoria cat = new ModeloCategoria();
+                cat.setIdCategoria(id);
+                cat.setNombreCat(nombre);
+                cat.setDescripcion(descripcion);
+                boolean exito = serviceCategoria.actualizarCategoria(cat);
+                if (exito) {
+                    JOptionPane.showMessageDialog(this, "Categoría actualizada correctamente.");
+                    limpiarCampos();
+                    cargarCategorias();
+                } else {
+                    JOptionPane.showMessageDialog(this, "Error al actualizar categoría.");
+                }
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage());
+            }
+        });
+
+        // Botón Eliminar
+        btnEliminar.addActionListener(e -> {
+            try {
+                String idText = txtIdCategoria.getText().trim();
+                if (idText.isEmpty()) {
+                    JOptionPane.showMessageDialog(this, "Seleccione una categoría para eliminar.");
+                    return;
+                }
+                int id = Integer.parseInt(idText);
+                int confirm = JOptionPane.showConfirmDialog(this, "¿Está seguro de eliminar esta categoría?", "Confirmar", JOptionPane.YES_NO_OPTION);
+                if (confirm == JOptionPane.YES_OPTION) {
+                    boolean exito = serviceCategoria.eliminarCategoria(id);
+                    if (exito) {
+                        JOptionPane.showMessageDialog(this, "Categoría eliminada correctamente.");
+                        limpiarCampos();
+                        cargarCategorias();
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Error al eliminar categoría.");
+                    }
+                }
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage());
+            }
+        });
+
+        // Botón Limpiar
+        btnLimpiar.addActionListener(e -> limpiarCampos());
+    }
+
+    private void limpiarCampos() {
+        txtIdCategoria.setText("");
+        txtNombre.setText("");
+        txtDireccion.setText("");
+        tblCategorias.clearSelection();
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -135,18 +288,15 @@ public class ViewCategorias extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(12, 12, 12)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(txtDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, 502, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 502, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 268, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(100, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(txtDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, 502, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 502, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 268, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(310, 310, 310)
-                        .addComponent(txtIdCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addComponent(txtIdCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(12, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
