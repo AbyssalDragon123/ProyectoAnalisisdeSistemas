@@ -2,13 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-
 /**
  *
  * @author Carlos Orozco
  */
-
-    
 package Servicio;
 
 import Modelos.ModeloCliente;
@@ -26,6 +23,7 @@ import java.util.List;
 public class ServiceCliente {
 
     private static final String CLIENTE = "http://localhost:5167/api/Clientes"; // URL corregida (http)
+
     private final Gson gson = new Gson();
 
     // Obtener lista de clientes
@@ -48,12 +46,12 @@ public class ServiceCliente {
         }
         in.close();
 
-        Type listType = new TypeToken<List<ModeloCliente>>() {}.getType();
+        Type listType = new TypeToken<List<ModeloCliente>>() {
+        }.getType();
         return gson.fromJson(response.toString(), listType);
     }
 
     // Agregar cliente
-    
     public boolean agregarCliente(ModeloCliente cliente) throws Exception {
         URL url = new URL(CLIENTE);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -91,9 +89,9 @@ public class ServiceCliente {
         conn.setDoOutput(true);
 
         String jsonInput = gson.toJson(cliente);
-        
+
         System.out.println("Json antes de enviar" + jsonInput);
-        
+
         try (DataOutputStream wr = new DataOutputStream(conn.getOutputStream())) {
             wr.writeBytes(jsonInput);
             wr.flush();
@@ -121,5 +119,3 @@ public class ServiceCliente {
         return responseCode == 200 || responseCode == 204;
     }
 }
-
-

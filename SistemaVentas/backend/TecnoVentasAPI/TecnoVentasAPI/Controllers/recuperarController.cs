@@ -29,7 +29,7 @@ namespace TecnoVentasAPI.Controllers
 
             string token = Guid.NewGuid().ToString();
             usuario.PasswordResetToken = token;
-            usuario.PasswordResetExpires = DateTime.Now.AddHours(1);
+            usuario.PasswordResetExpires = DateTime.Now.AddMinutes(15);
 
             await _context.SaveChangesAsync();
 

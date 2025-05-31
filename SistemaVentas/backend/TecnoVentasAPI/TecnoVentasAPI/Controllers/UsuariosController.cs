@@ -34,7 +34,21 @@ namespace TecnoVentasAPI.Controllers
 
             return usuario;
         }
+        /* //post hasheado
+        // POST: api/usuarios
+        [HttpPost]
+        public async Task<ActionResult<Usuario>> PostUsuario(Usuario usuario)
+        {
+            // Hashear la contraseña antes de guardarla
+            usuario.Pass = SeguridadUtil.HashearPassword(usuario.Pass);
 
+            _context.Usuarios.Add(usuario);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(GetUsuario), new { id = usuario.IdUsuario }, usuario);
+        }*/
+
+        //Post sin hashear
         // POST: api/usuarios
         [HttpPost]
         public async Task<ActionResult<Usuario>> PostUsuario(Usuario usuario)
@@ -44,7 +58,6 @@ namespace TecnoVentasAPI.Controllers
 
             return CreatedAtAction(nameof(GetUsuario), new { id = usuario.IdUsuario }, usuario);
         }
-
         // PUT: api/usuarios/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutUsuario(int id, Usuario usuario)

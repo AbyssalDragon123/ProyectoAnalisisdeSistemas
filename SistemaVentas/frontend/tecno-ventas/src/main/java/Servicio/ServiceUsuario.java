@@ -57,6 +57,8 @@ public class ServiceUsuario {
         try (DataOutputStream wr = new DataOutputStream(conn.getOutputStream())) {
             wr.writeBytes(jsonInput);
             wr.flush();
+            
+            System.out.println("Json enviado: " + jsonInput);
         }
 
         int responseCode = conn.getResponseCode();
