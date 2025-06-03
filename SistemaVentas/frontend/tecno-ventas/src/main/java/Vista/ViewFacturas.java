@@ -16,7 +16,10 @@ public class ViewFacturas extends javax.swing.JFrame {
      * Creates new form ViewFacturas
      */
     public ViewFacturas() {
+
         initComponents();
+
+        Util.navegacionUtil.desactivarControlesVentana(this); //desactivar botones ventana
     }
 
     /**
@@ -218,10 +221,10 @@ public class ViewFacturas extends javax.swing.JFrame {
 
     private void btnHome2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHome2ActionPerformed
         // TODO add your handling code here:
-                MenuPrincipal menu = new MenuPrincipal();
-    menu.setLocationRelativeTo(null);
-    menu.setVisible(true);
-                this.dispose();
+        MenuPrincipal menu = new MenuPrincipal();
+        menu.setLocationRelativeTo(null);
+        menu.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnHome2ActionPerformed
 
     /**

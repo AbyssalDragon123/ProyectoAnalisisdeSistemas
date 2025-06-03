@@ -8,6 +8,8 @@ import Vista.ViewRecuperarContrasena;
 import Servicio.ServiceRecuperarContrasena;
 import com.mysql.cj.CoreSession;
 import java.awt.Component;
+import Vista.MenuPrincipal;
+import com.mycompany.tecno.ventas.TecnoVentas;
 
 public class RecuperarController {
 
@@ -37,99 +39,114 @@ public class RecuperarController {
     }
 
     private void enviarCodigo() {
-    String correo = Vista.getTxtCorreo().getText().trim();
-    System.out.println("Correo obtenido: " + correo);
+        String correo = Vista.getTxtCorreo().getText().trim();
+        System.out.println("Correo obtenido: " + correo);
 
-    if (correo.isEmpty()) {
-        JOptionPane.showMessageDialog(Vista, "Por favor ingresa tu correo electrónico.", "Error", JOptionPane.ERROR_MESSAGE);
-        return;
-    }
-
-    JDialog dialogoEspera = crearDialogoEspera((JFrame) SwingUtilities.getWindowAncestor(Vista), "Enviando correo, por favor espera...");
-    System.out.println("Mostrando diálogo de espera");
-
-    SwingWorker<Boolean, Void> worker = new SwingWorker<>() {
-
-        @Override
-        protected Boolean doInBackground() {
-            System.out.println("Ejecutando SwingWorker...");
-            boolean resultado = service.enviarToken(correo);
-            System.out.println("Resultado desde el servicio: " + resultado);
-            return resultado;
+        if (correo.isEmpty()) {
+            JOptionPane.showMessageDialog(Vista, "Por favor ingresa tu correo electrónico.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
         }
 
-        @Override
-        protected void done() {
-            dialogoEspera.dispose();
-            System.out.println("Cerrando diálogo de espera");
+        JDialog dialogoEspera = crearDialogoEspera((JFrame) SwingUtilities.getWindowAncestor(Vista), "Enviando correo, por favor espera...");
+        System.out.println("Mostrando diálogo de espera");
 
-            try {
-                boolean enviado = get();
-                System.out.println("Resultado final obtenido: " + enviado);
+        SwingWorker<Boolean, Void> worker = new SwingWorker<>() {
 
-                if (enviado) {
-                    JOptionPane.showMessageDialog(Vista, "Se envió el enlace de recuperación al correo.");
-                    Vista.getBtnRestablecer().setEnabled(true);
-                } else {
-                    JOptionPane.showMessageDialog(Vista, "No se pudo enviar el correo. Intenta más tarde.", "Error", JOptionPane.ERROR_MESSAGE);
-                }
-            } catch (Exception e) {
-                System.out.println("Excepción en SwingWorker: " + e.getMessage());
-                JOptionPane.showMessageDialog(Vista, "Error al enviar el correo: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            @Override
+            protected Boolean doInBackground() {
+                System.out.println("Ejecutando SwingWorker...");
+                boolean resultado = service.enviarToken(correo);
+                System.out.println("Resultado desde el servicio: " + resultado);
+                return resultado;
             }
+
+            @Override
+            protected void done() {
+                dialogoEspera.dispose();
+                System.out.println("Cerrando diálogo de espera");
+
+                try {
+                    boolean enviado = get();
+                    System.out.println("Resultado final obtenido: " + enviado);
+
+                    if (enviado) {
+                        JOptionPane.showMessageDialog(Vista, "Se envió el enlace de recuperación al correo.");
+                        Vista.getBtnRestablecer().setEnabled(true);
+                    } else {
+                        JOptionPane.showMessageDialog(Vista, "No se pudo enviar el correo. Intenta más tarde.", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                } catch (Exception e) {
+                    System.out.println("Excepción en SwingWorker: " + e.getMessage());
+                    JOptionPane.showMessageDialog(Vista, "Error al enviar el correo: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        };
+
+        worker.execute();
+        dialogoEspera.setVisible(true);
+        System.out.println("SwingWorker ejecutado");
+    }
+
+    private void restablecerPassword() {
+        String username = Vista.getTxtUserName().getText().trim();
+        String correo = Vista.getTxtCorreo().getText().trim();
+        String codigo = Vista.getTxtCodigo().getText().trim();
+        String nuevaPass = new String(Vista.getTxtNewPassword().getPassword()).trim();
+        String repetirPass = new String(Vista.getTxtRepetirPassword().getPassword()).trim();
+
+        System.out.println("Usuario ingresado: " + username);
+        System.out.println("Correo ingresado: " + correo);
+        System.out.println("Código/token ingresado: " + codigo);
+        System.out.println("Nueva contraseña: " + nuevaPass);
+        System.out.println("Repetir contraseña: " + repetirPass);
+
+        // Validar campos vacíos
+        if (username.isEmpty() || correo.isEmpty() || codigo.isEmpty() || nuevaPass.isEmpty() || repetirPass.isEmpty()) {
+            JOptionPane.showMessageDialog(Vista, "Completa todos los campos para restablecer la contraseña.", "Error", JOptionPane.ERROR_MESSAGE);
+            System.out.println("Faltan campos obligatorios.");
+            return;
         }
-    };
 
-    worker.execute();
-    dialogoEspera.setVisible(true);
-    System.out.println("SwingWorker ejecutado");
-}
-
-private void restablecerPassword() {
-    String username = Vista.getTxtUserName().getText().trim();
-    String correo = Vista.getTxtCorreo().getText().trim();
-    String codigo = Vista.getTxtCodigo().getText().trim();
-    String nuevaPass = new String(Vista.getTxtNewPassword().getPassword()).trim();
-    String repetirPass = new String(Vista.getTxtRepetirPassword().getPassword()).trim();
-
-    System.out.println("Usuario ingresado: " + username);
-    System.out.println("Correo ingresado: " + correo);
-    System.out.println("Código/token ingresado: " + codigo);
-    System.out.println("Nueva contraseña: " + nuevaPass);
-    System.out.println("Repetir contraseña: " + repetirPass);
-
-    // Validar campos vacíos
-    if (username.isEmpty() || correo.isEmpty() || codigo.isEmpty() || nuevaPass.isEmpty() || repetirPass.isEmpty()) {
-        JOptionPane.showMessageDialog(Vista, "Completa todos los campos para restablecer la contraseña.", "Error", JOptionPane.ERROR_MESSAGE);
-        System.out.println("Faltan campos obligatorios.");
-        return;
-    }
-
-    // Validar que las contraseñas coincidan
-    if (!nuevaPass.equals(repetirPass)) {
-        JOptionPane.showMessageDialog(Vista, "Las contraseñas no coinciden.", "Error", JOptionPane.ERROR_MESSAGE);
-        System.out.println("Las contraseñas no coinciden.");
-        return;
-    }
-
-    try {
-        System.out.println("Enviando solicitud para actualizar contraseña...");
-        boolean actualizado = service.resetearContrasena(username, correo, codigo, nuevaPass);
-        System.out.println("Resultado de la solicitud: " + actualizado);
-
-        if (actualizado) {
-            JOptionPane.showMessageDialog(Vista, "Contraseña actualizada correctamente.");
-            limpiarCampos();
-            Vista.getBtnRestablecer().setEnabled(false);
-        } else {
-            JOptionPane.showMessageDialog(Vista, "Código inválido, expirado o datos incorrectos.", "Error", JOptionPane.ERROR_MESSAGE);
-            System.out.println("Token inválido o expirado.");
+        // Validar que las contraseñas coincidan
+        if (!nuevaPass.equals(repetirPass)) {
+            JOptionPane.showMessageDialog(Vista, "Las contraseñas no coinciden.", "Error", JOptionPane.ERROR_MESSAGE);
+            System.out.println("Las contraseñas no coinciden.");
+            return;
         }
-    } catch (Exception ex) {
-        JOptionPane.showMessageDialog(Vista, "Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        ex.printStackTrace();
+
+        try {
+            System.out.println("Enviando solicitud para actualizar contraseña...");
+            boolean actualizado = service.resetearContrasena(username, correo, codigo, nuevaPass);
+            System.out.println("Resultado de la solicitud: " + actualizado);
+
+            if (actualizado) {
+                JOptionPane.showMessageDialog(Vista, "Contraseña actualizada correctamente.");
+
+                // Mostrar aviso, esperando a que el usuario presione "Aceptar"
+                JOptionPane.showMessageDialog(
+                        Vista,
+                        "Serás redirigido al login para iniciar sesión con tu nueva contraseña.",
+                        "Redirigiendo al login",
+                        JOptionPane.INFORMATION_MESSAGE
+                );
+
+                // Cerrar la ventana actual
+                if (Vista instanceof JFrame) {
+                    ((JFrame) Vista).dispose();
+                }
+                
+                
+                restartApp();
+
+            } else {
+                JOptionPane.showMessageDialog(Vista, "Código inválido, expirado o datos incorrectos.", "Error", JOptionPane.ERROR_MESSAGE);
+                System.out.println("Token inválido o expirado.");
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(Vista, "Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            ex.printStackTrace();
+        }
     }
-}
 
     private void limpiarCampos() {
         Vista.getTxtCodigo().setText("");
@@ -163,6 +180,17 @@ private void restablecerPassword() {
         dialog.setLocationRelativeTo(parent);
         dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
         return dialog;
+    }
+
+    private void restartApp() {
+        try {
+            // Vuelve a ejecutar el método main
+            String[] args = {};
+            TecnoVentas.main(args);
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "No se pudo reiniciar la aplicación.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
 }

@@ -22,6 +22,8 @@ public class ViewCliente extends javax.swing.JFrame {
     public ViewCliente() {
 
         initComponents();
+        
+        Util.navegacionUtil.desactivarControlesVentana(this); //desactivar botones de ventana
 
         //ocultar el idCliente 
         txtIdCliente.setVisible(false);

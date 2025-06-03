@@ -2,6 +2,7 @@ package servicio;
 
 import Modelos.ModeloCategoria;
 import Modelos.ModeloProducto;
+import Util.SesionUsuarioJWT;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -27,6 +28,7 @@ public class ServiceCategoria {
             URL url = new URL(CATEGORIA_API);
             conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
+            conn.setRequestProperty("Authorization", "Bearer " + SesionUsuarioJWT.getToken()); //Validación de token
 
             int responseCode = conn.getResponseCode();
             if (responseCode != 200) {
@@ -78,7 +80,7 @@ public class ServiceCategoria {
             URL url = new URL(PRODUCTO_API);
             conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
-
+            conn.setRequestProperty("Authorization", "Bearer " + SesionUsuarioJWT.getToken());//validación de token
             int responseCode = conn.getResponseCode();
             if (responseCode != 200) {
                 throw new RuntimeException("Error al obtener Productos. Código: " + responseCode);
@@ -108,6 +110,7 @@ public class ServiceCategoria {
             URL url = new URL(CATEGORIA_API);
             conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");
+            conn.setRequestProperty("Authorization", "Bearer " + SesionUsuarioJWT.getToken()); //validación de token
             conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
             conn.setDoOutput(true);
 
@@ -158,6 +161,7 @@ public class ServiceCategoria {
             URL url = new URL(CATEGORIA_API + "/" + categoria.getIdCategoria());
             conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("PUT");
+            conn.setRequestProperty("Authorization", "Bearer " + SesionUsuarioJWT.getToken());//validación de token
             conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
             conn.setDoOutput(true);
 
@@ -205,7 +209,7 @@ public class ServiceCategoria {
             URL url = new URL(CATEGORIA_API + "/" + idCategoria);
             conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("DELETE");
-
+            conn.setRequestProperty("Authorization", "Bearer " + SesionUsuarioJWT.getToken()); //validación de token
             int responseCode = conn.getResponseCode();
             if (responseCode != 200 && responseCode != 204) {
                 System.out.println("Error al eliminar Categoría. Código: " + responseCode);
@@ -228,7 +232,7 @@ public class ServiceCategoria {
             URL url = new URL(CATEGORIA_API + "/" + idCategoria);
             conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
-
+            conn.setRequestProperty("Authorization", "Bearer " + SesionUsuarioJWT.getToken()); //Validación de token
             int responseCode = conn.getResponseCode();
             if (responseCode != 200) {
                 throw new RuntimeException("Error al obtener Categoría. Código: " + responseCode);

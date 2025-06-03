@@ -14,6 +14,12 @@ import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
 import Vista.ViewCliente;
 import Controlador.ClienteController;
+import java.awt.Frame;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import javax.swing.JFrame;
+import javax.swing.JRootPane;
+import Util.navegacionUtil;
 
 /**
  *
@@ -21,46 +27,45 @@ import Controlador.ClienteController;
  */
 public class MenuPrincipal extends javax.swing.JFrame {
 
-
-
-    /**
-     * Creates new form MenuPrincipal
-     */
     public MenuPrincipal() {
-        
+
         initComponents();
+
+        navegacionUtil.desactivarControlesVentana(this);
+
         btnCerrarSesion.addActionListener(new ActionListener() {
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        cerrarSesion();
-    }
-});
-            nombreUsuario = SesionUsuario.nombreUsuario;
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cerrarSesion();
+            }
+        });
+        nombreUsuario = SesionUsuario.nombreUsuario;
 
-    if (nombreUsuario != null) {
-        txtPrincipalUsuario.setText(nombreUsuario);
-    } else {
-        txtPrincipalUsuario.setText("Usuario no identificado");
-    };
-        
+        if (nombreUsuario != null) {
+            txtPrincipalUsuario.setText(nombreUsuario);
+        } else {
+            txtPrincipalUsuario.setText("Usuario no identificado");
+        };
+
     }
+
     private void cerrarSesion() {
-    // Confirmar si el usuario realmente quiere cerrar sesión
-    int confirm = JOptionPane.showConfirmDialog(this, "¿Deseas cerrar sesión?", "Confirmar", JOptionPane.YES_NO_OPTION);
-    
-    if (confirm == JOptionPane.YES_OPTION) {
-        // Limpiar la sesión
-        SesionUsuario.nombreUsuario = null;
+        // Confirmar si el usuario realmente quiere cerrar sesión
+        int confirm = JOptionPane.showConfirmDialog(this, "¿Deseas cerrar sesión?", "Confirmar", JOptionPane.YES_NO_OPTION);
 
-        // Cerrar ventana actual
-        this.dispose();
+        if (confirm == JOptionPane.YES_OPTION) {
+            // Limpiar la sesión
+            SesionUsuario.nombreUsuario = null;
 
-        // Volver a mostrar la ventana de login
-        ViewLogin login = new ViewLogin();
-        ServiceLogin servicio = new ServiceLogin();
-        new LoginController(login, servicio);
+            // Cerrar ventana actual
+            this.dispose();
+
+            // Volver a mostrar la ventana de login
+            ViewLogin login = new ViewLogin();
+            ServiceLogin servicio = new ServiceLogin();
+            new LoginController(login, servicio);
+        }
     }
-}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -357,28 +362,26 @@ public class MenuPrincipal extends javax.swing.JFrame {
 
     private void btnVentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVentasActionPerformed
         // TODO add your handling code here:
-        
+
         //abrir vista ventas
-        
         ViewVentas ventas = new ViewVentas();
         ventas.setLocationRelativeTo(null);
         ventas.setVisible(true);
-            this.dispose();
-        
-        
+        this.dispose();
+
+
     }//GEN-LAST:event_btnVentasActionPerformed
 
     private void btnClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClientesActionPerformed
         // TODO add your handling code here:
-        
+
         //abrir vista clientes, instanciar controlador
-        
         ViewCliente clientes = new ViewCliente();
-        ClienteController  clienteController = new ClienteController(clientes);
+        ClienteController clienteController = new ClienteController(clientes);
         clientes.setLocationRelativeTo(null);
         clientes.setVisible(true);
-            this.dispose();
-        
+        this.dispose();
+
     }//GEN-LAST:event_btnClientesActionPerformed
 
     private void btnProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProductosActionPerformed
@@ -386,7 +389,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
         ViewProducto producto = new ViewProducto();
         producto.setLocationRelativeTo(null);
         producto.setVisible(true);
-                    this.dispose();
+        this.dispose();
     }//GEN-LAST:event_btnProductosActionPerformed
 
     private void btnCategoriasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCategoriasActionPerformed
@@ -402,7 +405,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
         ViewFacturas facturas = new ViewFacturas();
         facturas.setLocationRelativeTo(null);
         facturas.setVisible(true);
-                    this.dispose();
+        this.dispose();
     }//GEN-LAST:event_btnFacturasActionPerformed
 
     private void btnUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUsuariosActionPerformed
@@ -410,7 +413,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
         ViewUsuario vista = new ViewUsuario(); //Instancia de vista
         UsuarioController controller = new UsuarioController(vista); //Instanciar el UsuarioController
         vista.setVisible(true);
-                    this.dispose();
+        this.dispose();
     }//GEN-LAST:event_btnUsuariosActionPerformed
 
     private void btnCerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarSesionActionPerformed

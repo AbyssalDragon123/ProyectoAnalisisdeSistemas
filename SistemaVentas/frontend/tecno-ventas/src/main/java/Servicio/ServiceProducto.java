@@ -1,6 +1,7 @@
 package Servicio;
 
 import Modelos.ModeloProducto;
+import Util.SesionUsuarioJWT;
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 
@@ -47,7 +48,7 @@ public class ServiceProducto {
         URL url = new URL(PRODUCTO_API);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("GET");
-
+        conn.setRequestProperty("Authorization", "Bearer " + SesionUsuarioJWT.getToken()); //Validación de token
         int responseCode = conn.getResponseCode();
         if (responseCode != 200) {
             throw new RuntimeException("Error al obtener productos. Código: " + responseCode);
@@ -71,6 +72,7 @@ public class ServiceProducto {
         URL url = new URL(PRODUCTO_API);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("POST");
+        conn.setRequestProperty("Authorization", "Bearer " + SesionUsuarioJWT.getToken());//Validaciónd de token
         conn.setRequestProperty("Content-Type", "application/json");
         conn.setDoOutput(true);
 
@@ -100,6 +102,7 @@ public class ServiceProducto {
         URL url = new URL(PRODUCTO_API + "/" + producto.getIdProducto());
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("PUT");
+        conn.setRequestProperty("Authorization", "Bearer " + SesionUsuarioJWT.getToken()); //Validación de token
         conn.setRequestProperty("Content-Type", "application/json");
         conn.setDoOutput(true);
 
@@ -125,7 +128,7 @@ public class ServiceProducto {
         URL url = new URL(PRODUCTO_API + "/" + idProducto);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("DELETE");
-
+        conn.setRequestProperty("Authorization", "Bearer " + SesionUsuarioJWT.getToken()); //Validación de token
         int responseCode = conn.getResponseCode();
         if (responseCode != 200 && responseCode != 204) {
             System.out.println("Error al eliminar producto. Código: " + responseCode);

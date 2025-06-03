@@ -3,18 +3,12 @@
 
 namespace TecnoVentasAPI.DTOs
 {
-    
     public class LoginRequest
     {
-        [Column("username")]
+        // Nombre de usuario o email con el que el usuario se autentica
         public string? UserName { get; set; }
-        [Column("pass")]
+
+        // Contraseña que se validará con la base de datos
         public string? Password { get; set; }
-        /*[Column("password_reset_token")]
-        public string? Token { get; set; }
-        [Column("password_reset_expires")]
-        public DateOnly? ExpireToken { get; set; }
-        public string? Email { get; set; }*/
-        public string? rol { get; set; }
     }
 }

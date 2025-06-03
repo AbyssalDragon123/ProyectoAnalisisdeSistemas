@@ -9,6 +9,7 @@
 package Servicio;
 
 import Modelos.ModeloCliente;
+import Util.SesionUsuarioJWT;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -22,7 +23,7 @@ import java.util.List;
 
 public class ServiceCliente {
 
-    private static final String CLIENTE = "http://localhost:5167/api/Clientes"; // URL corregida (http)
+    private static final String CLIENTE = "http://192.168.0.7:5167/api/Clientes"; // URL corregida (http)
 
     private final Gson gson = new Gson();
 
@@ -31,6 +32,7 @@ public class ServiceCliente {
         URL url = new URL(CLIENTE);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("GET");
+        conn.setRequestProperty("Authorization", "Bearer " + SesionUsuarioJWT.getToken());
 
         int responseCode = conn.getResponseCode();
         if (responseCode != 200) {
@@ -56,6 +58,7 @@ public class ServiceCliente {
         URL url = new URL(CLIENTE);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("POST");
+        conn.setRequestProperty("Authorization", "Bearer " + SesionUsuarioJWT.getToken());//validacion de token
         conn.setRequestProperty("Content-Type", "application/json");
         conn.setDoOutput(true);
 
@@ -85,6 +88,7 @@ public class ServiceCliente {
         URL url = new URL(CLIENTE + "/" + cliente.getIdCliente());
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("PUT");
+        conn.setRequestProperty("Authorization", "Bearer " + SesionUsuarioJWT.getToken());//validacion de token
         conn.setRequestProperty("Content-Type", "application/json");
         conn.setDoOutput(true);
 
@@ -110,7 +114,7 @@ public class ServiceCliente {
         URL url = new URL(CLIENTE + "/" + idCliente);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("DELETE");
-
+        conn.setRequestProperty("Authorization", "Bearer " + SesionUsuarioJWT.getToken());//validacion de token
         int responseCode = conn.getResponseCode();
         if (responseCode != 200 && responseCode != 204) {
             System.out.println("Error al eliminar cliente. Código: " + responseCode);

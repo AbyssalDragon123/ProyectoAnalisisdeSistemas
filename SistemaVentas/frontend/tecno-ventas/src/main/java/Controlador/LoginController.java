@@ -46,10 +46,10 @@ public class LoginController {
         ModeloLogin usuario = ServiceLogin.autenticar(username, password);
 
         if (usuario != null) {
-            System.out.println("Usuario autenticado: " + usuario.getUserName());
-            JOptionPane.showMessageDialog(viewLogin, "Bienvenido!!  "+ usuario.getUserName());
+            System.out.println("Usuario autenticado: " + usuario.getUsername());
+            JOptionPane.showMessageDialog(viewLogin, "Bienvenido!!  "+ usuario.getUsername());
                 // Guardar en la sesión
-            SesionUsuario.nombreUsuario = usuario.getUserName();
+            SesionUsuario.nombreUsuario = usuario.getUsername();
             // Crear e iniciar el formulario principal, pasando el nombre del usuario
             MenuPrincipal menu = new MenuPrincipal();
             menu.setLocationRelativeTo(null); // Centrar formulario

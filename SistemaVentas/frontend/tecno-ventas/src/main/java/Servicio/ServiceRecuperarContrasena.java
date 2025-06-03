@@ -2,6 +2,7 @@ package Servicio;
 
 import com.google.gson.Gson;
 import Modelos.ModeloRecuperarContrasena;
+import Util.SesionUsuarioJWT;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
@@ -31,6 +32,7 @@ public class ServiceRecuperarContrasena {
             System.out.println("Endpoint: " + RECUPERAR + "/forgot-password");
 
             conn.setRequestMethod("POST");
+             conn.setRequestProperty("Authorization", "Bearer " + SesionUsuarioJWT.getToken()); //Validación de token
             conn.setRequestProperty("Content-Type", "application/json; utf-8");
             conn.setDoOutput(true);
 

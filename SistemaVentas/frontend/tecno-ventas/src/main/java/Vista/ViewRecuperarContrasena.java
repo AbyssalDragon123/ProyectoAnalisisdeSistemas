@@ -4,6 +4,11 @@
  */
 package Vista;
 
+import Util.navegacionUtil;
+import java.util.Locale;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Admin
@@ -14,15 +19,15 @@ public class ViewRecuperarContrasena extends javax.swing.JFrame {
     public javax.swing.JButton getBtnEnviarCodigo() {
         return btnEnvirCodigo;
     }
-
+    
     public void setBtnEnviarCodigo(javax.swing.JButton btnEnvirCodigo) {
         this.btnEnvirCodigo = btnEnvirCodigo;
     }
-
+    
     public javax.swing.JButton getBtnRestablecer() {
         return btnRestablecer;
     }
-
+    
     public void setBtnRestablecer(javax.swing.JButton btnRestablecer) {
         this.btnRestablecer = btnRestablecer;
     }
@@ -31,23 +36,23 @@ public class ViewRecuperarContrasena extends javax.swing.JFrame {
     public javax.swing.JTextField getTxtCodigo() {
         return txtCodigo;
     }
-
+    
     public void setTxtCodigo(javax.swing.JTextField txtCodigo) {
         this.txtCodigo = txtCodigo;
     }
-
+    
     public javax.swing.JTextField getTxtCorreo() {
         return txtCorreo;
     }
-
+    
     public void setTxtCorreo(javax.swing.JTextField txtCorreo) {
         this.txtCorreo = txtCorreo;
     }
-
+    
     public javax.swing.JTextField getTxtUserName() {
         return txtUserName;
     }
-
+    
     public void setTxtUserName(javax.swing.JTextField txtUserName) {
         this.txtUserName = txtUserName;
     }
@@ -56,15 +61,15 @@ public class ViewRecuperarContrasena extends javax.swing.JFrame {
     public javax.swing.JPasswordField getTxtNewPassword() {
         return txtNewPassword;
     }
-
+    
     public void setTxtNewPassword(javax.swing.JPasswordField txtNewPassword) {
         this.txtNewPassword = txtNewPassword;
     }
-
+    
     public javax.swing.JPasswordField getTxtRepetirPassword() {
         return txtRepetirPassword;
     }
-
+    
     public void setTxtRepetirPassword(javax.swing.JPasswordField txtRepetirPassword) {
         this.txtRepetirPassword = txtRepetirPassword;
     }
@@ -73,7 +78,55 @@ public class ViewRecuperarContrasena extends javax.swing.JFrame {
      * Creates new form ViewRecuperarContrasena
      */
     public ViewRecuperarContrasena() {
+        
         initComponents();
+        
+        navegacionUtil.desactivarControlesVentana(this); //deshabilitar botones de ventana
+
+        //cargar iconos para efecto del ojo
+        ImageIcon iconoOjoAbierto = new ImageIcon(getClass().getResource("/ojo-abierto(32).png"));
+        ImageIcon iconoOjoCerrado = new ImageIcon(getClass().getResource("/esconder-ojo(32).png"));
+
+        //icono por default
+        jbtVerPassword.setIcon(iconoOjoCerrado);
+
+        //Acciones para el boton ("visualizar password")
+        jbtVerPassword.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                mostrarPassword(true); // Mostrar mientras está presionado
+                jbtVerPassword.setIcon(iconoOjoAbierto);
+            }
+            
+            @Override
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                mostrarPassword(false); // Ocultar cuando se suelta
+                jbtVerPassword.setIcon(iconoOjoCerrado);
+            }
+        });
+        
+    }
+    
+    private void mostrarPassword(boolean mostrar) {
+        
+        char echoChar = '*'; // carácter a usar cuando se oculta
+
+        String passwordTxt = String.valueOf(txtNewPassword.getPassword());
+        String nPaswordTxt = String.valueOf(txtRepetirPassword.getPassword());
+        
+        if (passwordTxt.isEmpty() || nPaswordTxt.isEmpty()) {
+            
+            JOptionPane.showMessageDialog(this, "El campo de contraseña está vacío", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        if (mostrar) {
+            txtNewPassword.setEchoChar((char) 0); // Mostrar texto
+            txtRepetirPassword.setEchoChar((char) 0);
+        } else {
+            txtNewPassword.setEchoChar(echoChar); // Ocultar con asteriscos
+            txtRepetirPassword.setEchoChar(echoChar);
+        }
     }
 
     /**
@@ -87,6 +140,7 @@ public class ViewRecuperarContrasena extends javax.swing.JFrame {
 
         jPanel3 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         btnRestablecer = new javax.swing.JButton();
@@ -101,6 +155,7 @@ public class ViewRecuperarContrasena extends javax.swing.JFrame {
         jLabel10 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         txtUserName = new javax.swing.JTextField();
+        jbtVerPassword = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -112,20 +167,33 @@ public class ViewRecuperarContrasena extends javax.swing.JFrame {
         jLabel4.setForeground(new java.awt.Color(219, 233, 238));
         jLabel4.setText("Recuperar Contraseña");
 
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/atras.png"))); // NOI18N
+        jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel1MouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(jLabel4)
-                .addGap(54, 54, 54))
+                .addGap(36, 36, 36))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(18, Short.MAX_VALUE))
         );
 
@@ -162,6 +230,11 @@ public class ViewRecuperarContrasena extends javax.swing.JFrame {
         jLabel8.setText("Ingresar nueva contraseña");
 
         txtNewPassword.setText("jPasswordField1");
+        txtNewPassword.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtNewPasswordFocusGained(evt);
+            }
+        });
 
         btnEnvirCodigo.setBackground(new java.awt.Color(154, 179, 227));
         btnEnvirCodigo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/candado.png"))); // NOI18N
@@ -176,6 +249,11 @@ public class ViewRecuperarContrasena extends javax.swing.JFrame {
         });
 
         txtRepetirPassword.setText("jPasswordField1");
+        txtRepetirPassword.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtRepetirPasswordFocusGained(evt);
+            }
+        });
 
         jLabel10.setFont(new java.awt.Font("Roboto Medium", 1, 18)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(255, 255, 255));
@@ -189,68 +267,80 @@ public class ViewRecuperarContrasena extends javax.swing.JFrame {
         txtUserName.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         txtUserName.setBorder(null);
 
+        jbtVerPassword.setBackground(new java.awt.Color(115, 137, 174));
+        jbtVerPassword.setBorder(null);
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(27, 27, 27)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addContainerGap(44, Short.MAX_VALUE)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(txtNewPassword, javax.swing.GroupLayout.DEFAULT_SIZE, 203, Short.MAX_VALUE)
-                            .addComponent(txtRepetirPassword)))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(27, 27, 27)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtNewPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtRepetirPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(6, 6, 6))
                             .addComponent(txtCodigo, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel9)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 77, Short.MAX_VALUE)
+                                .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(txtUserName, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel7)
-                                    .addComponent(btnRestablecer, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(btnEnvirCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(txtUserName, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addComponent(jLabel9)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(0, 0, Short.MAX_VALUE)))))
-                .addContainerGap())
+                                    .addComponent(btnEnvirCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addContainerGap())
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(btnRestablecer, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jbtVerPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(100, 100, 100))))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(12, 12, 12)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel9)
-                    .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel9)
+                            .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel6))
                     .addComponent(txtUserName, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(19, 19, 19)
+                .addGap(26, 26, 26)
                 .addComponent(btnEnvirCodigo)
                 .addGap(27, 27, 27)
                 .addComponent(jLabel7)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(41, 41, 41)
+                .addGap(29, 29, 29)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtRepetirPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel8))
+                    .addComponent(jLabel8)
+                    .addComponent(txtNewPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtNewPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel10))
-                .addGap(18, 18, Short.MAX_VALUE)
-                .addComponent(btnRestablecer))
+                    .addComponent(jLabel10)
+                    .addComponent(txtRepetirPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnRestablecer)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jbtVerPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -296,6 +386,32 @@ public class ViewRecuperarContrasena extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnEnvirCodigoActionPerformed
 
+    private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
+        // TODO add your handling code here:
+
+        ViewLogin login = new ViewLogin();
+        
+        login.setLocationRelativeTo(this);
+        login.setVisible(true);
+        this.dispose();
+
+    }//GEN-LAST:event_jLabel1MouseClicked
+
+    private void txtRepetirPasswordFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtRepetirPasswordFocusGained
+        // TODO add your handling code here:
+
+        //limpiar al recibir el enfoque
+        txtRepetirPassword.setText("");
+        
+    }//GEN-LAST:event_txtRepetirPasswordFocusGained
+
+    private void txtNewPasswordFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtNewPasswordFocusGained
+        // TODO add your handling code here:
+
+        //limpiar al recibir el enfoque
+        txtNewPassword.setText("");
+    }//GEN-LAST:event_txtNewPasswordFocusGained
+
     /**
      * @param args the command line arguments
      */
@@ -334,6 +450,7 @@ public class ViewRecuperarContrasena extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEnvirCodigo;
     private javax.swing.JButton btnRestablecer;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
@@ -343,6 +460,7 @@ public class ViewRecuperarContrasena extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JButton jbtVerPassword;
     private javax.swing.JTextField txtCodigo;
     private javax.swing.JTextField txtCorreo;
     private javax.swing.JPasswordField txtNewPassword;

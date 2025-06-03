@@ -1,8 +1,7 @@
-
-    
 package Servicio;
 
 import Modelos.ModeloUsuario;
+import Util.SesionUsuarioJWT;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -21,11 +20,11 @@ public class ServiceUsuario {
 
     // Obtener lista de clientes
     public List<ModeloUsuario> obtenerUsuarios() throws Exception {
-        
+
         URL url = new URL(USUARIOS);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("GET");
-
+        conn.setRequestProperty("Authorization", "Bearer " + SesionUsuarioJWT.getToken()); //Validación de token
         int responseCode = conn.getResponseCode();
         if (responseCode != 200) {
             throw new RuntimeException("Error al obtener clientes. Código: " + responseCode);
@@ -40,16 +39,17 @@ public class ServiceUsuario {
         }
         in.close();
 
-        Type listType = new TypeToken<List<ModeloUsuario>>() {}.getType();
+        Type listType = new TypeToken<List<ModeloUsuario>>() {
+        }.getType();
         return gson.fromJson(response.toString(), listType);
     }
 
     // Agregar cliente
-    
     public boolean agregarUsuario(ModeloUsuario usuario) throws Exception {
         URL url = new URL(USUARIOS);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("POST");
+        conn.setRequestProperty("Authorization", "Bearer " + SesionUsuarioJWT.getToken()); //Validación de token
         conn.setRequestProperty("Content-Type", "application/json");
         conn.setDoOutput(true);
 
@@ -57,7 +57,7 @@ public class ServiceUsuario {
         try (DataOutputStream wr = new DataOutputStream(conn.getOutputStream())) {
             wr.writeBytes(jsonInput);
             wr.flush();
-            
+
             System.out.println("Json enviado: " + jsonInput);
         }
 
@@ -81,13 +81,14 @@ public class ServiceUsuario {
         URL url = new URL(USUARIOS + "/" + usuario.getIdUsuario());
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("PUT");
+        conn.setRequestProperty("Authorization", "Bearer " + SesionUsuarioJWT.getToken()); //Validación de token
         conn.setRequestProperty("Content-Type", "application/json");
         conn.setDoOutput(true);
 
         String jsonInput = gson.toJson(usuario);
-        
+
         System.out.println("Json antes de enviar" + jsonInput);
-        
+
         try (DataOutputStream wr = new DataOutputStream(conn.getOutputStream())) {
             wr.writeBytes(jsonInput);
             wr.flush();
@@ -106,7 +107,7 @@ public class ServiceUsuario {
         URL url = new URL(USUARIOS + "/" + idUsuario);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("DELETE");
-
+        conn.setRequestProperty("Authorization", "Bearer " + SesionUsuarioJWT.getToken()); //Validación de token
         int responseCode = conn.getResponseCode();
         if (responseCode != 200 && responseCode != 204) {
             System.out.println("Error al eliminar cliente. Código: " + responseCode);
@@ -115,5 +116,3 @@ public class ServiceUsuario {
         return responseCode == 200 || responseCode == 204;
     }
 }
-
-

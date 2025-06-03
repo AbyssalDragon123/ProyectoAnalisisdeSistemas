@@ -18,10 +18,15 @@ import servicio.ServiceCategoria;
  */
 public class ViewCategorias extends javax.swing.JFrame {
 
-private final ServiceCategoria serviceCategoria = new ServiceCategoria();
+    private final ServiceCategoria serviceCategoria = new ServiceCategoria();
 
     public ViewCategorias() {
         initComponents();
+
+        habilitarBotones();
+
+        Util.navegacionUtil.desactivarControlesVentana(this);//desactivar botones de ventana
+
         configurarTabla();
         cargarCategorias();
         configurarEventos();
@@ -70,6 +75,7 @@ private final ServiceCategoria serviceCategoria = new ServiceCategoria();
         tblCategorias.getSelectionModel().addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting() && tblCategorias.getSelectedRow() != -1) {
                 int fila = tblCategorias.getSelectedRow();
+                deshabilitarBotones();
 
                 Object idValue = tblCategorias.getValueAt(fila, 0);
                 Object nombreValue = tblCategorias.getValueAt(fila, 1);
@@ -78,11 +84,14 @@ private final ServiceCategoria serviceCategoria = new ServiceCategoria();
                 txtIdCategoria.setText(idValue != null ? idValue.toString() : "");
                 txtNombre.setText(nombreValue != null ? nombreValue.toString() : "");
                 txtDireccion.setText(descripcionValue != null ? descripcionValue.toString() : "");
+                
+                
             }
+
         });
 
         // Botón Agregar
-        btnAgregar.addActionListener(e -> {
+        btnRegistrar.addActionListener(e -> {
             try {
                 String nombre = txtNombre.getText().trim();
                 String descripcion = txtDireccion.getText().trim();
@@ -98,6 +107,7 @@ private final ServiceCategoria serviceCategoria = new ServiceCategoria();
                     JOptionPane.showMessageDialog(this, "Categoría agregada correctamente.");
                     limpiarCampos();
                     cargarCategorias();
+
                 } else {
                     JOptionPane.showMessageDialog(this, "Error al agregar categoría.");
                 }
@@ -106,8 +116,8 @@ private final ServiceCategoria serviceCategoria = new ServiceCategoria();
             }
         });
 
-        // Botón Editar
-        btnEditar.addActionListener(e -> {
+        // Botón Actualizar
+        btnActualizar.addActionListener(e -> {
             try {
                 String idText = txtIdCategoria.getText().trim();
                 if (idText.isEmpty()) {
@@ -130,6 +140,7 @@ private final ServiceCategoria serviceCategoria = new ServiceCategoria();
                     JOptionPane.showMessageDialog(this, "Categoría actualizada correctamente.");
                     limpiarCampos();
                     cargarCategorias();
+                    habilitarBotones();
                 } else {
                     JOptionPane.showMessageDialog(this, "Error al actualizar categoría.");
                 }
@@ -154,6 +165,7 @@ private final ServiceCategoria serviceCategoria = new ServiceCategoria();
                         JOptionPane.showMessageDialog(this, "Categoría eliminada correctamente.");
                         limpiarCampos();
                         cargarCategorias();
+                        habilitarBotones();
                     } else {
                         JOptionPane.showMessageDialog(this, "Error al eliminar categoría.");
                     }
@@ -173,6 +185,24 @@ private final ServiceCategoria serviceCategoria = new ServiceCategoria();
         txtDireccion.setText("");
         tblCategorias.clearSelection();
     }
+
+    public void habilitarBotones() {
+
+        this.btnActualizar.setEnabled(false);
+        this.btnEliminar.setEnabled(false);
+        this.btnRegistrar.setEnabled(true);
+
+    }
+
+    public void deshabilitarBotones() {
+
+        //deshabilitar botone y habilitar solo registrar
+        this.btnRegistrar.setEnabled(false);
+        this.btnActualizar.setEnabled(true);
+        this.btnEliminar.setEnabled(true);
+
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -198,8 +228,8 @@ private final ServiceCategoria serviceCategoria = new ServiceCategoria();
         tblCategorias = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
         btnHome = new javax.swing.JButton();
-        btnAgregar = new javax.swing.JButton();
-        btnEditar = new javax.swing.JButton();
+        btnRegistrar = new javax.swing.JButton();
+        btnActualizar = new javax.swing.JButton();
         btnLimpiar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
 
@@ -379,22 +409,22 @@ private final ServiceCategoria serviceCategoria = new ServiceCategoria();
             }
         });
 
-        btnAgregar.setBackground(new java.awt.Color(154, 179, 227));
-        btnAgregar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/anadir-amigo.png"))); // NOI18N
-        btnAgregar.setText("Registrar");
-        btnAgregar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(74, 111, 165), 3));
-        btnAgregar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnRegistrar.setBackground(new java.awt.Color(154, 179, 227));
+        btnRegistrar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnRegistrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/anadir-amigo.png"))); // NOI18N
+        btnRegistrar.setText("Registrar");
+        btnRegistrar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(74, 111, 165), 3));
+        btnRegistrar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
-        btnEditar.setBackground(new java.awt.Color(154, 179, 227));
-        btnEditar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/avatar-de-usuario.png"))); // NOI18N
-        btnEditar.setText("Actualizar");
-        btnEditar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(74, 111, 165), 3));
-        btnEditar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+        btnActualizar.setBackground(new java.awt.Color(154, 179, 227));
+        btnActualizar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnActualizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/avatar-de-usuario.png"))); // NOI18N
+        btnActualizar.setText("Actualizar");
+        btnActualizar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(74, 111, 165), 3));
+        btnActualizar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnActualizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEditarActionPerformed(evt);
+                btnActualizarActionPerformed(evt);
             }
         });
 
@@ -420,8 +450,8 @@ private final ServiceCategoria serviceCategoria = new ServiceCategoria();
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnHome, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnAgregar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnEditar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnRegistrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnActualizar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnLimpiar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnEliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
@@ -432,9 +462,9 @@ private final ServiceCategoria serviceCategoria = new ServiceCategoria();
                 .addGap(23, 23, 23)
                 .addComponent(btnHome, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(44, 44, 44)
-                .addComponent(btnAgregar)
+                .addComponent(btnRegistrar)
                 .addGap(18, 18, 18)
-                .addComponent(btnEditar)
+                .addComponent(btnActualizar)
                 .addGap(18, 18, 18)
                 .addComponent(btnLimpiar)
                 .addGap(18, 18, 18)
@@ -470,15 +500,15 @@ private final ServiceCategoria serviceCategoria = new ServiceCategoria();
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+    private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnEditarActionPerformed
+    }//GEN-LAST:event_btnActualizarActionPerformed
 
     private void btnHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHomeActionPerformed
 
         MenuPrincipal menu = new MenuPrincipal();
-    menu.setLocationRelativeTo(null);
-    menu.setVisible(true);
+        menu.setLocationRelativeTo(null);
+        menu.setVisible(true);
 
         this.dispose();
     }//GEN-LAST:event_btnHomeActionPerformed
@@ -519,11 +549,11 @@ private final ServiceCategoria serviceCategoria = new ServiceCategoria();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAgregar;
-    private javax.swing.JButton btnEditar;
+    private javax.swing.JButton btnActualizar;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnHome;
     private javax.swing.JButton btnLimpiar;
+    private javax.swing.JButton btnRegistrar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;

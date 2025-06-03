@@ -7,6 +7,7 @@ package Vista;
 import Modelos.ModeloCategoria;
 import Servicio.ServiceProducto;
 import Modelos.ModeloProducto;
+import Util.navegacionUtil;
 import java.math.BigDecimal;
 import servicio.ServiceCategoria;
 import javax.swing.table.DefaultTableModel;
@@ -18,7 +19,10 @@ public class ViewProducto extends javax.swing.JFrame {
     private final ServiceCategoria serviceCategoria = new ServiceCategoria();
 
     public ViewProducto() {
+
         initComponents();
+        deshabilitarBotones();
+        navegacionUtil.desactivarControlesVentana(this); //desactivar botones de ventana
         cargarCategorias();
         cargarProductos();
 
@@ -56,6 +60,8 @@ public class ViewProducto extends javax.swing.JFrame {
                         break;
                     }
                 }
+                habilitarBotones();
+
             } else {
                 cmbCategoria.setSelectedIndex(-1);
             }
@@ -95,6 +101,7 @@ public class ViewProducto extends javax.swing.JFrame {
             }
 
             tblProducto.setModel(model);
+            habilitarBotones();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -109,6 +116,24 @@ public class ViewProducto extends javax.swing.JFrame {
         cmbCategoria.setSelectedIndex(-1);
         tblProducto.clearSelection();
     }
+
+    public void habilitarBotones() {
+
+        this.btnActualizar.setEnabled(false);
+        this.btnEliminar.setEnabled(false);
+        this.btnRegistrar.setEnabled(true);
+
+    }
+
+    public void deshabilitarBotones() {
+
+        //deshabilitar botone y habilitar solo registrar
+        this.btnRegistrar.setEnabled(false);
+        this.btnActualizar.setEnabled(true);
+        this.btnEliminar.setEnabled(true);
+
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -121,7 +146,7 @@ public class ViewProducto extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         btnHome = new javax.swing.JButton();
         btnRegistrar = new javax.swing.JButton();
-        btnEditar = new javax.swing.JButton();
+        btnActualizar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
         btnLimpiar = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
@@ -167,14 +192,14 @@ public class ViewProducto extends javax.swing.JFrame {
             }
         });
 
-        btnEditar.setBackground(new java.awt.Color(154, 179, 227));
-        btnEditar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/avatar-de-usuario.png"))); // NOI18N
-        btnEditar.setText("Editar");
-        btnEditar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(74, 111, 165), 3));
-        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+        btnActualizar.setBackground(new java.awt.Color(154, 179, 227));
+        btnActualizar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnActualizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/avatar-de-usuario.png"))); // NOI18N
+        btnActualizar.setText("Actualizar");
+        btnActualizar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(74, 111, 165), 3));
+        btnActualizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEditarActionPerformed(evt);
+                btnActualizarActionPerformed(evt);
             }
         });
 
@@ -209,7 +234,7 @@ public class ViewProducto extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnHome, javax.swing.GroupLayout.DEFAULT_SIZE, 172, Short.MAX_VALUE)
                     .addComponent(btnRegistrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnEditar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnActualizar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnEliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnLimpiar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
@@ -220,7 +245,7 @@ public class ViewProducto extends javax.swing.JFrame {
                 .addGap(88, 88, 88)
                 .addComponent(btnRegistrar, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -466,48 +491,49 @@ public class ViewProducto extends javax.swing.JFrame {
 
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
         // TODO add your handling code here:
-     try {
-        String nombre = txtNombre.getText().trim();
-        String precioStr = txtPrecio.getText().trim();
-        String cantidadStr = txtCantidad.getText().trim();
-        ModeloCategoria categoriaSeleccionada = (ModeloCategoria) cmbCategoria.getSelectedItem();
+        try {
+            String nombre = txtNombre.getText().trim();
+            String precioStr = txtPrecio.getText().trim();
+            String cantidadStr = txtCantidad.getText().trim();
+            ModeloCategoria categoriaSeleccionada = (ModeloCategoria) cmbCategoria.getSelectedItem();
 
-        if (nombre.isEmpty() || precioStr.isEmpty() || cantidadStr.isEmpty() || categoriaSeleccionada == null) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos.");
-            return;
+            if (nombre.isEmpty() || precioStr.isEmpty() || cantidadStr.isEmpty() || categoriaSeleccionada == null) {
+                javax.swing.JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos.");
+                return;
+            }
+
+            double precio = Double.parseDouble(precioStr);
+            int cantidad = Integer.parseInt(cantidadStr);
+            int idCategoria = categoriaSeleccionada.getIdCategoria();
+
+            ModeloProducto nuevoProducto = new ModeloProducto();
+            nuevoProducto.setNombre(nombre);
+            nuevoProducto.setPrecioVenta(precio);
+            nuevoProducto.setStock(cantidad);
+            nuevoProducto.setIdCategoria(idCategoria);
+            nuevoProducto.setIdUsuario(1); // <-- Asignar un idUsuario válido aquí
+
+            boolean exito = serviceProducto.agregarProducto(nuevoProducto);
+
+            if (exito) {
+                javax.swing.JOptionPane.showMessageDialog(this, "Producto registrado correctamente.");
+                limpiarCampos();
+                cargarProductos();
+
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(this, "Error al registrar el producto.");
+            }
+        } catch (NumberFormatException e) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Precio y Cantidad deben ser números válidos.");
+        } catch (Exception e) {
+            e.printStackTrace();
+            javax.swing.JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
         }
-
-        double precio = Double.parseDouble(precioStr);
-        int cantidad = Integer.parseInt(cantidadStr);
-        int idCategoria = categoriaSeleccionada.getIdCategoria();
-
-        ModeloProducto nuevoProducto = new ModeloProducto();
-        nuevoProducto.setNombre(nombre);
-        nuevoProducto.setPrecioVenta(precio);
-        nuevoProducto.setStock(cantidad);
-        nuevoProducto.setIdCategoria(idCategoria);
-        nuevoProducto.setIdUsuario(1); // <-- Asignar un idUsuario válido aquí
-
-        boolean exito = serviceProducto.agregarProducto(nuevoProducto);
-
-        if (exito) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Producto registrado correctamente.");
-            limpiarCampos();
-            cargarProductos();
-        } else {
-            javax.swing.JOptionPane.showMessageDialog(this, "Error al registrar el producto.");
-        }
-    } catch (NumberFormatException e) {
-        javax.swing.JOptionPane.showMessageDialog(this, "Precio y Cantidad deben ser números válidos.");
-    } catch (Exception e) {
-        e.printStackTrace();
-        javax.swing.JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
-    }
     }//GEN-LAST:event_btnRegistrarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         // TODO add your handling code here:
-     try {
+        try {
             int filaSeleccionada = tblProducto.getSelectedRow();
             if (filaSeleccionada == -1) {
                 javax.swing.JOptionPane.showMessageDialog(this, "Seleccione un producto para eliminar.");
@@ -524,6 +550,7 @@ public class ViewProducto extends javax.swing.JFrame {
                     javax.swing.JOptionPane.showMessageDialog(this, "Producto eliminado correctamente.");
                     limpiarCampos();
                     cargarProductos();
+                    deshabilitarBotones();
                 } else {
                     javax.swing.JOptionPane.showMessageDialog(this, "Error al eliminar el producto.");
                 }
@@ -542,54 +569,55 @@ public class ViewProducto extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtCantidadActionPerformed
 
-    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+    private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
         // TODO add your handling code here:
-       try {
-        int filaSeleccionada = tblProducto.getSelectedRow();
-        if (filaSeleccionada == -1) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Seleccione un producto para editar.");
-            return;
+        try {
+            int filaSeleccionada = tblProducto.getSelectedRow();
+            if (filaSeleccionada == -1) {
+                javax.swing.JOptionPane.showMessageDialog(this, "Seleccione un producto para editar.");
+                return;
+            }
+
+            int idProducto = (int) tblProducto.getValueAt(filaSeleccionada, 0);
+            String nombre = txtNombre.getText().trim();
+            String precioStr = txtPrecio.getText().trim();
+            String cantidadStr = txtCantidad.getText().trim();
+            ModeloCategoria categoriaSeleccionada = (ModeloCategoria) cmbCategoria.getSelectedItem();
+
+            if (nombre.isEmpty() || precioStr.isEmpty() || cantidadStr.isEmpty() || categoriaSeleccionada == null) {
+                javax.swing.JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos.");
+                return;
+            }
+
+            double precio = Double.parseDouble(precioStr);
+            int cantidad = Integer.parseInt(cantidadStr);
+            int idCategoria = categoriaSeleccionada.getIdCategoria();
+
+            ModeloProducto productoEditado = new ModeloProducto();
+            productoEditado.setIdProducto(idProducto);
+            productoEditado.setNombre(nombre);
+            productoEditado.setPrecioVenta(precio);
+            productoEditado.setStock(cantidad);
+            productoEditado.setIdCategoria(idCategoria);
+            productoEditado.setIdUsuario(1); // <-- Asignar un idUsuario válido aquí
+
+            boolean exito = serviceProducto.actualizarProducto(productoEditado);
+
+            if (exito) {
+                javax.swing.JOptionPane.showMessageDialog(this, "Producto actualizado correctamente.");
+                limpiarCampos();
+                cargarProductos();
+                deshabilitarBotones();
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(this, "Error al actualizar el producto.");
+            }
+        } catch (NumberFormatException e) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Precio y Cantidad deben ser números válidos.");
+        } catch (Exception e) {
+            e.printStackTrace();
+            javax.swing.JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
         }
-
-        int idProducto = (int) tblProducto.getValueAt(filaSeleccionada, 0);
-        String nombre = txtNombre.getText().trim();
-        String precioStr = txtPrecio.getText().trim();
-        String cantidadStr = txtCantidad.getText().trim();
-        ModeloCategoria categoriaSeleccionada = (ModeloCategoria) cmbCategoria.getSelectedItem();
-
-        if (nombre.isEmpty() || precioStr.isEmpty() || cantidadStr.isEmpty() || categoriaSeleccionada == null) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos.");
-            return;
-        }
-
-        double precio = Double.parseDouble(precioStr);
-        int cantidad = Integer.parseInt(cantidadStr);
-        int idCategoria = categoriaSeleccionada.getIdCategoria();
-
-        ModeloProducto productoEditado = new ModeloProducto();
-        productoEditado.setIdProducto(idProducto);
-        productoEditado.setNombre(nombre);
-        productoEditado.setPrecioVenta(precio);
-        productoEditado.setStock(cantidad);
-        productoEditado.setIdCategoria(idCategoria);
-        productoEditado.setIdUsuario(1); // <-- Asignar un idUsuario válido aquí
-
-        boolean exito = serviceProducto.actualizarProducto(productoEditado);
-
-        if (exito) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Producto actualizado correctamente.");
-            limpiarCampos();
-            cargarProductos();
-        } else {
-            javax.swing.JOptionPane.showMessageDialog(this, "Error al actualizar el producto.");
-        }
-    } catch (NumberFormatException e) {
-        javax.swing.JOptionPane.showMessageDialog(this, "Precio y Cantidad deben ser números válidos.");
-    } catch (Exception e) {
-        e.printStackTrace();
-        javax.swing.JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
-    }
-    }//GEN-LAST:event_btnEditarActionPerformed
+    }//GEN-LAST:event_btnActualizarActionPerformed
 
     private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
         // TODO add your handling code here:
@@ -645,7 +673,7 @@ public class ViewProducto extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnEditar;
+    private javax.swing.JButton btnActualizar;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnHome;
     private javax.swing.JButton btnLimpiar;
