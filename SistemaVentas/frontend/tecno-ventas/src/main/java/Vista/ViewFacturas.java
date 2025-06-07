@@ -5,6 +5,17 @@
 package Vista;
 
 import Controlador.UsuarioController;
+import Modelos.ModeloFactura;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -20,6 +31,85 @@ public class ViewFacturas extends javax.swing.JFrame {
         initComponents();
 
         Util.navegacionUtil.desactivarControlesVentana(this); //desactivar botones ventana
+        cargarFacturas();
+    }
+
+    //obtener facturas
+    public List<ModeloFactura> obtenerFacturas() {
+        List<ModeloFactura> facturas = null;
+
+        try {
+            String url = "http://localhost:5167/api/Facturas";
+
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .GET()
+                    .build();
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() == 200) {
+                String json = response.body();
+
+                // Parseamos la lista JSON a List<ModeloFactura>
+                Gson gson = new Gson();
+                facturas = gson.fromJson(json, new TypeToken<List<ModeloFactura>>() {
+                }.getType());
+            } else {
+                JOptionPane.showMessageDialog(null, "Error al obtener facturas: " + response.statusCode());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error al obtener facturas: " + e.getMessage());
+        }
+
+        return facturas;
+    }
+
+    public void cargarFacturas() {
+        try {
+            // Definir columnas de la tabla
+            String[] columnas = {"ID Factura", "Fecha", "ID Cliente", "ID Usuario"};
+            DefaultTableModel modeloTabla = new DefaultTableModel(null, columnas) {
+                @Override
+                public boolean isCellEditable(int row, int column) {
+                    return false; // Evitar edición directa en la tabla
+                }
+            };
+            tblClientes.setModel(modeloTabla);
+
+            // Llamada HTTP para obtener facturas
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create("http://localhost:5167/api/Facturas"))
+                    .GET()
+                    .build();
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() == 200) {
+                Gson gson = new Gson();
+                ModeloFactura[] facturas = gson.fromJson(response.body(), ModeloFactura[].class);
+
+                // Agregar filas al modelo
+                for (ModeloFactura f : facturas) {
+                    Object[] fila = {
+                        f.getIdFactura(),
+                        f.getFechaFactura(),
+                        f.getIdCliente(),
+                        f.getIdUsuario()
+                    };
+                    modeloTabla.addRow(fila);
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Error al cargar facturas: " + response.statusCode());
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error: " + e.getMessage());
+        }
     }
 
     /**

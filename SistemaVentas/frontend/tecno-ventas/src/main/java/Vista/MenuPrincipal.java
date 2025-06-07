@@ -7,13 +7,14 @@ package Vista;
 import Controlador.LoginController;
 import Controlador.UsuarioController;
 import Modelos.SesionUsuario;
-import static Modelos.SesionUsuario.nombreUsuario;
+
 import Servicio.ServiceLogin;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
 import Vista.ViewCliente;
 import Controlador.ClienteController;
+import static Modelos.SesionUsuario.nombreUsuario;
 import java.awt.Frame;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -39,6 +40,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
                 cerrarSesion();
             }
         });
+
         nombreUsuario = SesionUsuario.nombreUsuario;
 
         if (nombreUsuario != null) {
@@ -55,6 +57,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
 
         if (confirm == JOptionPane.YES_OPTION) {
             // Limpiar la sesión
+
             SesionUsuario.nombreUsuario = null;
 
             // Cerrar ventana actual

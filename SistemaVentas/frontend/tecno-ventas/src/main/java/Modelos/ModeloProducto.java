@@ -72,4 +72,10 @@ public class ModeloProducto {
     public void setFechaCreacion(String fechaCreacion) {
         this.fechaCreacion = fechaCreacion;
     }
+    
+    @Override
+    public String toString(){
+    
+        return nombre;
+    }
 }

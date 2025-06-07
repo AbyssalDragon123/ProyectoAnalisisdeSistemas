@@ -9,9 +9,10 @@ public class ModeloDetalleVenta {
     private Integer cantidad; // nullable int
     private BigDecimal precioVenta; // decimal(10,2) en C#
 
-    public ModeloDetalleVenta() {}
+    public ModeloDetalleVenta() {} //constructor vacio
 
     public ModeloDetalleVenta(int idFactura, int idProducto, Integer cantidad, BigDecimal precioVenta) {
+        
         this.idFactura = idFactura;
         this.idProducto = idProducto;
         this.cantidad = cantidad;

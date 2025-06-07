@@ -9,6 +9,13 @@
     <packaging>jar</packaging>
 
     <dependencies>
+        
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>itextpdf</artifactId>
+            <version>5.5.13.3</version>
+        </dependency>
+
         <dependency>
             <groupId>com.toedter</groupId>
             <artifactId>jcalendar</artifactId>

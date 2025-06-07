@@ -4,12 +4,24 @@
  */
 package Modelos;
 
+import Modelos.ModeloUsuario;
+
 /**
  *
  * @author Admin
  */
 public class SesionUsuario {
+
+    public static String nombreUsuario;
     
-        public static String nombreUsuario;
-        
+    /*public static ModeloUsuario usuarioLogueado;
+
+    public static ModeloUsuario getUsuarioLogueado() {
+        return usuarioLogueado;
+    }
+
+    public static void setUsuarioLogueado(ModeloUsuario usuario) {
+        usuarioLogueado = usuario;
+    }*/
+
 }

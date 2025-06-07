@@ -70,6 +70,6 @@ public class ModeloCliente {
 
     @Override
     public String toString() {
-        return nombre + " " + apellido + " (" + correo + ")";
+        return nombre + " " + apellido ;
     }
 }

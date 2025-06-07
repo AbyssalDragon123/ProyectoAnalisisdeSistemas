@@ -104,5 +104,22 @@ namespace TecnoVentasAPI.Controllers
         {
             return _context.DetalleVentas.Any(e => e.IdDetalle == id);
         }
+
+        // GET: api/DetalleVentas/porFactura/10
+        [HttpGet("porFactura/{idFactura}")]
+        public async Task<ActionResult<IEnumerable<DetalleVenta>>> GetDetallesPorFactura(int idFactura)
+        {
+            var detalles = await _context.DetalleVentas
+                .Where(d => d.IdFactura == idFactura)
+                .ToListAsync();
+
+            if (detalles == null || !detalles.Any())
+            {
+                return NotFound();
+            }
+
+            return Ok(detalles);
+        }
+
     }
 }

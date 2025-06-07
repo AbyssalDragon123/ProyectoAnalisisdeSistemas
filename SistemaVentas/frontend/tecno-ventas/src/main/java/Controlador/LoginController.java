@@ -15,7 +15,7 @@ import javax.swing.JOptionPane;
  * @author C-Orozco
  */
 public class LoginController {
-    
+
     private ViewLogin viewLogin;
     private ServiceLogin servicio;
 
@@ -47,9 +47,10 @@ public class LoginController {
 
         if (usuario != null) {
             System.out.println("Usuario autenticado: " + usuario.getUsername());
-            JOptionPane.showMessageDialog(viewLogin, "Bienvenido!!  "+ usuario.getUsername());
-                // Guardar en la sesión
+            JOptionPane.showMessageDialog(viewLogin, "Bienvenido!!  " + usuario.getUsername());
+            // Guardar en la sesión
             SesionUsuario.nombreUsuario = usuario.getUsername();
+
             // Crear e iniciar el formulario principal, pasando el nombre del usuario
             MenuPrincipal menu = new MenuPrincipal();
             menu.setLocationRelativeTo(null); // Centrar formulario

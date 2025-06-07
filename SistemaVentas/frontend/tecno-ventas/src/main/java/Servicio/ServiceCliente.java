@@ -23,7 +23,7 @@ import java.util.List;
 
 public class ServiceCliente {
 
-    private static final String CLIENTE = "http://192.168.0.7:5167/api/Clientes"; // URL corregida (http)
+    private static final String CLIENTE = "http://localhost:5167/api/Clientes"; // URL corregida (http)
 
     private final Gson gson = new Gson();
 
