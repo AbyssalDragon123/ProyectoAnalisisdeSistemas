@@ -1,6 +1,7 @@
 package Servicio;
 
 import Modelos.ModeloProducto;
+import Util.ProductoEnUsoException;
 import Util.SesionUsuarioJWT;
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
@@ -123,17 +124,48 @@ public class ServiceProducto {
         return responseCode == 204;
     }
 
-    // Eliminar producto
-    public boolean eliminarProducto(int idProducto) throws Exception {
+      public boolean eliminarProducto(int idProducto) throws ProductoEnUsoException, Exception { // Declara las excepciones que puede lanzar
         URL url = new URL(PRODUCTO_API + "/" + idProducto);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("DELETE");
-        conn.setRequestProperty("Authorization", "Bearer " + SesionUsuarioJWT.getToken()); //Validación de token
-        int responseCode = conn.getResponseCode();
-        if (responseCode != 200 && responseCode != 204) {
-            System.out.println("Error al eliminar producto. Código: " + responseCode);
-        }
 
-        return responseCode == 200 || responseCode == 204;
+        String token = SesionUsuarioJWT.getToken();
+        conn.setRequestProperty("Authorization", "Bearer " + token);
+
+        int responseCode = conn.getResponseCode();
+
+        // Si la eliminación fue exitosa (200 OK o 204 No Content)
+        if (responseCode == 200 || responseCode == 204) {
+            return true; // Retorna true para éxito
+        } else { // Si hubo algún tipo de error
+            BufferedReader errorReader = null;
+            String errorMessage = "Error desconocido"; // Mensaje por defecto
+
+            try {
+                errorReader = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
+                StringBuilder errorResponse = new StringBuilder();
+                String line;
+                while ((line = errorReader.readLine()) != null) {
+                    errorResponse.append(line);
+                }
+                errorMessage = errorResponse.toString();
+            } finally {
+                if (errorReader != null) {
+                    try {
+                        errorReader.close();
+                    } catch (Exception e) {
+                        e.printStackTrace(); // Log del error al cerrar el reader
+                    }
+                }
+            }
+
+            // Si el código es 409, lanza la excepción personalizada
+            if (responseCode == 409) {
+                throw new ProductoEnUsoException(errorMessage);
+            } else {
+                // Para cualquier otro código de error (ej. 401 Unauthorized, 404 Not Found, 500 Internal Server Error)
+                throw new Exception("Error al eliminar el producto. Código: " + responseCode + ". Mensaje: " + errorMessage);
+            }
+        }
     }
 }

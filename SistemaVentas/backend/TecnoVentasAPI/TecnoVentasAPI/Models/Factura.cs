@@ -20,11 +20,12 @@ namespace TecnoVentasAPI.Models
         [Required]
         [Column("id_usuario")]
         public int IdUsuario { get; set; }
+        
 
-       /*[ForeignKey("IdCliente")]
-        public Cliente? Cliente { get; set; }
+        /*[ForeignKey("IdCliente")]
+         public Cliente? Cliente { get; set; }
 
-        [ForeignKey("IdUsuario")]  //relación uno a muchos con Usuario
-        public Usuario Usuario { get; set; } = null!;*/
+         [ForeignKey("IdUsuario")]  //relación uno a muchos con Usuario
+         public Usuario Usuario { get; set; } = null!;*/
     }
 }
