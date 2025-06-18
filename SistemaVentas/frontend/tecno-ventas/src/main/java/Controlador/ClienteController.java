@@ -7,6 +7,7 @@ import Util.GenericTableModel;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
+import javax.swing.table.TableRowSorter;
 
 public class ClienteController {
 
@@ -94,7 +95,11 @@ public class ClienteController {
             }
 
             vista.getTblClientes().setModel(modelo);//cargar los datos obtenidos a la tabla
+            TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(modelo);
+            vista.getTblClientes().setRowSorter(sorter);
+            vista.setRowSorterClientes(sorter);
             ocultarColumnas(new int[]{0, 7}); //ocultar columnas
+            
             
 
         } catch (Exception e) {

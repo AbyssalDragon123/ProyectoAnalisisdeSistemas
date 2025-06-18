@@ -20,7 +20,8 @@ namespace TecnoVentasAPI.Models
         [Required]
         [Column("id_usuario")]
         public int IdUsuario { get; set; }
-        
+        public ICollection<DetalleVenta> DetalleVentas { get; set; } = new List<DetalleVenta>();
+
 
         /*[ForeignKey("IdCliente")]
          public Cliente? Cliente { get; set; }
