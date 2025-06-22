@@ -4,13 +4,16 @@ import java.util.Date;
 import java.util.List;
 
 public class ModeloFacturaDetalle {
+
     private int idFactura;
     private Date fechaFactura;
     private String clienteNombre;
     private String usuarioNombre;
+    private int estado;
     private List<ModeloDetalleDTO> detalles;
 
-    public ModeloFacturaDetalle() {}
+    public ModeloFacturaDetalle() {
+    }
 
     public int getIdFactura() {
         return idFactura;
@@ -50,5 +53,15 @@ public class ModeloFacturaDetalle {
 
     public void setDetalles(List<ModeloDetalleDTO> detalles) {
         this.detalles = detalles;
+    }
+
+    public boolean isEstado() {
+
+        return estado ==1;
+    }
+
+    public void setEstado(int estado) {
+        this.estado = estado;
+
     }
 }

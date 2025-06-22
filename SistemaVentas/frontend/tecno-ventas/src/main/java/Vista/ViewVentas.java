@@ -29,6 +29,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 import java.math.BigDecimal;
+import Util.SessionManager;
 
 /**
  *
@@ -316,7 +317,9 @@ public class ViewVentas extends javax.swing.JFrame {
         factura.setIdCliente(clienteSeleccionado.getIdCliente());
 
         //int idUsuario = SesionUsuario.nombreUsuario;
-        factura.setIdUsuario(1);
+        factura.setIdUsuario(SessionManager.getIdUsuario());
+
+        System.out.println("Usuario que genera la factura" + SessionManager.getIdUsuario());
 
         // 2. Guardar factura y obtener ID generado
         ServiceFactura serviceFactura = new ServiceFactura();
@@ -356,7 +359,6 @@ public class ViewVentas extends javax.swing.JFrame {
         }
     }
 
-    
     //limpiar campos del formulario despues de realizar una venta
     private void limpiarTodo() {
 
@@ -922,7 +924,7 @@ public class ViewVentas extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        
+
         generarFactura();
 
 

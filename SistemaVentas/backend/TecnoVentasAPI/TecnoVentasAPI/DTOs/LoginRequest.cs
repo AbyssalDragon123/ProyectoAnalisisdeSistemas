@@ -10,5 +10,6 @@ namespace TecnoVentasAPI.DTOs
 
         // Contraseña que se validará con la base de datos
         public string? Password { get; set; }
+        public string? Rol { get; set; }
     }
 }

@@ -20,6 +20,8 @@ namespace TecnoVentasAPI.Models
         [Required]
         [Column("id_usuario")]
         public int IdUsuario { get; set; }
+        [Column("estado")]
+        public bool Estado { get; set; }
         public ICollection<DetalleVenta> DetalleVentas { get; set; } = new List<DetalleVenta>();
 
 

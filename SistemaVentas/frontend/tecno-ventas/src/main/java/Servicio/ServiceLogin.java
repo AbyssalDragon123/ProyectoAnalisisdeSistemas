@@ -8,6 +8,7 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import org.json.JSONObject;
+import Util.SessionManager;
 
 
 
@@ -51,6 +52,9 @@ public class ServiceLogin {
                 
                 //enviar el token a variable global para las demas peticiones
                 SesionUsuarioJWT.setToken(token);
+                SessionManager.setToken(token);
+                SessionManager.mostrarDatosSesion();
+                
                
                 //Enviamos token para validar usuario
                 login.setToken(token);

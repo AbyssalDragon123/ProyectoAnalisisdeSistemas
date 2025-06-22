@@ -11,15 +11,25 @@ import Modelos.ModeloFacturaDetalle;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import java.awt.Component;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.DefaultCellEditor;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
+import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.*;
+import java.io.FileOutputStream;
+import java.util.List;
 
 /**
  *
@@ -39,73 +49,229 @@ public class ViewFacturas extends javax.swing.JFrame {
     }
 
     //obtener facturas
-   public List<ModeloFacturaDetalle> obtenerFacturasCompletas() {
-    List<ModeloFacturaDetalle> lista = new ArrayList<>();
+    public List<ModeloFacturaDetalle> obtenerFacturasCompletas() {
+        List<ModeloFacturaDetalle> lista = new ArrayList<>();
 
-    try {
-        String url = "http://localhost:5167/api/GestionFactura/completas";
+        try {
+            String url = "http://localhost:5167/api/GestionFactura/completas";
 
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(url))
-                .GET()
-                .build();
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .GET()
+                    .build();
 
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-        if (response.statusCode() == 200) {
-            Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
-            lista = gson.fromJson(response.body(), new TypeToken<List<ModeloFacturaDetalle>>() {}.getType());
-        } else {
-            JOptionPane.showMessageDialog(null, "Error al obtener facturas completas: " + response.statusCode());
+            if (response.statusCode() == 200) {
+                Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+                lista = gson.fromJson(response.body(), new TypeToken<List<ModeloFacturaDetalle>>() {
+                }.getType());
+            } else {
+                JOptionPane.showMessageDialog(null, "Error al obtener facturas completas: " + response.statusCode());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error al obtener facturas completas: " + e.getMessage());
         }
-    } catch (Exception e) {
-        e.printStackTrace();
-        JOptionPane.showMessageDialog(null, "Error al obtener facturas completas: " + e.getMessage());
+
+        return lista;
     }
 
-    return lista;
-}
+    public void cargarFacturasConDetalles() {
+        try {
+            String[] columnas = {"ID", "Fecha", "Cliente", "Usuario", "Estado", "Ver Detalle"};
+            DefaultTableModel modeloTabla = new DefaultTableModel(null, columnas) {
+                @Override
+                public boolean isCellEditable(int row, int column) {
+                    // Solo la columna del botón es editable
+                    return column == 5;
+                }
+            };
 
+            tblClientes.setModel(modeloTabla);
 
-   public void cargarFacturasConDetalles() {
-    try {
-        String[] columnas = {"ID", "Fecha", "Cliente", "Usuario", "Detalles"};
-        DefaultTableModel modeloTabla = new DefaultTableModel(null, columnas) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
+            List<ModeloFacturaDetalle> facturas = obtenerFacturasCompletas();
+            SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
+
+            for (ModeloFacturaDetalle f : facturas) {
+                Object[] fila = {
+                    f.getIdFactura(),
+                    formatoFecha.format(f.getFechaFactura()),
+                    f.getClienteNombre(),
+                    f.getUsuarioNombre(),
+                    f.isEstado() ? "Anulada" : "Activa", // Aquí asumimos que isEstado() retorna booleano
+                    "Ver" // texto del botón
+                };
+                modeloTabla.addRow(fila);
             }
-        };
 
-        tblClientes.setModel(modeloTabla);
+            // Agregar renderer para mostrar botón
+            tblClientes.getColumn("Ver Detalle").setCellRenderer(new ButtonRenderer());
+            tblClientes.getColumn("Ver Detalle").setCellEditor(new ButtonEditor(new JCheckBox(), facturas));
 
-        List<ModeloFacturaDetalle> facturas = obtenerFacturasCompletas();
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error al cargar facturas con detalles: " + e.getMessage());
+        }
+    }
 
-        for (ModeloFacturaDetalle f : facturas) {
-            StringBuilder detalleText = new StringBuilder();
-            for (ModeloDetalleDTO d : f.getDetalles()) {
-                detalleText.append(d.getProductoNombre())
+//boton render
+    class ButtonRenderer extends JButton implements TableCellRenderer {
+
+        public ButtonRenderer() {
+            setText("Ver");
+        }
+
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value,
+                boolean isSelected, boolean hasFocus, int row, int column) {
+            return this;
+        }
+    }
+
+    //boton Editar
+    class ButtonEditor extends DefaultCellEditor {
+
+        private JButton button;
+        private boolean clicked;
+        private List<ModeloFacturaDetalle> facturas;
+        private int row;
+
+        public ButtonEditor(JCheckBox checkBox, List<ModeloFacturaDetalle> facturas) {
+            super(checkBox);
+            this.facturas = facturas;
+            button = new JButton("Ver");
+            button.addActionListener(e -> mostrarDetalle());
+        }
+
+        private void mostrarDetalle() {
+            ModeloFacturaDetalle factura = facturas.get(row);
+            StringBuilder mensaje = new StringBuilder();
+            for (ModeloDetalleDTO d : factura.getDetalles()) {
+                mensaje.append("- ")
+                        .append(d.getProductoNombre())
                         .append(" x").append(d.getCantidad())
-                        .append(" @Q").append(d.getPrecioUnitario())
+                        .append(" Q").append(d.getPrecioUnitario())
                         .append("\n");
             }
-
-            Object[] fila = {
-                f.getIdFactura(),
-                f.getFechaFactura(),
-                f.getClienteNombre(),
-                f.getUsuarioNombre(),
-                detalleText.toString().trim()
-            };
-            modeloTabla.addRow(fila);
+            JOptionPane.showMessageDialog(button, mensaje.toString(),
+                    "Detalle de Factura #" + factura.getIdFactura(), JOptionPane.INFORMATION_MESSAGE);
         }
 
-    } catch (Exception e) {
-        e.printStackTrace();
-        JOptionPane.showMessageDialog(null, "Error al cargar facturas con detalles: " + e.getMessage());
+        @Override
+        public Component getTableCellEditorComponent(JTable table, Object value,
+                boolean isSelected, int row, int column) {
+            this.row = row;
+            clicked = true;
+            return button;
+        }
+
+        @Override
+        public Object getCellEditorValue() {
+            clicked = false;
+            return "Ver";
+        }
+
+        @Override
+        public boolean stopCellEditing() {
+            clicked = false;
+            return super.stopCellEditing();
+        }
     }
-}
+
+    //Anular factura
+    public void anularFactura(int idFactura) {
+        String url = "http://localhost:5167/api/Facturas/anular/" + idFactura;
+
+        try {
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .PUT(HttpRequest.BodyPublishers.noBody()) // PUT sin body para anular
+                    .build();
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() == 200 || response.statusCode() == 204) {
+                JOptionPane.showMessageDialog(null, "Factura anulada con éxito.");
+                cargarFacturasConDetalles(); // Recarga la tabla para reflejar cambios
+            } else {
+                JOptionPane.showMessageDialog(null, "Error al anular factura. Código: " + response.statusCode());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error al anular factura: " + e.getMessage());
+        }
+    }
+
+    //Metodo para generar pdf de factura
+    public void generarFacturaPDF(ModeloFacturaDetalle factura, String rutaArchivo) {
+        Document document = new Document();
+
+        try {
+            PdfWriter.getInstance(document, new FileOutputStream(rutaArchivo));
+            document.open();
+
+            // Título
+            Font fontTitulo = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18);
+            Paragraph titulo = new Paragraph("Factura Nº " + factura.getIdFactura(), fontTitulo);
+            titulo.setAlignment(Element.ALIGN_CENTER);
+            document.add(titulo);
+
+            document.add(new Paragraph(" ")); // Espacio en blanco
+
+            // Datos generales
+            document.add(new Paragraph("Fecha: " + factura.getFechaFactura()));
+            document.add(new Paragraph("Cliente: " + factura.getClienteNombre()));
+            document.add(new Paragraph("Usuario: " + factura.getUsuarioNombre()));
+            document.add(new Paragraph("Estado: " + (factura.isEstado() ? "Anulada" : "Activa")));
+
+            document.add(new Paragraph(" ")); // Espacio en blanco
+
+            // Tabla de detalles
+            PdfPTable tabla = new PdfPTable(4); // 4 columnas
+            tabla.setWidthPercentage(100);
+            tabla.setWidths(new int[]{5, 1, 2, 2});
+
+            // Encabezados
+            tabla.addCell("Producto");
+            tabla.addCell("Cantidad");
+            tabla.addCell("Precio Unitario");
+            tabla.addCell("Subtotal");
+
+            double total = 0;
+
+            List<ModeloDetalleDTO> detalles = factura.getDetalles();
+
+            for (ModeloDetalleDTO detalle : detalles) {
+                tabla.addCell(detalle.getProductoNombre());
+                tabla.addCell(String.valueOf(detalle.getCantidad()));
+                tabla.addCell(String.format("Q%.2f", detalle.getPrecioUnitario()));
+
+                double subtotal = detalle.getCantidad() * detalle.getPrecioUnitario().doubleValue();
+                tabla.addCell(String.format("Q%.2f", subtotal));
+                total += subtotal;
+            }
+
+            // Fila total
+            PdfPCell celdaTotal = new PdfPCell(new Phrase("TOTAL"));
+            celdaTotal.setColspan(3);
+            celdaTotal.setHorizontalAlignment(Element.ALIGN_RIGHT);
+            tabla.addCell(celdaTotal);
+            tabla.addCell(String.format("Q%.2f", total));
+
+            document.add(tabla);
+
+            document.close();
+
+            JOptionPane.showMessageDialog(null, "Factura PDF generada en:\n" + rutaArchivo);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error al generar PDF: " + e.getMessage());
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -127,6 +293,8 @@ public class ViewFacturas extends javax.swing.JFrame {
         tblClientes = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
         btnHome2 = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         btnHome4.setBackground(new java.awt.Color(154, 179, 227));
         btnHome4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/casa (1).png"))); // NOI18N
@@ -253,13 +421,30 @@ public class ViewFacturas extends javax.swing.JFrame {
             }
         });
 
+        jButton1.setText("Anular Factura");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jButton2.setText("Imprimir Factura");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(btnHome2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnHome2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -267,7 +452,11 @@ public class ViewFacturas extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(btnHome2, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(450, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(341, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -312,6 +501,38 @@ public class ViewFacturas extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnHome2ActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+
+        //llamar metodo para eliminar
+        int filaSeleccionada = tblClientes.getSelectedRow();
+        if (filaSeleccionada != -1) {
+            int idFactura = Integer.parseInt(tblClientes.getValueAt(filaSeleccionada, 0).toString());
+            int confirm = JOptionPane.showConfirmDialog(this, "¿Seguro que deseas eliminar la factura #" + idFactura + "?", "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
+
+            if (confirm == JOptionPane.YES_OPTION) {
+                anularFactura(idFactura);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Seleccione una factura para eliminar.");
+        }
+
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+
+        int fila = tblClientes.getSelectedRow();
+        if (fila >= 0) {
+            //ModeloFacturaDetalle factura = obtenerFacturasCompletas(); // Asegúrate que tengas una lista `facturas`
+            //String rutaArchivo = "Factura_" + factura.getIdFactura() + ".pdf";
+
+            //generarFacturaPDF(factura, rutaArchivo);
+        } else {
+            JOptionPane.showMessageDialog(null, "Selecciona una factura primero.");
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -350,6 +571,8 @@ public class ViewFacturas extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnHome2;
     private javax.swing.JButton btnHome4;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel2;
