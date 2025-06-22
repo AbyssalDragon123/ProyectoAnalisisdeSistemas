@@ -27,7 +27,9 @@ public class ServiceFactura {
         try {
             Gson gson = new Gson();
             String json = gson.toJson(factura);
-
+            
+            //validacion del json
+            System.out.println("JSON enviado a la api" + json);
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(URL))

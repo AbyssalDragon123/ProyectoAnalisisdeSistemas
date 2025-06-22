@@ -104,5 +104,39 @@ namespace TecnoVentasAPI.Controllers
         {
             return _context.Facturas.Any(e => e.IdFactura == id);
         }
+
+        // PUT: api/Facturas/anular/5
+        [HttpPut("anular/{id}")]
+        public async Task<IActionResult> AnularFactura(int id)
+        {
+            var factura = await _context.Facturas.FindAsync(id);
+            if (factura == null)
+            {
+                return NotFound();
+            }
+
+            factura.Estado = true; // O factura.Anulada = true; depende del nombre de tu propiedad
+
+            _context.Entry(factura).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!FacturaExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
     }
 }

@@ -21,7 +21,23 @@
             <artifactId>jcalendar</artifactId>
             <version>1.4</version>
         </dependency>
-        
+        <!-- GenerarPDF -->
+        <dependency>
+            <groupId>com.github.librepdf</groupId>
+            <artifactId>openpdf</artifactId>
+            <version>1.3.30</version>
+        </dependency>
+<!-- Enviar correo -->
+        <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
+            <version>1.4.7</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.activation</groupId>
+            <artifactId>activation</artifactId>
+            <version>1.1.1</version>
+        </dependency>
         <!-- Versión estable de JSONObject -->
         <dependency>
             <groupId>org.json</groupId>

@@ -12,14 +12,9 @@ import Servicio.ServiceLogin;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
-import Vista.ViewCliente;
 import Controlador.ClienteController;
 import static Modelos.SesionUsuario.nombreUsuario;
-import java.awt.Frame;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import javax.swing.JFrame;
-import javax.swing.JRootPane;
+import Util.SessionManager;
 import Util.navegacionUtil;
 
 /**
@@ -31,8 +26,10 @@ public class MenuPrincipal extends javax.swing.JFrame {
     public MenuPrincipal() {
 
         initComponents();
-
+        
+        aplicarPermisosPorRol();
         navegacionUtil.desactivarControlesVentana(this);
+       
 
         btnCerrarSesion.addActionListener(new ActionListener() {
             @Override
@@ -49,6 +46,40 @@ public class MenuPrincipal extends javax.swing.JFrame {
             txtPrincipalUsuario.setText("Usuario no identificado");
         };
 
+    }
+
+    private void aplicarPermisosPorRol() {
+        String rol = SessionManager.getRol(); // Puede ser "Admin", "Vendedor", null, etc.
+
+        if ("Vendedor".equalsIgnoreCase(rol)) {
+            // Vendedor: se restringen algunos accesos
+            btnUsuarios.setEnabled(false);
+            btnCategorias.setEnabled(false);
+            btnProductos.setEnabled(false);
+            btnVentas.setEnabled(true);
+            btnClientes.setEnabled(true);
+            btnFacturas.setEnabled(true);
+
+        } else if ("Admin".equalsIgnoreCase(rol) || "Administrador".equalsIgnoreCase(rol)) {
+            // Administrador: acceso total
+            btnUsuarios.setEnabled(true);
+            btnCategorias.setEnabled(true);
+            btnProductos.setEnabled(true);
+            btnVentas.setEnabled(true);
+            btnClientes.setEnabled(true);
+            btnFacturas.setEnabled(true);
+
+        } else {
+            // Rol no identificado: bloquear todo
+            JOptionPane.showMessageDialog(this, "Usuario no identificado. Contacte al administrador.", "Acceso restringido", JOptionPane.WARNING_MESSAGE);
+
+            btnUsuarios.setEnabled(false);
+            btnCategorias.setEnabled(false);
+            btnProductos.setEnabled(false);
+            btnVentas.setEnabled(false);
+            btnClientes.setEnabled(false);
+            btnFacturas.setEnabled(false);
+        }
     }
 
     private void cerrarSesion() {

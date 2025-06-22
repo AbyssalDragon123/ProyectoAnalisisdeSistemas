@@ -47,7 +47,8 @@ namespace TecnoVentasAPI.Controllers
             {
                 new Claim(ClaimTypes.Name, user.Username),
                 new Claim(ClaimTypes.Role, user.Rol),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()) // ID único del token
+                new Claim(ClaimTypes.NameIdentifier, user.IdUsuario.ToString()), // ID del usuario
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
 
             // Crear la clave de seguridad a partir del secret

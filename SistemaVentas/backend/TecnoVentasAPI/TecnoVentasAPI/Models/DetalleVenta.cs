@@ -24,10 +24,12 @@ namespace TecnoVentasAPI.Models
         [Column("precio_venta", TypeName = "decimal(10,2)")]
         public decimal? PrecioVenta { get; set; }
 
-        /*[ForeignKey("IdFactura")]
-        public Factura Factura { get; set; } = null!;
+        //propiedades de navegación
+
+        [ForeignKey("IdFactura")]
+        public Factura? Factura { get; set; } = null!;
 
         [ForeignKey("IdProducto")]
-        public Producto Producto { get; set; } = null!;*/
+        public Producto? Producto { get; set; } = null!;
     }
 }

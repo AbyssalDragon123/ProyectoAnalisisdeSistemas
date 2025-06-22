@@ -27,7 +27,7 @@ public class ServiceDetalleVenta {
             con.setDoOutput(true);
             
             String jsonInputString = gson.toJson(detalle);
-
+            System.out.println("Detalle enviado" + jsonInputString);
             try (OutputStream os = con.getOutputStream()) {
                 byte[] input = jsonInputString.getBytes(StandardCharsets.UTF_8);
                 os.write(input, 0, input.length);

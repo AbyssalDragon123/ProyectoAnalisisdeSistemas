@@ -29,7 +29,7 @@ namespace TecnoVentasAPI.Controllers
 
             string token = Guid.NewGuid().ToString();
             usuario.PasswordResetToken = token;
-            usuario.PasswordResetExpires = DateTime.Now.AddMinutes(15);
+            usuario.PasswordResetExpires = DateTime.Now.AddMinutes(5);
 
             await _context.SaveChangesAsync();
 
@@ -72,7 +72,7 @@ namespace TecnoVentasAPI.Controllers
 
                 var asunto = "Recuperación de contraseña";
                 var mensaje = $"Atentamente confirmamos su solicitud realizada para la recuperación de su contraseña,\n\n" +
-                    $"Este es tu código de recuperación: {token}\n\nEste código expirará en 15 minutos.";
+                    $"Este es tu código de recuperación: {token}\n\nEste código vence en 5 minutos.";
 
                 var smtp = new SmtpClient("smtp.gmail.com")
                 {

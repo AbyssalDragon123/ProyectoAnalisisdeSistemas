@@ -20,11 +20,15 @@ namespace TecnoVentasAPI.Models
         [Required]
         [Column("id_usuario")]
         public int IdUsuario { get; set; }
+        [Column("estado")]
+        public bool Estado { get; set; }
+        public ICollection<DetalleVenta> DetalleVentas { get; set; } = new List<DetalleVenta>();
 
-       /*[ForeignKey("IdCliente")]
-        public Cliente? Cliente { get; set; }
 
-        [ForeignKey("IdUsuario")]  //relación uno a muchos con Usuario
-        public Usuario Usuario { get; set; } = null!;*/
+        /*[ForeignKey("IdCliente")]
+         public Cliente? Cliente { get; set; }
+
+         [ForeignKey("IdUsuario")]  //relación uno a muchos con Usuario
+         public Usuario Usuario { get; set; } = null!;*/
     }
 }
